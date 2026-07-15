@@ -1,20 +1,5 @@
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
-import CodeBlock from '@theme/CodeBlock';
-
-const CONFIG_REPO = 'https://github.com/meshmy/meshtastic-config-my-sg';
-const CONFIG_RAW = 'https://raw.githubusercontent.com/meshmy/meshtastic-config-my-sg/main';
-
-function ConfigLink({file}) {
-  return (
-    <>
-      <a href={`${CONFIG_REPO}/blob/main/${file}`} target="_blank" rel="noreferrer">
-        {file}
-      </a>{' '}
-      (<a href={`${CONFIG_RAW}/${file}`} target="_blank" rel="noreferrer">raw</a>)
-    </>
-  );
-}
 
 export default function Join() {
   return (
@@ -80,103 +65,122 @@ export default function Join() {
               below.
             </p>
 
-            <Heading as="h2">3. Choose your band</Heading>
-            <p>MeshMY runs on two LoRa bands. Pick the one that matches your situation:</p>
+            <Heading as="h2">3. Radio Configuration → LoRa</Heading>
+            <p>
+              Open your device's{' '}
+              <a
+                href="https://meshtastic.org/docs/configuration/radio/lora/"
+                target="_blank"
+                rel="noreferrer">
+                LoRa settings
+              </a>{' '}
+              and set the following:
+            </p>
 
             <div className="alert alert--info margin-bottom--md" role="alert">
-              <strong>919 MHz (MY_919)</strong> — the license-free ISM band.
-              This is the recommended default for everyone. Set your
-              device's region to <code>MY_919</code>.
+              <strong>Region: 919 MHz (MY_919)</strong> — the license-free
+              ISM band. This is the recommended default for everyone. See
+              the full{' '}
+              <a
+                href="https://meshtastic.org/docs/configuration/region-by-country/"
+                target="_blank"
+                rel="noreferrer">
+                region by country
+              </a>{' '}
+              list for reference.
             </div>
 
             <div className="alert alert--warning margin-bottom--md" role="alert">
-              <strong>433 MHz (MY_433)</strong> — this falls within Malaysia's
-              amateur radio band. Only use <code>MY_433</code> if you hold a
+              <strong>Region: 433 MHz (MY_433)</strong> — this falls within
+              Malaysia's amateur radio band. Only select it if you hold a
               valid Malaysian amateur radio licence. If you're not a licensed
-              ham operator, stick to 919 MHz.
+              ham operator, use 919 MHz instead.
             </div>
 
-            <Heading as="h2">4. Import the MeshMY channel</Heading>
-            <p>
-              Rather than configuring settings by hand, import one of the
-              community's ready-made channel configs from{' '}
-              <a href={CONFIG_REPO} target="_blank" rel="noreferrer">
-                meshtastic-config-my-sg
-              </a>
-              . Each band has three variants — pick based on how your node
-              connects to the internet:
-            </p>
-
-            <Heading as="h3">Standard (recommended default)</Heading>
-            <p>
-              Use this if you're usually within RF range of other mesh
-              nodes. MQTT is off on your own node, but the channel stays
-              marked "OK to MQTT" so nearby gateway nodes can still bridge
-              your messages onto the wider mesh.
-            </p>
+            <p>Also on this page:</p>
             <ul>
-              <li><ConfigLink file="MY_919.yaml" /></li>
-              <li><ConfigLink file="MY_433.yaml" /> (licensed operators only)</li>
+              <li>
+                Set <strong>Modem Preset</strong> to <code>Medium Fast</code>{' '}
+                — this is the preset the rest of the MeshMY community uses,
+                so staying on it keeps you compatible with everyone else's
+                mesh timing.
+              </li>
+              <li>
+                Leave <strong>Max Hops</strong> at its default of{' '}
+                <code>3</code>, which is fine for most setups.
+              </li>
+              <li>
+                Turn on <strong>OK to MQTT</strong>. This tells nearby
+                gateway nodes they're allowed to bridge your packets onto
+                MQTT — see the note on MQTT below for why this matters.
+              </li>
             </ul>
 
-            <Heading as="h3">MQTT Gateway / Client Proxy</Heading>
+            <Heading as="h2">4. Radio Configuration → Channels</Heading>
             <p>
-              Use this if your node is often outside mesh coverage but has
-              Wi-Fi or a phone with cellular data nearby. Your node connects
-              directly to the community MQTT server, so you stay bridged to
-              the rest of the mesh even without RF neighbors.
-            </p>
-            <ul>
-              <li><ConfigLink file="MY_919_lucifernet_MQTT.yaml" /></li>
-              <li><ConfigLink file="MY_433_lucifernet_MQTT.yaml" /> (licensed operators only)</li>
-            </ul>
-
-            <Heading as="h3">RF-only</Heading>
-            <p>
-              Use this only if you deliberately want your traffic to stay
-              off MQTT entirely.
-            </p>
-            <div className="alert alert--danger margin-bottom--md" role="alert">
-              <strong>Not recommended.</strong> Going RF-only prevents your
-              messages from being linked over MQTT to nodes out-of-state.
-              Unless you have a specific reason to isolate your traffic to
-              local RF range, use the Standard or MQTT Gateway config above
-              instead.
-            </div>
-            <ul>
-              <li><ConfigLink file="MY_919_RF_only.yaml" /></li>
-              <li><ConfigLink file="MY_433_RF_only.yaml" /> (licensed operators only)</li>
-            </ul>
-
-            <Heading as="h3">Applying a config</Heading>
-            <p>
-              Easiest: open the channel's <code>channel_url</code> from the
-              yaml file on your phone (or scan its QR code) to import it
-              directly in the Meshtastic app under{' '}
-              <em>Settings → Channels</em>.
-            </p>
-            <p>
-              Or, using the{' '}
+              Open your{' '}
               <a
-                href="https://meshtastic.org/docs/software/python/cli/installation/"
+                href="https://meshtastic.org/docs/configuration/radio/channels/"
                 target="_blank"
                 rel="noreferrer">
-                Meshtastic Python CLI
-              </a>
-              :
+                Channels settings
+              </a>{' '}
+              and leave the primary channel as-is — an empty name (which
+              resolves to the <code>default</code> channel) with its default
+              PSK. Don't create a custom channel or change the PSK; staying
+              on the default channel is what puts you on the air with the
+              rest of the MeshMY community.
             </p>
-            <CodeBlock language="bash">
-              {'meshtastic [-t tcp_node_ip/hostname] [-s com_port/tty_device] --configure MY_919.yaml'}
-            </CodeBlock>
+            <p>
+              On that same primary channel, turn on <strong>Uplink
+              Enabled</strong> and <strong>Downlink Enabled</strong>. These
+              work together with "OK to MQTT" above to let your messages
+              flow to and from MQTT gateways.
+            </p>
 
-            <Heading as="h2">5. About the MQTT server</Heading>
+            <Heading as="h2">5. Module Configuration → MQTT</Heading>
+            <p>
+              Meshtastic's{' '}
+              <a
+                href="https://meshtastic.org/docs/configuration/module/mqtt/"
+                target="_blank"
+                rel="noreferrer">
+                MQTT module
+              </a>{' '}
+              controls whether your node talks to an MQTT broker directly.
+              There are two reasonable ways to set this up, depending on how
+              your node connects to the internet:
+            </p>
+            <ul>
+              <li>
+                <strong>Rely on a nearby gateway (recommended default).</strong>{' '}
+                Leave the MQTT module disabled on your own node. As long as
+                "OK to MQTT" and the channel's uplink/downlink toggles are
+                on (steps 3–4 above), any MeshMY gateway node within RF range
+                will bridge your messages for you.
+              </li>
+              <li>
+                <strong>Be your own gateway.</strong> If your node is often
+                out of RF range but has Wi-Fi or a phone with cellular data
+                nearby, enable the MQTT module directly and point it at
+                MeshMY's community server — see below.
+              </li>
+            </ul>
+            <div className="alert alert--danger margin-bottom--md" role="alert">
+              <strong>Not recommended:</strong> turning off both "OK to
+              MQTT" and the module (an "RF-only" setup). This isolates your
+              traffic to local RF range only and prevents it from being
+              linked over MQTT to nodes out-of-state. Only do this if you
+              deliberately want to stay off MQTT entirely.
+            </div>
+
+            <Heading as="h3">MeshMY's community MQTT server</Heading>
             <p>
               <a href="https://mqtt.lucifernet.com" target="_blank" rel="noreferrer">
                 mqtt.lucifernet.com
               </a>{' '}
-              is MeshMY's preferred community MQTT server (maintained by
-              9W2LWK). It's already set in the MQTT Gateway configs above. If
-              you're setting it up manually, use:
+              is MeshMY's preferred MQTT server (maintained by 9W2LWK). If
+              you're setting up the MQTT module yourself, use:
             </p>
             <ul>
               <li>Address: <code>mqtt.lucifernet.com</code></li>
@@ -187,7 +191,8 @@ export default function Join() {
             </ul>
             <p>
               This server also feeds the community mesh map — once your node
-              is uplinking to it, you'll show up at{' '}
+              is uplinking to it (whether directly or via a nearby gateway),
+              you'll show up at{' '}
               <a href="https://meshmap2.lucifernet.com/" target="_blank" rel="noreferrer">
                 meshmap2.lucifernet.com
               </a>
