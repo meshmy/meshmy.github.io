@@ -5,7 +5,7 @@ export default function Join() {
   return (
     <Layout
       title="Join the Mesh"
-      description="How to get on the MeshMY Meshtastic network: hardware, apps, channel configs, and the weekly net.">
+      description="How to get on the MeshMY Meshtastic network: hardware, apps, and channel configuration.">
       <main className="container margin-vert--lg">
         <div className="row">
           <div className="col col--8 col--offset-2">
@@ -200,26 +200,10 @@ export default function Join() {
               .
             </p>
 
-            <Heading as="h2">6. Join the weekly net</Heading>
             <p>
-              MeshMY runs a weekly check-in net on MY919 — "Check In Net Mesh
-              MY919". Check-ins are open from <strong>10:00 AM to 10:00 PM</strong>.
-              Send one of the following messages on the default channel to
-              check in:
-            </p>
-            <ul>
-              <li>
-                <code>CMQTT CHECK IN NET MESH MY919</code> — if your node is
-                connected directly to MQTT (e.g. the MQTT Gateway config).
-              </li>
-              <li>
-                <code>CRF CHECK IN NET MESH MY919</code> — if you're checking
-                in over RF and relying on another node to relay you to MQTT.
-              </li>
-            </ul>
-            <p>
-              <em>Jom check in net! Kalau bukan anda, siapa lagi.</em>{' '}
-              ("Come check in to the net — if not you, then who else.")
+              Once you're set up, head over to the{' '}
+              <a href="/meshtastic/weekly-net">weekly net</a> page to take
+              part in the community check-in.
             </p>
 
             <Heading as="h2">Get help</Heading>

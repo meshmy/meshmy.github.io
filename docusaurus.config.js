@@ -74,7 +74,16 @@ const config = {
         items: [
           {to: '/', label: 'Home', position: 'left'},
           {to: '/about', label: 'About', position: 'left'},
-          {to: '/join', label: 'Join the Mesh', position: 'left'},
+          {
+            type: 'dropdown',
+            to: '/meshtastic',
+            label: 'Meshtastic',
+            position: 'left',
+            items: [
+              {to: '/meshtastic/join', label: 'Join'},
+              {to: '/meshtastic/weekly-net', label: 'Weekly Net'},
+            ],
+          },
           {to: '/events', label: 'Events', position: 'left'},
           {
             href: 'https://github.com/meshmy',
@@ -91,8 +100,15 @@ const config = {
             items: [
               {label: 'Home', to: '/'},
               {label: 'About', to: '/about'},
-              {label: 'Join the Mesh', to: '/join'},
               {label: 'Events', to: '/events'},
+            ],
+          },
+          {
+            title: 'Meshtastic',
+            items: [
+              {label: 'Overview', to: '/meshtastic'},
+              {label: 'Join', to: '/meshtastic/join'},
+              {label: 'Weekly Net', to: '/meshtastic/weekly-net'},
             ],
           },
           {
