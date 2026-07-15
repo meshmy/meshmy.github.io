@@ -125,11 +125,12 @@ export default function Join() {
                 rel="noreferrer">
                 Channels settings
               </a>{' '}
-              and leave the primary channel as-is — an empty name (which
-              resolves to the <code>default</code> channel) with its default
-              PSK. Don't create a custom channel or change the PSK; staying
-              on the default channel is what puts you on the air with the
-              rest of the MeshMY community.
+              and leave the primary channel's name field blank and its PSK
+              at the default. With the name blank, the channel is named
+              automatically after your modem preset — <code>MediumFast</code>{' '}
+              per step 3 above. Don't create a custom channel or change the
+              PSK; staying on this default channel is what puts you on the
+              air with the rest of the MeshMY community.
             </p>
             <p>
               On that same primary channel, turn on <strong>Uplink
