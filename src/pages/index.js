@@ -23,12 +23,12 @@ function HomepageHeader() {
             Join the Mesh
           </Link>
           <Link
-            className="button button--secondary button--lg margin-left--md"
+            className="button button--secondary button--lg"
             to="/about">
             Learn More
           </Link>
           <Link
-            className="button button--secondary button--lg margin-left--md"
+            className="button button--secondary button--lg"
             to="/events">
             Upcoming Events
           </Link>
