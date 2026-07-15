@@ -72,6 +72,7 @@ const config = {
         items: [
           {to: '/', label: 'Home', position: 'left'},
           {to: '/about', label: 'About', position: 'left'},
+          {to: '/join', label: 'Join the Mesh', position: 'left'},
           {to: '/events', label: 'Events', position: 'left'},
           {
             href: 'https://github.com/meshmy',
@@ -88,6 +89,7 @@ const config = {
             items: [
               {label: 'Home', to: '/'},
               {label: 'About', to: '/about'},
+              {label: 'Join the Mesh', to: '/join'},
               {label: 'Events', to: '/events'},
             ],
           },

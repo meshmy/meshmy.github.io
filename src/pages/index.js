@@ -19,6 +19,11 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
+            to="/join">
+            Join the Mesh
+          </Link>
+          <Link
+            className="button button--secondary button--lg margin-left--md"
             to="/about">
             Learn More
           </Link>
