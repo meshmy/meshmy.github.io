@@ -5,48 +5,49 @@
  */
 
 /*
- * MeshMY brand palette, inspired by the Malaysian flag (Jalur Gemilang):
- * dark blue background, white text, red for primary actions/hero,
- * gold/yellow as the accent color.
+ * MeshMY brand palette, inspired by the Malaysian flag (Jalur Gemilang).
+ * Base hues match the flag's official Pantone Matching System (PMS) specs:
+ * Blue PMS 2768 C, Red PMS 199 C, Yellow PMS 108 C. Red is darkened by
+ * halving its HSV value, per brand guidance; yellow is used as-is.
  */
 :root,
 [data-theme='dark'] {
-  --ifm-color-primary: #a3282c;
-  --ifm-color-primary-dark: #93242a;
-  --ifm-color-primary-darker: #8a2226;
-  --ifm-color-primary-darkest: #721c1f;
-  --ifm-color-primary-light: #b12c30;
-  --ifm-color-primary-lighter: #ba2f33;
-  --ifm-color-primary-lightest: #c53d41;
+  --ifm-color-primary: #6a0019;
+  --ifm-color-primary-dark: #5f0016;
+  --ifm-color-primary-darker: #5a0015;
+  --ifm-color-primary-darkest: #4a0012;
+  --ifm-color-primary-light: #791a30;
+  --ifm-color-primary-lighter: #80263c;
+  --ifm-color-primary-lightest: #974c5e;
 
-  --ifm-color-secondary: #d1a12f;
-  --ifm-color-secondary-dark: #bc9129;
-  --ifm-color-secondary-darker: #b18927;
-  --ifm-color-secondary-darkest: #927020;
-  --ifm-color-secondary-light: #d6ab43;
-  --ifm-color-secondary-lighter: #d9b04f;
-  --ifm-color-secondary-lightest: #e0bd6b;
+  --ifm-color-secondary: #fedb00;
+  --ifm-color-secondary-dark: #e5c500;
+  --ifm-color-secondary-darker: #d8ba00;
+  --ifm-color-secondary-darkest: #b29900;
+  --ifm-color-secondary-light: #fedf1a;
+  --ifm-color-secondary-lighter: #fee026;
+  --ifm-color-secondary-lightest: #fee64c;
 
-  --ifm-background-color: #010066;
-  --ifm-background-surface-color: #0b1a73;
+  --ifm-background-color: #071d49;
+  --ifm-background-surface-color: #20345b;
 
   --ifm-font-color-base: #ffffff;
   --ifm-heading-color: #ffffff;
 
-  --ifm-navbar-background-color: #000a4d;
+  --ifm-navbar-background-color: #06193e;
   --ifm-navbar-link-color: #ffffff;
-  --ifm-navbar-link-hover-color: #d1a12f;
+  --ifm-navbar-link-hover-color: #fedb00;
 
-  --ifm-footer-background-color: #000a4d;
+  --ifm-footer-background-color: #06193e;
   --ifm-footer-color: #ffffff;
-  --ifm-footer-link-color: #d1a12f;
+  --ifm-footer-link-color: #fedb00;
   --ifm-footer-title-color: #ffffff;
 
-  --ifm-link-color: #d1a12f;
-  --ifm-link-hover-color: #dcae43;
+  --ifm-link-color: #fedb00;
+  --ifm-link-hover-color: #fedf1a;
 
-  --ifm-card-background-color: #0b1a73;
-  --ifm-hr-border-color: #d1a12f;
+  --ifm-card-background-color: #20345b;
+  --ifm-hr-border-color: #fedb00;
 
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
@@ -58,7 +59,7 @@
 
 /* Infima's .footer--dark class redefines these locally, overriding :root */
 .footer--dark {
-  --ifm-footer-background-color: #000a4d;
-  --ifm-footer-link-color: #d1a12f;
+  --ifm-footer-background-color: #06193e;
+  --ifm-footer-link-color: #fedb00;
   --ifm-footer-title-color: #ffffff;
 }
