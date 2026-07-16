@@ -23,7 +23,7 @@ export default function Meshtastic() {
             <p>Start here:</p>
 
             <div className="row">
-              <div className="col col--6 margin-bottom--md">
+              <div className="col col--4 margin-bottom--md">
                 <div className="card">
                   <div className="card__header">
                     <Heading as="h2">Join</Heading>
@@ -41,7 +41,7 @@ export default function Meshtastic() {
                   </div>
                 </div>
               </div>
-              <div className="col col--6 margin-bottom--md">
+              <div className="col col--4 margin-bottom--md">
                 <div className="card">
                   <div className="card__header">
                     <Heading as="h2">Weekly Net</Heading>
@@ -55,6 +55,24 @@ export default function Meshtastic() {
                   <div className="card__footer">
                     <Link className="button button--secondary button--block" to="/meshtastic/weekly-net">
                       Weekly net details
+                    </Link>
+                  </div>
+                </div>
+              </div>
+              <div className="col col--4 margin-bottom--md">
+                <div className="card">
+                  <div className="card__header">
+                    <Heading as="h2">Infrastructure</Heading>
+                  </div>
+                  <div className="card__body">
+                    <p>
+                      See the router sites the MeshMY team builds and
+                      maintains to extend mesh coverage.
+                    </p>
+                  </div>
+                  <div className="card__footer">
+                    <Link className="button button--secondary button--block" to="/meshtastic/infrastructure">
+                      View infrastructure
                     </Link>
                   </div>
                 </div>

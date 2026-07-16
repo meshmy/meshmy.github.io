@@ -82,6 +82,7 @@ const config = {
             items: [
               {to: '/meshtastic/join', label: 'Join'},
               {to: '/meshtastic/weekly-net', label: 'Weekly Net'},
+              {to: '/meshtastic/infrastructure', label: 'Infrastructure'},
             ],
           },
           {to: '/events', label: 'Events', position: 'left'},
@@ -109,6 +110,7 @@ const config = {
               {label: 'Overview', to: '/meshtastic'},
               {label: 'Join', to: '/meshtastic/join'},
               {label: 'Weekly Net', to: '/meshtastic/weekly-net'},
+              {label: 'Infrastructure', to: '/meshtastic/infrastructure'},
             ],
           },
           {
