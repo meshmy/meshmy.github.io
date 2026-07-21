@@ -111,6 +111,15 @@
      (numeric readouts, etc). Needs to be whichever brand color actually
      pops off this theme's background — yellow reads fine on navy. */
   --brand-highlight-text: var(--ifm-color-secondary);
+
+  /* Neutral (non-brand) grey accents for icons/tracks/fills that shouldn't
+     compete with the red/yellow/blue palette — e.g. the foliage calculator's
+     antenna/connector icons and its margin budget segment. Dark mode's own
+     Infima emphasis scale already reads fine against navy, so these just
+     pass through unchanged; light mode gets its own hand-picked values
+     below since Infima's auto-generated scale is too pale against white. */
+  --brand-neutral-icon: var(--ifm-color-emphasis-500);
+  --brand-neutral-track: var(--ifm-color-emphasis-300);
 }
 
 /* Light mode uses a different role assignment than dark mode: neutral
@@ -174,6 +183,13 @@
   /* Blue is the accent that reads well as page text/links here; red is
      fill-only in this theme (same role split dark mode gives yellow). */
   --brand-highlight-text: var(--ifm-color-primary);
+
+  /* Infima's auto-generated --ifm-color-emphasis-500/-300 are tuned for a
+     dark background and read as too pale/washed-out against white — hand-
+     picked darker greys instead, verified by eye against the light theme's
+     card background (#f2f4fa) and page background (white). */
+  --brand-neutral-icon: #5c6370;
+  --brand-neutral-track: #c4cad3;
 }
 
 .hero--primary {

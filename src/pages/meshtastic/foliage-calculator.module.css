@@ -15,6 +15,20 @@
   max-width: 42rem;
 }
 
+/* Fixed rather than scroll-triggered (unlike .floatingBar below) — this
+   needs to be visible immediately and throughout, not just after scrolling
+   past a particular card. `right` tracks the page's own centered content
+   column (--ifm-container-width, set in custom.css) rather than the raw
+   viewport edge, so on wide screens it lines up with the cards below it
+   instead of drifting out to the browser's edge; on narrow screens it falls
+   back to a flat 1rem margin like the rest of the page. */
+.resetFab {
+  position: fixed;
+  top: calc(var(--ifm-navbar-height) + 0.75rem);
+  right: max(1rem, calc((100vw - var(--ifm-container-width)) / 2 + 1rem));
+  z-index: 40;
+}
+
 .cardNote {
   font-size: 0.8rem;
   color: var(--ifm-color-emphasis-600);
@@ -65,6 +79,7 @@
   appearance: none;
   width: 100%;
   height: 6px;
+  margin: 0;
   border-radius: 999px;
   background: linear-gradient(
     90deg,
@@ -151,9 +166,12 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   margin-top: 1rem;
-  transition: opacity 0.25s ease, filter 0.25s ease;
 }
-.pigtailFieldsDisabled { opacity: 0.35; filter: grayscale(0.6); pointer-events: none; }
+/* Shared base for any toggle-gated field group (pigtail loss, foliage
+   density) — the transition lives here, always present, so it animates in
+   both directions; .toggleFieldsDisabled only carries the end-state values. */
+.toggleFields { transition: opacity 0.25s ease, filter 0.25s ease; }
+.toggleFieldsDisabled { opacity: 0.35; filter: grayscale(0.6); pointer-events: none; }
 
 /* ---------- Preset grid ---------- */
 .presetGrid {
@@ -250,17 +268,9 @@
 }
 
 /* ---------- Distance result card ---------- */
-.distanceCard {
+.distanceBody {
   text-align: center;
-  padding-top: 2rem;
-  padding-bottom: 1.5rem;
-}
-.distanceLabel {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--ifm-color-emphasis-600);
-  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 .distanceRow {
   display: flex;
@@ -288,7 +298,10 @@
 }
 
 /* ---------- Budget bar ---------- */
-.budgetBarWrap { width: 100%; text-align: left; margin-top: 1.5rem; }
+/* position: relative so .marginCallout below can be positioned against it
+   as a sibling of .budgetBar, rather than a child clipped by the bar's own
+   overflow: hidden. */
+.budgetBarWrap { position: relative; width: 100%; text-align: left; margin-top: 1.5rem; }
 .budgetBarCaption {
   margin-bottom: 0.5rem;
   font-size: 0.8rem;
@@ -315,6 +328,11 @@
 }
 .segFspl { background: var(--ifm-color-secondary); }
 .segFoliage { background: var(--ifm-color-primary); }
+/* Margin is reserved headroom, not a loss being "spent" — muted grey instead
+   of a brand color keeps it visually distinct from the two active segments.
+   Both emphasis stops are theme-reactive and sit far apart on the same
+   scale, so this pairing keeps decent contrast in light and dark alike. */
+.segMargin { background: var(--brand-neutral-track); }
 
 .segLabel {
   font-size: 0.68rem;
@@ -329,36 +347,145 @@
    instead of a hardcoded color. */
 .segFspl .segLabel { color: var(--brand-secondary-fill-foreground); }
 .segFoliage .segLabel { color: var(--brand-primary-fill-foreground); }
+.segMargin .segLabel { color: var(--ifm-color-emphasis-800); }
 .segLabel b { font-weight: 800; }
 .labelHidden .segLabel { opacity: 0; }
+
+/* External legend for the margin segment when it's too narrow (< LABEL_MIN_PCT)
+   for its inline label to fit — a short connector line pointing down from the
+   bar to a label placed below it. Sits in normal document flow (not
+   absolutely positioned over the bar) so it reserves its own vertical space
+   automatically and pushes the validity-warning paragraph below it down,
+   rather than needing a manually-guessed padding reservation on the wrap.
+   The margin segment is always the rightmost one in the bar (fspl -> foliage
+   -> margin), so its center sits at 87-100% — a label centered there would
+   routinely overflow the card's right edge; right-anchoring it instead
+   keeps it flush inside the bar's own width while the connector still
+   points at the segment's true center. */
+.marginCalloutRow {
+  position: relative;
+  height: 1.65rem;
+  margin-top: 0.3rem;
+}
+.marginCalloutConnector {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 8px;
+  background: var(--brand-neutral-icon);
+}
+.marginCalloutLabel {
+  position: absolute;
+  top: 0.65rem;
+  right: 0;
+  font-size: 0.68rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--ifm-color-emphasis-700);
+  font-variant-numeric: tabular-nums;
+}
+.marginCalloutLabel b { font-weight: 800; }
 
 /* ---------- Chart ---------- */
 .chartWrap { position: relative; width: 100%; height: 260px; }
 
-/* ---------- Breakdown ---------- */
-.breakdownGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 0.9rem;
+/* ---------- Breakdown: linear TX -> path -> RX diagram ---------- */
+.linkPath {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
 }
-.bdItem {
-  border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: var(--ifm-global-radius);
-  padding: 0.65rem 0.8rem;
-  background: var(--ifm-color-emphasis-100);
+.linkNode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex-shrink: 0;
+  width: 108px;
 }
-.bdItem dt {
-  font-size: 0.7rem;
-  color: var(--ifm-color-emphasis-600);
+.linkIcon {
+  width: 34px;
+  height: 34px;
+  color: var(--brand-highlight-text);
+  margin-bottom: 0.35rem;
+}
+.linkNodeLabel {
+  font-size: 0.65rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: 0.25rem;
-}
-.bdItem dd {
-  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  color: var(--ifm-color-emphasis-600);
   font-weight: 600;
+}
+.linkNodeValue {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--brand-highlight-text);
   font-variant-numeric: tabular-nums;
-  margin: 0;
+  margin-top: 0.2rem;
+}
+.linkPathMiddle {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+}
+.linkPathBar {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  gap: 0.5rem;
+}
+.linkPathZone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 44px;
+}
+.linkPathZoneIcon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 0.4rem;
+}
+.linkPathZoneTrack {
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  margin-bottom: 0.4rem;
+}
+.linkPathZoneLabel {
+  font-size: 0.65rem;
+  line-height: 1.3;
+  color: var(--ifm-color-emphasis-600);
+  font-family: var(--ifm-font-family-monospace);
+  text-align: center;
+  white-space: nowrap;
+}
+/* Antenna gain / connector loss zones are chain steps, not part of the
+   free-space-vs-foliage comparison, so they stay neutral — only the two
+   path-loss zones get the brand secondary/primary treatment. */
+.linkPathZone .linkPathZoneIcon { color: var(--brand-neutral-icon); }
+.linkPathZone .linkPathZoneTrack { background: var(--brand-neutral-track); }
+.linkPathZoneFspl .linkPathZoneIcon { color: var(--ifm-color-secondary); }
+.linkPathZoneFspl .linkPathZoneTrack { background: var(--ifm-color-secondary); }
+.linkPathZoneFoliage .linkPathZoneIcon { color: var(--ifm-color-primary); }
+.linkPathZoneFoliage .linkPathZoneTrack { background: var(--ifm-color-primary); }
+.linkPathCaption {
+  margin: 0.6rem 0 0;
+  font-size: 0.75rem;
+  color: var(--ifm-color-emphasis-600);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .linkPathBar { flex-wrap: wrap; justify-content: center; row-gap: 1rem; }
+}
+
+@media (max-width: 640px) {
+  .linkPath { flex-direction: column; align-items: center; gap: 0.75rem; }
+  .linkNode { width: auto; }
+  .linkPathMiddle { width: 100%; }
 }
 
 /* ---------- Footer note ---------- */
