@@ -83,6 +83,7 @@ const config = {
               {to: '/meshtastic/join', label: 'Join'},
               {to: '/meshtastic/weekly-net', label: 'Weekly Net'},
               {to: '/meshtastic/infrastructure', label: 'Infrastructure'},
+              {to: '/meshtastic/foliage-calculator', label: 'Foliage Calculator'},
             ],
           },
           {to: '/events', label: 'Events', position: 'left'},

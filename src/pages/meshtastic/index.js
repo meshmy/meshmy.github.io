@@ -23,7 +23,7 @@ export default function Meshtastic() {
             <p>Start here:</p>
 
             <div className="row">
-              <div className="col col--4 margin-bottom--md">
+              <div className="col col--3 margin-bottom--md">
                 <div className="card">
                   <div className="card__header">
                     <Heading as="h2">Join</Heading>
@@ -41,7 +41,7 @@ export default function Meshtastic() {
                   </div>
                 </div>
               </div>
-              <div className="col col--4 margin-bottom--md">
+              <div className="col col--3 margin-bottom--md">
                 <div className="card">
                   <div className="card__header">
                     <Heading as="h2">Weekly Net</Heading>
@@ -59,7 +59,7 @@ export default function Meshtastic() {
                   </div>
                 </div>
               </div>
-              <div className="col col--4 margin-bottom--md">
+              <div className="col col--3 margin-bottom--md">
                 <div className="card">
                   <div className="card__header">
                     <Heading as="h2">Infrastructure</Heading>
@@ -73,6 +73,24 @@ export default function Meshtastic() {
                   <div className="card__footer">
                     <Link className="button button--secondary button--block" to="/meshtastic/infrastructure">
                       View infrastructure
+                    </Link>
+                  </div>
+                </div>
+              </div>
+              <div className="col col--3 margin-bottom--md">
+                <div className="card">
+                  <div className="card__header">
+                    <Heading as="h2">Foliage Calculator</Heading>
+                  </div>
+                  <div className="card__body">
+                    <p>
+                      Estimate usable link range through vegetation for your
+                      radio and LoRa modem preset.
+                    </p>
+                  </div>
+                  <div className="card__footer">
+                    <Link className="button button--secondary button--block" to="/meshtastic/foliage-calculator">
+                      Open calculator
                     </Link>
                   </div>
                 </div>

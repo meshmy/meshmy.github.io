@@ -1,0 +1,412 @@
+/* Only the bespoke widgets that Infima has no equivalent for live here —
+   layout, cards, and typography all reuse Infima's own classes/vars. */
+
+.kicker {
+  color: var(--ifm-color-emphasis-600);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  color: var(--ifm-color-emphasis-700);
+  max-width: 42rem;
+}
+
+.cardNote {
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-600);
+  margin-bottom: 0.75rem;
+}
+
+/* ---------- Fields ---------- */
+.field { margin-bottom: 1.1rem; }
+.field:last-child { margin-bottom: 0; }
+
+.fieldLabelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.4rem;
+  font-size: 0.85rem;
+}
+
+.fieldLabelRow label {
+  color: var(--ifm-color-emphasis-700);
+  font-weight: 500;
+}
+
+.fieldValue {
+  font-variant-numeric: tabular-nums;
+  color: var(--ifm-color-secondary);
+  font-weight: 600;
+  font-family: var(--ifm-font-family-monospace);
+}
+
+.numInput {
+  width: 100%;
+  margin-top: 0.5rem;
+  background: var(--ifm-background-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-global-radius);
+  padding: 0.5rem 0.65rem;
+  color: var(--ifm-font-color-base);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.numInput:focus { border-color: var(--ifm-color-secondary); }
+
+/* Range slider */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--ifm-color-secondary) var(--fill, 50%),
+    var(--ifm-color-emphasis-300) var(--fill, 50%)
+  );
+  outline: none;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ifm-color-secondary);
+  border: 2px solid var(--ifm-background-color);
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+.slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
+.slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ifm-color-secondary);
+  border: 2px solid var(--ifm-background-color);
+  cursor: pointer;
+}
+
+/* ---------- Antenna grid ---------- */
+.pairGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.cableSection {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+.toggleRowLabel {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* ---------- Toggle switch ---------- */
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 25px;
+  border-radius: 999px;
+  background: var(--ifm-color-emphasis-300);
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.toggleOn { background: var(--ifm-color-secondary); }
+.toggleKnob {
+  position: absolute;
+  top: 2.5px;
+  left: 2.5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.toggleOn .toggleKnob { transform: translateX(19px); }
+
+.pigtailFields {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+  transition: opacity 0.25s ease, filter 0.25s ease;
+}
+.pigtailFieldsDisabled { opacity: 0.35; filter: grayscale(0.6); pointer-events: none; }
+
+/* ---------- Preset grid ---------- */
+.presetGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 0.6rem;
+}
+
+.presetBtn {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-background-color);
+  border-radius: var(--ifm-global-radius);
+  padding: 0.6rem 0.65rem;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+.presetBtn:hover { border-color: var(--ifm-color-secondary); transform: translateY(-1px); }
+.presetBtnActive {
+  border-color: var(--ifm-color-secondary);
+  background: var(--ifm-color-emphasis-100);
+  box-shadow: 0 0 0 1px var(--ifm-color-secondary);
+}
+.pname { font-size: 0.8rem; font-weight: 600; white-space: nowrap; }
+.pmeta {
+  font-size: 0.7rem;
+  color: var(--ifm-color-emphasis-600);
+  margin-top: 0.15rem;
+  font-family: var(--ifm-font-family-monospace);
+}
+.presetBtnActive .pmeta { color: var(--ifm-color-secondary); }
+
+.sliderTrackWrap {
+  position: relative;
+  padding-top: 20px;
+}
+.suggestMark {
+  position: absolute;
+  top: 0;
+  height: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  transform: translateX(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.suggestLabel {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ifm-color-primary);
+  white-space: nowrap;
+  line-height: 1;
+  opacity: 0.85;
+  transition: opacity 0.15s ease;
+}
+.suggestTick {
+  width: 2px;
+  height: 7px;
+  background: var(--ifm-color-primary);
+  opacity: 0.7;
+  transition: opacity 0.15s ease, height 0.15s ease;
+}
+.suggestMark:hover .suggestLabel,
+.suggestMark:hover .suggestTick { opacity: 1; }
+.suggestMark:hover .suggestTick { height: 9px; }
+
+.marksRow {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.25rem;
+  font-size: 10px;
+  color: var(--ifm-color-emphasis-600);
+  font-family: var(--ifm-font-family-monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.densityDesc {
+  font-size: 0.8rem;
+  color: var(--ifm-color-secondary);
+  text-align: center;
+}
+
+.abbrHelp {
+  text-decoration: underline dotted var(--ifm-color-emphasis-500);
+  text-underline-offset: 2px;
+  cursor: help;
+}
+
+/* ---------- Distance result card ---------- */
+.distanceCard {
+  text-align: center;
+  padding-top: 2rem;
+  padding-bottom: 1.5rem;
+}
+.distanceLabel {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ifm-color-emphasis-600);
+  margin-bottom: 0.5rem;
+}
+.distanceRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.distanceValue {
+  font-size: 3.75rem;
+  font-weight: 700;
+  color: var(--ifm-color-secondary);
+  font-variant-numeric: tabular-nums;
+}
+@media (min-width: 640px) { .distanceValue { font-size: 4.5rem; } }
+.distanceUnit {
+  font-size: 1.5rem;
+  color: var(--ifm-color-emphasis-700);
+  font-weight: 500;
+}
+
+.validityWarning {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: var(--ifm-color-secondary);
+}
+
+/* ---------- Budget bar ---------- */
+.budgetBarWrap { width: 100%; text-align: left; margin-top: 1.5rem; }
+.budgetBarCaption {
+  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-600);
+  text-align: center;
+}
+.budgetBar {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--ifm-background-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  overflow: hidden;
+  display: flex;
+}
+.seg {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+.segFspl { background: var(--ifm-color-secondary); }
+.segFoliage { background: var(--ifm-color-primary); }
+
+.segLabel {
+  font-size: 0.68rem;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 0 0.5rem;
+  font-variant-numeric: tabular-nums;
+  transition: opacity 0.2s ease;
+}
+.segFspl .segLabel { color: rgba(0, 0, 0, 0.8); }
+.segFoliage .segLabel { color: #fff; }
+.segLabel b { font-weight: 800; }
+.labelHidden .segLabel { opacity: 0; }
+
+/* ---------- Chart ---------- */
+.chartWrap { position: relative; width: 100%; height: 260px; }
+
+/* ---------- Breakdown ---------- */
+.breakdownGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.9rem;
+}
+.bdItem {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-global-radius);
+  padding: 0.65rem 0.8rem;
+  background: var(--ifm-color-emphasis-100);
+}
+.bdItem dt {
+  font-size: 0.7rem;
+  color: var(--ifm-color-emphasis-600);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
+}
+.bdItem dd {
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+}
+
+/* ---------- Footer note ---------- */
+.footer {
+  margin-top: 2.5rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-600);
+}
+
+/* ---------- Floating distance bar ---------- */
+.floatingBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem calc(0.9rem + env(safe-area-inset-bottom));
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(130%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  z-index: 50;
+}
+.floatingBarVisible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.floatingBarInner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--ifm-navbar-background-color);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 999px;
+  padding: 0.65rem 1.25rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+.floatingBarLabel {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ifm-color-emphasis-700);
+}
+.floatingBarValue {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--ifm-color-secondary);
+  font-variant-numeric: tabular-nums;
+}
