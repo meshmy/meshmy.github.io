@@ -324,11 +324,10 @@
   font-variant-numeric: tabular-nums;
   transition: opacity 0.2s ease;
 }
-/* Secondary (yellow) is bright in both themes, so its segment always wants
-   dark text. Primary (red) is only bright in dark mode (see custom.css), so
-   its segment's foreground follows --brand-primary-fill-foreground instead
-   of a hardcoded color. */
-.segFspl .segLabel { color: rgba(0, 0, 0, 0.8); }
+/* Both primary and secondary flip bright/dark by theme (see custom.css), so
+   each segment's foreground follows its own brand-*-fill-foreground token
+   instead of a hardcoded color. */
+.segFspl .segLabel { color: var(--brand-secondary-fill-foreground); }
 .segFoliage .segLabel { color: var(--brand-primary-fill-foreground); }
 .segLabel b { font-weight: 800; }
 .labelHidden .segLabel { opacity: 0; }

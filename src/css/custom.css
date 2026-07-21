@@ -5,13 +5,47 @@
  */
 
 /*
- * MeshMY brand palette, inspired by the Malaysian flag (Jalur Gemilang).
- * Base hues match the flag's official Pantone Matching System (PMS) specs:
- * Blue PMS 2768 C, Red PMS 199 C, Yellow PMS 108 C. Yellow is used as-is in
- * both themes. Red's value is theme-dependent: dark mode brightens it to
- * match yellow's HSV value (both need to pop off the navy background),
- * while light mode keeps the original halved-value red (it already reads
- * fine on white). See the --ifm-color-primary blocks below for specifics.
+ * MeshMY brand palette, inspired by the Malaysian flag (Jalur Gemilang):
+ * Blue, Red, and Yellow, each kept as close to its original PMS-derived hue
+ * as the sRGB gamut allows for the role it's playing (see each theme block
+ * below — the two themes assign these three hues to different roles).
+ *
+ * Colors are tuned in OKLCH (a perceptually uniform space) using the
+ * apcach library (github.com/RaruTheFluffy/apcach) combined with the APCA
+ * contrast algorithm, not HSV or WCAG2 — at equal HSV saturation/value (or
+ * equal WCAG2 contrast), different hues do NOT look equally vivid. Red and
+ * blue's hues can hold high chroma across a wide range of lightness, but
+ * yellow's hue is gamut-limited to low chroma unless it's very light.
+ * That's a property of the sRGB gamut itself, not a bad color pick — even
+ * the original full-brightness brand yellow (#fedb00) sits right at its
+ * hue's chroma ceiling already.
+ *
+ *   - Dark mode (navy bg): accents just need to be bright, so each sits at
+ *     its own hue's peak-chroma lightness (found by sweeping OKLCH L and
+ *     taking the in-gamut chroma ceiling at each step) — red peaks around
+ *     L≈0.63, yellow around L≈0.89 (basically the original brand yellow
+ *     already). Forcing red as light as yellow (verified with apcach/APCA)
+ *     just washes it out toward pink long before it gets that light. Both
+ *     take dark foreground when used as a fill.
+ *   - Light mode (white bg): red is generated with
+ *     apcach(crToBg('#fff', 75, 'apca'), maxChroma(), 18.5) — the most
+ *     saturated in-gamut red at a fixed ~Lc 75 APCA contrast (≈5.2:1 WCAG)
+ *     against white, so a fill built from it can always take white text.
+ *     Blue deliberately does NOT use maxChroma(): maxing it out at that
+ *     same Lc 75 landed on a bright, fairly saturated "electric/cobalt"
+ *     blue that read as a different color family from the site's actual
+ *     navy (#071d49) rather than a lighter version of it. Blue instead
+ *     uses a fixed, modest chroma (0.12 — well short of what's available)
+ *     at a higher, darker Lc (85), landing much closer to the reference
+ *     navy's own muted character while staying legible/usable as an accent
+ *     distinct from black text. Yellow does not hold up at its own brand
+ *     hue (97°) under either approach — max chroma at Lc 75 caps out at
+ *     roughly half of red's — so it isn't used anywhere in light mode; even
+ *     the footer, which uses yellow links on navy in dark mode, switches to
+ *     blue links on a light background here (see the footer variables in
+ *     each theme block below).
+ * See the --ifm-color-primary/-secondary blocks below for the actual
+ * values.
  */
 :root {
   --ifm-code-font-size: 95%;
@@ -24,23 +58,20 @@
   --ifm-container-width-xl: 1024px;
 }
 
-/* Primary (red) is brightened here to the same HSV value as secondary
-   (yellow) — on the navy background both need to read as bright text/fills,
-   so matching their value means fills built from either color can share one
-   dark foreground instead of an inverted rule per color (see
-   --brand-primary-fill-foreground below and its use in the foliage
-   calculator's budget bar). The muted, low-value red is kept for light mode,
-   where it already reads fine against a white background. Large solid areas
-   (e.g. the hero) should reference -dark/-darker instead of the bare
-   variable to get the deeper, less saturated tone back. */
+/* Dark mode: red sits at its own hue's peak-chroma lightness (OKLCH
+   L≈0.63), not matched to yellow's — pushing it as light as yellow (L≈0.89)
+   was tested and just washes it out toward pink (APCA-verified: at equal
+   contrast-vs-navy, red's chroma collapses much faster approaching white
+   than yellow's does). Large solid areas (e.g. the hero) should reference
+   -dark/-darker instead of the bare variable, for a deeper, richer tone. */
 [data-theme='dark'] {
-  --ifm-color-primary: #fe003c;
-  --ifm-color-primary-dark: #e50036;
-  --ifm-color-primary-darker: #d80033;
-  --ifm-color-primary-darkest: #b2002a;
-  --ifm-color-primary-light: #fe1a50;
-  --ifm-color-primary-lighter: #fe2659;
-  --ifm-color-primary-lightest: #fe4d77;
+  --ifm-color-primary: #fd0049;
+  --ifm-color-primary-dark: #d9003d;
+  --ifm-color-primary-darker: #ba0033;
+  --ifm-color-primary-darkest: #980028;
+  --ifm-color-primary-light: #ff616f;
+  --ifm-color-primary-lighter: #ff898d;
+  --ifm-color-primary-lightest: #ffafaf;
 
   --ifm-color-secondary: #fedb00;
   --ifm-color-secondary-dark: #e5c500;
@@ -71,8 +102,10 @@
   --ifm-card-background-color: #20345b;
   --ifm-hr-border-color: #fedb00;
 
-  /* Primary is bright here, so a fill built from it needs dark text. */
+  /* Primary and secondary are both bright here, so fills built from either
+     need dark text. */
   --brand-primary-fill-foreground: rgba(0, 0, 0, 0.8);
+  --brand-secondary-fill-foreground: rgba(0, 0, 0, 0.8);
 
   /* Accent color for text sitting directly on the page/card background
      (numeric readouts, etc). Needs to be whichever brand color actually
@@ -80,47 +113,66 @@
   --brand-highlight-text: var(--ifm-color-secondary);
 }
 
-/* Same brand hues as dark mode, re-tuned for a white base: yellow reads too
-   pale on white to use for links/hover, so red (primary) takes over as the
-   accent color and navy becomes the body/heading tone instead of white. */
+/* Light mode uses a different role assignment than dark mode: neutral
+   foreground text moves off flag-blue onto true black (max contrast); the
+   accent role red held (links, hero, highlighted numbers) moves to flag
+   blue instead; and red inherits yellow's old accent role (buttons, fills,
+   borders). Yellow drops out of the rotation entirely here, including in
+   the footer (dark mode keeps yellow links on a navy footer; light mode's
+   footer uses blue links on a light background instead — see below).
+   Red is generated the same way as dark mode: apcach's maxChroma() at a
+   fixed Lc 75 APCA contrast against white, staying at its real brand hue
+   (18.5°). Blue uses a *fixed*, moderate chroma (0.12) at its own real
+   brand hue (262°, read straight off the site's navy background #071d49 /
+   PMS 2768 C) — maxChroma() here landed on a brighter, more saturated blue
+   that read as a different color family from that navy rather than a
+   usable-lightness version of it, so a modest chroma at a darker Lc (85)
+   was chosen by eye against swatches next to the reference navy instead. */
 [data-theme='light'] {
-  --ifm-color-primary: #6a0019;
-  --ifm-color-primary-dark: #5f0016;
-  --ifm-color-primary-darker: #5a0015;
-  --ifm-color-primary-darkest: #4a0012;
-  --ifm-color-primary-light: #791a30;
-  --ifm-color-primary-lighter: #80263c;
-  --ifm-color-primary-lightest: #974c5e;
+  --ifm-color-primary: #305499;
+  --ifm-color-primary-dark: #294d91;
+  --ifm-color-primary-darker: #1f4185;
+  --ifm-color-primary-darkest: #143578;
+  --ifm-color-primary-light: #5c83cd;
+  --ifm-color-primary-lighter: #78a1ed;
+  --ifm-color-primary-lightest: #94beff;
 
-  --ifm-color-secondary: #fedb00;
-  --ifm-color-secondary-dark: #e5c500;
-  --ifm-color-secondary-darker: #d8ba00;
-  --ifm-color-secondary-darkest: #b29900;
-  --ifm-color-secondary-light: #fedf1a;
-  --ifm-color-secondary-lighter: #fee026;
-  --ifm-color-secondary-lightest: #fee64c;
+  --ifm-color-secondary: #d1063c;
+  --ifm-color-secondary-dark: #b20131;
+  --ifm-color-secondary-darker: #970128;
+  --ifm-color-secondary-darkest: #74031d;
+  --ifm-color-secondary-light: #ff5f6e;
+  --ifm-color-secondary-lighter: #fe9195;
+  --ifm-color-secondary-lightest: #feb9b9;
 
   --ifm-background-color: #ffffff;
   --ifm-background-surface-color: #f2f4fa;
 
-  --ifm-font-color-base: #1c2333;
-  --ifm-heading-color: #071d49;
+  --ifm-font-color-base: #000000;
+  --ifm-heading-color: #000000;
 
   --ifm-navbar-background-color: #ffffff;
-  --ifm-navbar-link-color: #071d49;
-  --ifm-navbar-link-hover-color: #6a0019;
+  --ifm-navbar-link-color: #000000;
+  --ifm-navbar-link-hover-color: #305499;
 
-  --ifm-link-color: #6a0019;
-  --ifm-link-hover-color: #791a30;
+  --ifm-footer-background-color: #f2f4fa;
+  --ifm-footer-color: #000000;
+  --ifm-footer-link-color: #305499;
+  --ifm-footer-title-color: #000000;
+
+  --ifm-link-color: #305499;
+  --ifm-link-hover-color: #5c83cd;
 
   --ifm-card-background-color: #f2f4fa;
-  --ifm-hr-border-color: #d8ba00;
+  --ifm-hr-border-color: #d1063c;
 
-  /* Primary stays dark here, so a fill built from it needs light text. */
+  /* Primary and secondary are both dark here, so fills built from either
+     need light text. */
   --brand-primary-fill-foreground: #ffffff;
+  --brand-secondary-fill-foreground: #ffffff;
 
-  /* Yellow is too pale to read as text on white, so red (which stays dark
-     in light mode) takes over the "pops off the page background" role. */
+  /* Blue is the accent that reads well as page text/links here; red is
+     fill-only in this theme (same role split dark mode gives yellow). */
   --brand-highlight-text: var(--ifm-color-primary);
 }
 
@@ -130,9 +182,19 @@
      look instead of switching the hero to a light-red/pink panel. */
   --ifm-hero-background-color: var(--ifm-color-primary-darker);
   --ifm-hero-text-color: #ffffff;
-  /* Headings otherwise resolve --ifm-heading-color (navy in light mode),
-     which reads poorly on this dark red background regardless of theme. */
+  /* Headings otherwise resolve --ifm-heading-color (white in dark mode,
+     black in light mode), and black reads poorly on this dark hero
+     background. */
   --ifm-heading-color: #ffffff;
+}
+
+/* Infima hardcodes dark text on .button--secondary (assuming its own
+   default light-gray secondary), which doesn't react to our brand colors.
+   That's fine in dark mode (secondary/yellow stays bright there) but wrong
+   in light mode, where secondary (red here) is dark and takes white
+   foreground instead. */
+[data-theme='light'] .button.button--secondary {
+  color: var(--brand-secondary-fill-foreground);
 }
 
 /* Cap navbar content to the same max-width as page content (.container),
@@ -143,9 +205,19 @@
   margin: 0 auto;
 }
 
-/* Infima's .footer--dark class redefines these locally, overriding :root */
-.footer--dark {
-  --ifm-footer-background-color: #06193e;
-  --ifm-footer-link-color: #fedb00;
-  --ifm-footer-title-color: #ffffff;
+/* Cross-fade the light/dark toggle instead of snapping instantly. Buttons
+   and links already animate on theme change (their hover transitions
+   happen to cover it too) — this extends the same treatment, at the same
+   duration/easing Infima uses elsewhere, to the containers that don't have
+   a hover state of their own to inherit a transition from. Deliberately
+   scoped to these rather than a blanket `*` selector, which would also
+   fight things like the foliage calculator's slider-thumb hover scale. */
+html,
+.navbar,
+.footer,
+.hero,
+.card {
+  transition-property: background-color, color, border-color;
+  transition-duration: var(--ifm-transition-fast);
+  transition-timing-function: var(--ifm-transition-timing-default);
 }
