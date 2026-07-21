@@ -51,10 +51,24 @@
 
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  /* Single flat content width (~80% of a 720p/1280px viewport) used for both
+     page containers and the navbar, instead of Infima's default two-tier
+     1140px/1320px jump at 1440px. */
+  --ifm-container-width: 1024px;
+  --ifm-container-width-xl: 1024px;
 }
 
 .hero--primary {
   --ifm-hero-text-color: #ffffff;
+}
+
+/* Cap navbar content to the same max-width as page content (.container),
+   instead of letting nav items spread across the full viewport. The
+   navbar bar itself stays full-bleed; only .navbar__inner is constrained. */
+.navbar__inner {
+  max-width: var(--ifm-container-width);
+  margin: 0 auto;
 }
 
 /* Infima's .footer--dark class redefines these locally, overriding :root */

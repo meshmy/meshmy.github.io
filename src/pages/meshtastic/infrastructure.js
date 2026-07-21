@@ -203,18 +203,16 @@ export default function Infrastructure() {
       title="Infrastructure"
       description="Community-maintained Meshtastic router infrastructure operated by the MeshMY team.">
       <main className="container margin-vert--lg">
-        <div className="row">
-          <div className="col col--10 col--offset-1">
-            <Heading as="h1">Infrastructure</Heading>
-            <p>
-              Beyond individual community nodes, the MeshMY team builds and
-              maintains a small number of high-site routers to extend mesh
-              coverage across the Klang Valley and beyond. These are
-              volunteer-run, solar-powered installations at elevated sites.
-            </p>
+        <Heading as="h1">Infrastructure</Heading>
+        <p>
+          Beyond individual community nodes, the MeshMY team builds and
+          maintains a small number of high-site routers to extend mesh
+          coverage across the Klang Valley and beyond. These are
+          volunteer-run, solar-powered installations at elevated sites.
+        </p>
 
-            <div className="row">
-              {sites.map((site) => (
+        <div className="row margin-top--lg">
+          {sites.map((site) => (
                 <div className="col col--6 margin-bottom--lg" key={site.shortName}>
                   <div className="card" style={{height: '100%'}}>
                     <div className="card__header">
@@ -336,21 +334,19 @@ export default function Infrastructure() {
                   </div>
                 </div>
               ))}
-            </div>
-
-            <Heading as="h2">Get help</Heading>
-            <p>
-              Interested in helping build or maintain a site, or want to
-              propose a new location? Check our{' '}
-              <a href="/events">events page</a> for upcoming meetups, or
-              browse the community's repositories on{' '}
-              <a href="https://github.com/meshmy" target="_blank" rel="noreferrer">
-                GitHub
-              </a>
-              .
-            </p>
-          </div>
         </div>
+
+        <Heading as="h2">Get help</Heading>
+        <p>
+          Interested in helping build or maintain a site, or want to
+          propose a new location? Check our{' '}
+          <a href="/events">events page</a> for upcoming meetups, or
+          browse the community's repositories on{' '}
+          <a href="https://github.com/meshmy" target="_blank" rel="noreferrer">
+            GitHub
+          </a>
+          .
+        </p>
       </main>
     </Layout>
   );

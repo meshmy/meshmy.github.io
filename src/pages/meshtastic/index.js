@@ -8,22 +8,20 @@ export default function Meshtastic() {
       title="Meshtastic"
       description="Meshtastic at MeshMY: how to join the mesh and take part in the weekly net.">
       <main className="container margin-vert--lg">
-        <div className="row">
-          <div className="col col--8 col--offset-2">
-            <Heading as="h1">Meshtastic</Heading>
-            <p>
-              MeshMY runs on{' '}
-              <a href="https://meshtastic.org" target="_blank" rel="noreferrer">
-                Meshtastic
-              </a>
-              , an open source project that turns inexpensive LoRa radios into
-              a long-range mesh network for text messaging and location
-              sharing — no cell service or internet connection required.
-            </p>
-            <p>Start here:</p>
+        <Heading as="h1">Meshtastic</Heading>
+        <p>
+          MeshMY runs on{' '}
+          <a href="https://meshtastic.org" target="_blank" rel="noreferrer">
+            Meshtastic
+          </a>
+          , an open source project that turns inexpensive LoRa radios into
+          a long-range mesh network for text messaging and location
+          sharing — no cell service or internet connection required.
+        </p>
+        <p>Start here:</p>
 
-            <div className="row">
-              <div className="col col--3 margin-bottom--md">
+        <div className="row margin-top--lg">
+          <div className="col col--3 margin-bottom--md">
                 <div className="card">
                   <div className="card__header">
                     <Heading as="h2">Join</Heading>
@@ -95,8 +93,6 @@ export default function Meshtastic() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
         </div>
       </main>
     </Layout>
