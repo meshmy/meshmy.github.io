@@ -7,18 +7,40 @@
 /*
  * MeshMY brand palette, inspired by the Malaysian flag (Jalur Gemilang).
  * Base hues match the flag's official Pantone Matching System (PMS) specs:
- * Blue PMS 2768 C, Red PMS 199 C, Yellow PMS 108 C. Red is darkened by
- * halving its HSV value, per brand guidance; yellow is used as-is.
+ * Blue PMS 2768 C, Red PMS 199 C, Yellow PMS 108 C. Yellow is used as-is in
+ * both themes. Red's value is theme-dependent: dark mode brightens it to
+ * match yellow's HSV value (both need to pop off the navy background),
+ * while light mode keeps the original halved-value red (it already reads
+ * fine on white). See the --ifm-color-primary blocks below for specifics.
  */
-:root,
+:root {
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  /* Single flat content width (~80% of a 720p/1280px viewport) used for both
+     page containers and the navbar, instead of Infima's default two-tier
+     1140px/1320px jump at 1440px. */
+  --ifm-container-width: 1024px;
+  --ifm-container-width-xl: 1024px;
+}
+
+/* Primary (red) is brightened here to the same HSV value as secondary
+   (yellow) — on the navy background both need to read as bright text/fills,
+   so matching their value means fills built from either color can share one
+   dark foreground instead of an inverted rule per color (see
+   --brand-primary-fill-foreground below and its use in the foliage
+   calculator's budget bar). The muted, low-value red is kept for light mode,
+   where it already reads fine against a white background. Large solid areas
+   (e.g. the hero) should reference -dark/-darker instead of the bare
+   variable to get the deeper, less saturated tone back. */
 [data-theme='dark'] {
-  --ifm-color-primary: #6a0019;
-  --ifm-color-primary-dark: #5f0016;
-  --ifm-color-primary-darker: #5a0015;
-  --ifm-color-primary-darkest: #4a0012;
-  --ifm-color-primary-light: #791a30;
-  --ifm-color-primary-lighter: #80263c;
-  --ifm-color-primary-lightest: #974c5e;
+  --ifm-color-primary: #fe003c;
+  --ifm-color-primary-dark: #e50036;
+  --ifm-color-primary-darker: #d80033;
+  --ifm-color-primary-darkest: #b2002a;
+  --ifm-color-primary-light: #fe1a50;
+  --ifm-color-primary-lighter: #fe2659;
+  --ifm-color-primary-lightest: #fe4d77;
 
   --ifm-color-secondary: #fedb00;
   --ifm-color-secondary-dark: #e5c500;
@@ -49,18 +71,68 @@
   --ifm-card-background-color: #20345b;
   --ifm-hr-border-color: #fedb00;
 
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  /* Primary is bright here, so a fill built from it needs dark text. */
+  --brand-primary-fill-foreground: rgba(0, 0, 0, 0.8);
 
-  /* Single flat content width (~80% of a 720p/1280px viewport) used for both
-     page containers and the navbar, instead of Infima's default two-tier
-     1140px/1320px jump at 1440px. */
-  --ifm-container-width: 1024px;
-  --ifm-container-width-xl: 1024px;
+  /* Accent color for text sitting directly on the page/card background
+     (numeric readouts, etc). Needs to be whichever brand color actually
+     pops off this theme's background — yellow reads fine on navy. */
+  --brand-highlight-text: var(--ifm-color-secondary);
+}
+
+/* Same brand hues as dark mode, re-tuned for a white base: yellow reads too
+   pale on white to use for links/hover, so red (primary) takes over as the
+   accent color and navy becomes the body/heading tone instead of white. */
+[data-theme='light'] {
+  --ifm-color-primary: #6a0019;
+  --ifm-color-primary-dark: #5f0016;
+  --ifm-color-primary-darker: #5a0015;
+  --ifm-color-primary-darkest: #4a0012;
+  --ifm-color-primary-light: #791a30;
+  --ifm-color-primary-lighter: #80263c;
+  --ifm-color-primary-lightest: #974c5e;
+
+  --ifm-color-secondary: #fedb00;
+  --ifm-color-secondary-dark: #e5c500;
+  --ifm-color-secondary-darker: #d8ba00;
+  --ifm-color-secondary-darkest: #b29900;
+  --ifm-color-secondary-light: #fedf1a;
+  --ifm-color-secondary-lighter: #fee026;
+  --ifm-color-secondary-lightest: #fee64c;
+
+  --ifm-background-color: #ffffff;
+  --ifm-background-surface-color: #f2f4fa;
+
+  --ifm-font-color-base: #1c2333;
+  --ifm-heading-color: #071d49;
+
+  --ifm-navbar-background-color: #ffffff;
+  --ifm-navbar-link-color: #071d49;
+  --ifm-navbar-link-hover-color: #6a0019;
+
+  --ifm-link-color: #6a0019;
+  --ifm-link-hover-color: #791a30;
+
+  --ifm-card-background-color: #f2f4fa;
+  --ifm-hr-border-color: #d8ba00;
+
+  /* Primary stays dark here, so a fill built from it needs light text. */
+  --brand-primary-fill-foreground: #ffffff;
+
+  /* Yellow is too pale to read as text on white, so red (which stays dark
+     in light mode) takes over the "pops off the page background" role. */
+  --brand-highlight-text: var(--ifm-color-primary);
 }
 
 .hero--primary {
+  /* Bare --ifm-color-primary is now bright in dark mode (see above), so pull
+     the hero background from the darker shade to keep its deep, saturated
+     look instead of switching the hero to a light-red/pink panel. */
+  --ifm-hero-background-color: var(--ifm-color-primary-darker);
   --ifm-hero-text-color: #ffffff;
+  /* Headings otherwise resolve --ifm-heading-color (navy in light mode),
+     which reads poorly on this dark red background regardless of theme. */
+  --ifm-heading-color: #ffffff;
 }
 
 /* Cap navbar content to the same max-width as page content (.container),

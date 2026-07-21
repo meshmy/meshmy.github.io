@@ -40,7 +40,7 @@
 
 .fieldValue {
   font-variant-numeric: tabular-nums;
-  color: var(--ifm-color-secondary);
+  color: var(--brand-highlight-text);
   font-weight: 600;
   font-family: var(--ifm-font-family-monospace);
 }
@@ -184,7 +184,7 @@
   margin-top: 0.15rem;
   font-family: var(--ifm-font-family-monospace);
 }
-.presetBtnActive .pmeta { color: var(--ifm-color-secondary); }
+.presetBtnActive .pmeta { color: var(--brand-highlight-text); }
 
 .sliderTrackWrap {
   position: relative;
@@ -239,7 +239,7 @@
 
 .densityDesc {
   font-size: 0.8rem;
-  color: var(--ifm-color-secondary);
+  color: var(--brand-highlight-text);
   text-align: center;
 }
 
@@ -271,7 +271,7 @@
 .distanceValue {
   font-size: 3.75rem;
   font-weight: 700;
-  color: var(--ifm-color-secondary);
+  color: var(--brand-highlight-text);
   font-variant-numeric: tabular-nums;
 }
 @media (min-width: 640px) { .distanceValue { font-size: 4.5rem; } }
@@ -284,7 +284,7 @@
 .validityWarning {
   margin-top: 1rem;
   font-size: 0.8rem;
-  color: var(--ifm-color-secondary);
+  color: var(--brand-highlight-text);
 }
 
 /* ---------- Budget bar ---------- */
@@ -324,8 +324,12 @@
   font-variant-numeric: tabular-nums;
   transition: opacity 0.2s ease;
 }
+/* Secondary (yellow) is bright in both themes, so its segment always wants
+   dark text. Primary (red) is only bright in dark mode (see custom.css), so
+   its segment's foreground follows --brand-primary-fill-foreground instead
+   of a hardcoded color. */
 .segFspl .segLabel { color: rgba(0, 0, 0, 0.8); }
-.segFoliage .segLabel { color: #fff; }
+.segFoliage .segLabel { color: var(--brand-primary-fill-foreground); }
 .segLabel b { font-weight: 800; }
 .labelHidden .segLabel { opacity: 0; }
 
@@ -407,6 +411,6 @@
 .floatingBarValue {
   font-weight: 700;
   font-size: 1.05rem;
-  color: var(--ifm-color-secondary);
+  color: var(--brand-highlight-text);
   font-variant-numeric: tabular-nums;
 }
