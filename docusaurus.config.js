@@ -12,7 +12,6 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const config = {
   title: 'MeshMY',
   tagline: 'Building the Meshtastic mesh network community',
-  favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -58,8 +57,6 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
       colorMode: {
         defaultMode: 'dark',
         disableSwitch: true,
@@ -67,10 +64,6 @@ const config = {
       },
       navbar: {
         title: 'MeshMY',
-        logo: {
-          alt: 'MeshMY Logo',
-          src: 'img/logo.svg',
-        },
         items: [
           {to: '/', label: 'Home', position: 'left'},
           {to: '/about', label: 'About', position: 'left'},
