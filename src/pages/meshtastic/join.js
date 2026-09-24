@@ -1,219 +1,436 @@
+import clsx from 'clsx';
+import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
+import CopyButton from '@site/src/components/Home/CopyButton';
+import {ConfigCard, MeshtasticLink, SettingRow, Settings} from '@site/src/components/Setup';
+import Term from '@site/src/components/Join/Term';
+import useStoredState from '@site/src/components/Join/useStoredState';
+import {
+  apps,
+  configUrl,
+  configUrl433,
+  mqtt,
+  recommended,
+  recommended433,
+} from '@site/src/data/meshtasticConfig';
+import {glossary, pairing, questions, troubleshooting} from '@site/src/data/joinGuide';
+import styles from './join.module.css';
+
+// Build-time defaults: the most common newcomer. Also what shows without JS.
+const INITIAL = {
+  answers: {hasRadio: 'no', platform: 'android', licensed: 'no', band: '919', gateway: 'no'},
+  done: {},
+  area: '',
+};
+const REQUIRED = ['radio', 'app', 'settings', 'check'];
+
+/** A row of pill-shaped radio buttons. Native inputs, so it works by keyboard. */
+function Choice({name, label, options, value, onChange, className}) {
+  return (
+    <fieldset className={clsx(styles.choice, className)}>
+      <legend>{label}</legend>
+      <div className={styles.pills}>
+        {options.map((o) => (
+          <label key={o.value} className={styles.pill}>
+            <input
+              type="radio"
+              name={name}
+              value={o.value}
+              checked={value === o.value}
+              onChange={() => onChange(o.value)}
+            />
+            <span>{o.label}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
+function CheckGlyph() {
+  return (
+    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+      <path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+/** One numbered step, with its "Done" tick. */
+function Step({id, n, title, optional, done, onDone, autoDone, children}) {
+  return (
+    <li className={clsx(styles.step, done && styles.stepDone)} aria-labelledby={`step-${id}`}>
+      <span className={styles.stepNum} aria-hidden="true">
+        {done ? <CheckGlyph /> : n}
+      </span>
+      <div className={styles.stepHead}>
+        <Heading as="h2" id={`step-${id}`} className={styles.stepTitle}>
+          {title}
+          {optional && <span className={styles.optional}>Optional</span>}
+        </Heading>
+        {autoDone ? (
+          <span className={styles.doneNote}>Done</span>
+        ) : (
+          <label className={styles.doneToggle}>
+            <input type="checkbox" checked={!!done} onChange={(e) => onDone(e.target.checked)} />
+            <span>Done</span>
+          </label>
+        )}
+      </div>
+      <div className={styles.stepBody}>{children}</div>
+    </li>
+  );
+}
+
+function Note({tone = 'info', label, children}) {
+  return (
+    <div className={clsx(styles.note, styles[`note--${tone}`])}>
+      {label && <strong className={styles.noteLabel}>{label}</strong>}
+      <div>{children}</div>
+    </div>
+  );
+}
 
 export default function Join() {
+  const [state, update, reset] = useStoredState('meshmy-join-v1', INITIAL);
+  const {answers, done, area} = state;
+  const answer = (id) => (value) => update({answers: {[id]: value}});
+  const tick = (id) => (value) => update({done: {[id]: value}});
+
+  const hasRadio = answers.hasRadio === 'yes';
+  const licensed = answers.licensed === 'yes';
+  const on433 = licensed && answers.band === '433';
+  const settings = on433 ? recommended433 : recommended;
+  const url = on433 ? configUrl433 : configUrl;
+  const rootTopic = on433 ? mqtt.rootTopic433 : mqtt.rootTopic;
+  const app = apps.find((a) => a.id === answers.platform) ?? apps[0];
+  const isDone = (id) => (id === 'radio' && hasRadio) || !!done[id];
+  const doneCount = REQUIRED.filter(isDone).length;
+  const allDone = doneCount === REQUIRED.length;
+  const hello = `Hello from ${area.trim() || 'Malaysia'}, new to the mesh!`;
+
   return (
     <Layout
-      title="Join the Mesh"
-      description="How to get on the MeshMY Meshtastic network: hardware, apps, and channel configuration.">
-      <main className="container margin-vert--lg">
-        <Heading as="h1">Join the Mesh</Heading>
-        <p>
-          This guide walks you through getting a{' '}
-          <a href="https://meshtastic.org" target="_blank" rel="noreferrer">
-            Meshtastic
-          </a>{' '}
-          node on the air and onto the MeshMY community mesh in Malaysia.
-          No amateur radio licence is required to get started on the
-          919 MHz band — anyone can join.
-        </p>
+      title="Join the mesh"
+      description="Get your first Meshtastic node onto the MeshMY community mesh: a guided setup for beginners, with one-tap settings.">
+      <main className={styles.page}>
+        <div className="container">
+          <header className={styles.header}>
+            <p className={styles.eyebrow}>Meshtastic<sup>®</sup> · MeshMY</p>
+            <Heading as="h1">Join the mesh</Heading>
+            <p className={styles.lead}>
+              Get your first node talking to the MeshMY community. Answer three
+              questions and you’ll see only the steps you need. No licence
+              needed on 919&nbsp;MHz.
+            </p>
+          </header>
 
-        <Heading as="h2">1. Get a device</Heading>
-        <p>
-          Meshtastic runs on inexpensive LoRa radios. Pick anything from
-          the official{' '}
-          <a
-            href="https://meshtastic.org/docs/hardware/devices/"
-            target="_blank"
-            rel="noreferrer">
-            supported hardware list
-          </a>{' '}
-          — a simple handheld unit (e.g. a Heltec, T-Echo, or RAK) is a
-          great first node.
-        </p>
+          <section className={styles.setup} aria-labelledby="setup-heading">
+            <div className={styles.setupHead}>
+              <Heading as="h2" id="setup-heading" className={styles.setupTitle}>
+                Your setup
+              </Heading>
+              <button type="button" className={styles.reset} onClick={reset}>
+                Start over
+              </button>
+            </div>
+            <div className={styles.questions}>
+              {questions.map((q) => (
+                <Choice
+                  key={q.id}
+                  name={q.id}
+                  label={q.label}
+                  options={q.options}
+                  value={answers[q.id]}
+                  onChange={answer(q.id)}
+                />
+              ))}
+            </div>
+            <div className={styles.progress}>
+              <div
+                className={styles.bar}
+                role="progressbar"
+                aria-label="Setup progress"
+                aria-valuemin={0}
+                aria-valuemax={REQUIRED.length}
+                aria-valuenow={doneCount}
+                aria-valuetext={`${doneCount} of ${REQUIRED.length} steps done`}>
+                <span style={{width: `${(doneCount / REQUIRED.length) * 100}%`}} />
+              </div>
+              <span aria-hidden="true">
+                {doneCount} of {REQUIRED.length} steps done
+              </span>
+            </div>
+          </section>
 
-        <Heading as="h2">2. Install the app</Heading>
-        <p>Install the official Meshtastic client for your platform:</p>
-        <ul>
-          <li>
-            <a
-              href="https://play.google.com/store/apps/details?id=com.geeksville.mesh"
-              target="_blank"
-              rel="noreferrer">
-              Android
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://apps.apple.com/us/app/meshtastic/id1586432531"
-              target="_blank"
-              rel="noreferrer">
-              iOS
-            </a>
-          </li>
-          <li>
-            <a href="https://client.meshtastic.org/" target="_blank" rel="noreferrer">
-              Web (Chrome/Edge, via USB or Bluetooth)
-            </a>
-          </li>
-        </ul>
-        <p>
-          Pair your device over Bluetooth or USB and complete the initial
-          setup, then come back here for the MeshMY-specific settings
-          below.
-        </p>
+          <ol className={styles.steps}>
+            <Step
+              id="radio"
+              n={1}
+              title={hasRadio ? 'Your radio' : 'Get a radio'}
+              done={isDone('radio')}
+              autoDone={hasRadio}
+              onDone={tick('radio')}>
+              {hasRadio ? (
+                <p>
+                  Charge it and keep it next to you. If it’s never been set up,
+                  that’s fine: step 3 does it for you.
+                </p>
+              ) : (
+                <>
+                  <p>
+                    Meshtastic runs on small, inexpensive <Term id="lora" /> radios.
+                    For a first <Term id="node" />, look for:
+                  </p>
+                  <ul className={styles.list}>
+                    <li>
+                      <strong>The 915&nbsp;MHz version.</strong>{' '}
+                      {licensed
+                        ? 'That’s the one for MY_919. For 433 MHz you need a 433 MHz version.'
+                        : 'That’s the one for MY_919. Radios are built for one band (433, 868 or 915 MHz), so check before you buy.'}
+                    </li>
+                    <li>
+                      <strong>Bluetooth</strong>, so it pairs with your phone.
+                    </li>
+                    <li>
+                      <strong>A battery</strong>, or a battery socket, so you can carry it.
+                    </li>
+                    <li>
+                      <strong>A screen</strong> helps but is optional: it shows the pairing PIN and messages.
+                    </li>
+                  </ul>
+                  <p>
+                    Popular first radios: Heltec T114, LilyGO T-Echo, RAK WisBlock.{' '}
+                    <a href="https://meshtastic.org/docs/hardware/devices/" target="_blank" rel="noreferrer">
+                      Supported hardware ↗
+                    </a>
+                  </p>
+                </>
+              )}
+            </Step>
 
-        <Heading as="h2">3. Radio Configuration → LoRa</Heading>
-        <p>
-          Open your device's{' '}
-          <a
-            href="https://meshtastic.org/docs/configuration/radio/lora/"
-            target="_blank"
-            rel="noreferrer">
-            LoRa settings
-          </a>{' '}
-          and set the following:
-        </p>
+            <Step id="app" n={2} title="Install the app and pair" done={isDone('app')} onDone={tick('app')}>
+              <div className={styles.appRow}>
+                <MeshtasticLink href={app.href} pill external>
+                  Get the {app.label} app
+                </MeshtasticLink>
+                <span className={styles.others}>
+                  Or:{' '}
+                  {apps
+                    .filter((a) => a.id !== app.id)
+                    .map((a, i) => (
+                      <span key={a.id}>
+                        {i > 0 && ' · '}
+                        <a href={a.href} target="_blank" rel="noreferrer">
+                          {a.label} ↗
+                        </a>
+                      </span>
+                    ))}
+                </span>
+              </div>
+              <ol className={styles.numbered}>
+                {pairing[app.id].map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ol>
+            </Step>
 
-        <div className="alert alert--info margin-bottom--md" role="alert">
-          <strong>Region: 919 MHz (MY_919)</strong> — the license-free
-          ISM band. This is the recommended default for everyone. See
-          the full{' '}
-          <a
-            href="https://meshtastic.org/docs/configuration/region-by-country/"
-            target="_blank"
-            rel="noreferrer">
-            region by country
-          </a>{' '}
-          list for reference.
+            <Step id="settings" n={3} title="Apply MeshMY’s settings" done={isDone('settings')} onDone={tick('settings')}>
+              {licensed && (
+                <Choice
+                  name="band"
+                  label="Which band?"
+                  className={styles.inlineChoice}
+                  options={[
+                    {value: '919', label: '919 MHz (everyone)'},
+                    {value: '433', label: '433 MHz (licensed)'},
+                  ]}
+                  value={answers.band}
+                  onChange={answer('band')}
+                />
+              )}
+              {on433 && (
+                <Note tone="warn" label="Licensed only">
+                  433&nbsp;MHz is in Malaysia’s amateur radio band. Use it only with
+                  a valid Malaysian amateur radio licence.
+                </Note>
+              )}
+              <ConfigCard
+                url={url}
+                qrTitle={`QR code with MeshMY's ${on433 ? '433' : '919'} MHz Meshtastic settings`}
+                intro={
+                  <p>
+                    {answers.platform === 'web'
+                      ? 'Scan this code with the Meshtastic app on your phone, or copy the link and open it on the phone paired to your radio.'
+                      : 'On this phone, tap Open in Meshtastic. On a computer, scan the code with the app instead.'}{' '}
+                    It sets everything below in one go.
+                  </p>
+                }>
+                <Settings>
+                  <SettingRow label={<Term id="region" />} value={settings.region} hint={on433 ? '433 MHz, licensed' : '919 MHz, licence-free'} />
+                  <SettingRow label={<Term id="preset" />} value={settings.modemPresetLabel} />
+                  <SettingRow label={<Term id="channel">Primary channel</Term>} value={settings.channelDisplayName} hint="name left blank, default key" />
+                  <SettingRow label="OK to MQTT · Uplink · Downlink" value="On" />
+                </Settings>
+                <p className={styles.fine}>
+                  This replaces your node’s channels and LoRa settings. That’s what
+                  you want on a new radio.
+                </p>
+              </ConfigCard>
+
+              <details className={styles.more}>
+                <summary>
+                  Set it by hand instead
+                  <span className={styles.chev} aria-hidden="true" />
+                </summary>
+                <Heading as="h3" className={styles.path}>
+                  Radio configuration → LoRa
+                </Heading>
+                <Settings>
+                  <SettingRow label="Region" value={settings.region} />
+                  <SettingRow label="Modem preset" value={settings.modemPresetLabel} hint="what the rest of MeshMY uses" />
+                  <SettingRow label={<Term id="hops">Max hops</Term>} value={String(settings.hopLimit)} hint="the default" />
+                  <SettingRow label="OK to MQTT" value="On" hint="lets gateways bridge your messages" />
+                </Settings>
+                <Heading as="h3" className={styles.path}>
+                  Radio configuration → Channels → primary channel
+                </Heading>
+                <Settings>
+                  <SettingRow label="Name" value="(leave blank)" hint={`it becomes “${settings.channelDisplayName}”`} />
+                  <SettingRow label={<Term id="psk" />} value="(leave the default)" />
+                  <SettingRow label={<Term id="uplink" />} value="Both on" />
+                </Settings>
+                <p className={styles.fine}>
+                  Don’t create a custom channel or change the key: the default
+                  channel is what puts you on the air with everyone else.
+                </p>
+              </details>
+            </Step>
+
+            <Step id="gateway" n={4} title="Be your own gateway" optional done={isDone('gateway')} onDone={tick('gateway')}>
+              <p>
+                Most people skip this. With step 3 done, any nearby{' '}
+                <Term id="gateway" /> already relays your messages over{' '}
+                <Term id="mqtt" /> for you.
+              </p>
+              <Choice
+                name="gateway"
+                label="Is your node often out of radio range, with Wi-Fi or phone data nearby?"
+                className={styles.inlineChoice}
+                options={[
+                  {value: 'no', label: 'No'},
+                  {value: 'yes', label: 'Yes'},
+                ]}
+                value={answers.gateway}
+                onChange={answer('gateway')}
+              />
+              {answers.gateway === 'yes' ? (
+                <>
+                  <p>
+                    In <strong>Module configuration → MQTT</strong>, turn MQTT on and
+                    use MeshMY’s community server (run by 9W2LWK):
+                  </p>
+                  <Settings>
+                    <SettingRow label="Address" value={mqtt.address} copy />
+                    <SettingRow label="Username" value={mqtt.username} copy />
+                    <SettingRow label="Password" value={mqtt.password} copy />
+                    <SettingRow label="Root topic" value={rootTopic} copy />
+                    <SettingRow label="Encryption" value="Enabled" />
+                  </Settings>
+                </>
+              ) : (
+                <p className={styles.muted}>
+                  Leave the MQTT module off. Don’t turn off OK to MQTT either: that
+                  keeps you on local radio only, out of reach of the wider mesh.
+                </p>
+              )}
+            </Step>
+
+            <Step id="check" n={5} title="Check you’re on the mesh" done={isDone('check')} onDone={tick('check')}>
+              <ol className={styles.numbered}>
+                <li>
+                  Open the <strong>Nodes</strong> list in the app. Other nodes appear
+                  as they announce themselves, usually within 15–30 minutes.
+                </li>
+                <li>
+                  Say hello on the <strong>{settings.channelDisplayName}</strong> channel.
+                  A tick means another node heard you.
+                  <div className={styles.hello}>
+                    <label className={styles.areaField}>
+                      <span>Your area (optional)</span>
+                      <input
+                        type="text"
+                        value={area}
+                        maxLength={40}
+                        placeholder="e.g. Petaling Jaya"
+                        onChange={(e) => update({area: e.target.value})}
+                      />
+                    </label>
+                    <span className={styles.helloRow}>
+                      <code>{hello}</code>
+                      <CopyButton text={hello} />
+                    </span>
+                  </div>
+                </li>
+                <li>
+                  Find yourself on the{' '}
+                  <a href="https://meshmap2.lucifernet.com/" target="_blank" rel="noreferrer">
+                    community mesh map ↗
+                  </a>
+                  . It shows nodes that reach MQTT, so allow up to an hour.
+                </li>
+              </ol>
+            </Step>
+          </ol>
+
+          {allDone && (
+            <section className={styles.success} aria-live="polite">
+              <Heading as="h2">You’re on the mesh</Heading>
+              <p>Say hi at the weekly net: one message, and everyone can see who’s reachable.</p>
+              <Link className={clsx('button button--lg', styles.cta)} to="/meshtastic/weekly-net">
+                Check in on the weekly net →
+              </Link>
+            </section>
+          )}
+
+          <section className={styles.section} aria-labelledby="help-heading">
+            <Heading as="h2" id="help-heading">
+              Something not working?
+            </Heading>
+            <div className={styles.faq}>
+              {troubleshooting.map((t) => (
+                <details key={t.q} className={styles.more}>
+                  <summary>
+                    {t.q}
+                    <span className={styles.chev} aria-hidden="true" />
+                  </summary>
+                  <p>{t.a}</p>
+                </details>
+              ))}
+            </div>
+            <p className={styles.muted}>
+              Still stuck? Come to a <Link to="/events">meetup →</Link> or ask on{' '}
+              <a href="https://github.com/meshmy" target="_blank" rel="noreferrer">
+                GitHub ↗
+              </a>
+              .
+            </p>
+          </section>
+
+          <section className={styles.section} aria-labelledby="words-heading">
+            <Heading as="h2" id="words-heading">
+              Words you’ll meet
+            </Heading>
+            <dl className={styles.glossary}>
+              {Object.values(glossary).map((g) => (
+                <div key={g.term}>
+                  <dt>{g.term}</dt>
+                  <dd>{g.text}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
         </div>
-
-        <div className="alert alert--warning margin-bottom--md" role="alert">
-          <strong>Region: 433 MHz (MY_433)</strong> — this falls within
-          Malaysia's amateur radio band. Only select it if you hold a
-          valid Malaysian amateur radio licence. If you're not a licensed
-          ham operator, use 919 MHz instead.
-        </div>
-
-        <p>Also on this page:</p>
-        <ul>
-          <li>
-            Set <strong>Modem Preset</strong> to <code>Medium Fast</code>{' '}
-            — this is the preset the rest of the MeshMY community uses,
-            so staying on it keeps you compatible with everyone else's
-            mesh timing.
-          </li>
-          <li>
-            Leave <strong>Max Hops</strong> at its default of{' '}
-            <code>3</code>, which is fine for most setups.
-          </li>
-          <li>
-            Turn on <strong>OK to MQTT</strong>. This tells nearby
-            gateway nodes they're allowed to bridge your packets onto
-            MQTT — see the note on MQTT below for why this matters.
-          </li>
-        </ul>
-
-        <Heading as="h2">4. Radio Configuration → Channels</Heading>
-        <p>
-          Open your{' '}
-          <a
-            href="https://meshtastic.org/docs/configuration/radio/channels/"
-            target="_blank"
-            rel="noreferrer">
-            Channels settings
-          </a>{' '}
-          and leave the primary channel's name field blank and its PSK
-          at the default. With the name blank, the channel is named
-          automatically after your modem preset — <code>MediumFast</code>{' '}
-          per step 3 above. Don't create a custom channel or change the
-          PSK; staying on this default channel is what puts you on the
-          air with the rest of the MeshMY community.
-        </p>
-        <p>
-          On that same primary channel, turn on <strong>Uplink
-          Enabled</strong> and <strong>Downlink Enabled</strong>. These
-          work together with "OK to MQTT" above to let your messages
-          flow to and from MQTT gateways.
-        </p>
-
-        <Heading as="h2">5. Module Configuration → MQTT</Heading>
-        <p>
-          Meshtastic's{' '}
-          <a
-            href="https://meshtastic.org/docs/configuration/module/mqtt/"
-            target="_blank"
-            rel="noreferrer">
-            MQTT module
-          </a>{' '}
-          controls whether your node talks to an MQTT broker directly.
-          There are two reasonable ways to set this up, depending on how
-          your node connects to the internet:
-        </p>
-        <ul>
-          <li>
-            <strong>Rely on a nearby gateway (recommended default).</strong>{' '}
-            Leave the MQTT module disabled on your own node. As long as
-            "OK to MQTT" and the channel's uplink/downlink toggles are
-            on (steps 3–4 above), any MeshMY gateway node within RF range
-            will bridge your messages for you.
-          </li>
-          <li>
-            <strong>Be your own gateway.</strong> If your node is often
-            out of RF range but has Wi-Fi or a phone with cellular data
-            nearby, enable the MQTT module directly and point it at
-            MeshMY's community server — see below.
-          </li>
-        </ul>
-        <div className="alert alert--danger margin-bottom--md" role="alert">
-          <strong>Not recommended:</strong> turning off both "OK to
-          MQTT" and the module (an "RF-only" setup). This isolates your
-          traffic to local RF range only and prevents it from being
-          linked over MQTT to nodes out-of-state. Only do this if you
-          deliberately want to stay off MQTT entirely.
-        </div>
-
-        <Heading as="h3">MeshMY's community MQTT server</Heading>
-        <p>
-          <a href="https://mqtt.lucifernet.com" target="_blank" rel="noreferrer">
-            mqtt.lucifernet.com
-          </a>{' '}
-          is MeshMY's preferred MQTT server (maintained by 9W2LWK). If
-          you're setting up the MQTT module yourself, use:
-        </p>
-        <ul>
-          <li>Address: <code>mqtt.lucifernet.com</code></li>
-          <li>Username: <code>meshdev</code></li>
-          <li>Password: <code>large4cats</code></li>
-          <li>Root topic: <code>msh/MY_919</code> (or <code>msh/MY_433</code>)</li>
-          <li>Encryption: enabled</li>
-        </ul>
-        <p>
-          This server also feeds the community mesh map — once your node
-          is uplinking to it (whether directly or via a nearby gateway),
-          you'll show up at{' '}
-          <a href="https://meshmap2.lucifernet.com/" target="_blank" rel="noreferrer">
-            meshmap2.lucifernet.com
-          </a>
-          .
-        </p>
-
-        <p>
-          Once you're set up, head over to the{' '}
-          <a href="/meshtastic/weekly-net">weekly net</a> page to take
-          part in the community check-in.
-        </p>
-
-        <Heading as="h2">Get help</Heading>
-        <p>
-          Questions, node placement help, or just want to say hi? Check
-          our <a href="/events">events page</a> for upcoming meetups, browse
-          the community's repositories on{' '}
-          <a href="https://github.com/meshmy" target="_blank" rel="noreferrer">
-            GitHub
-          </a>
-          , or read more on the <a href="/about">About page</a>.
-        </p>
       </main>
     </Layout>
   );
