@@ -3,27 +3,45 @@ import Heading from '@theme/Heading';
 import {
   sites,
   STATUS,
-  formatMetres,
+  MAINTAINERS,
+  UNKNOWN,
+  maintainerOf,
+  siteElevation,
   googleMapsUrl,
   meshmapUrl,
 } from '@site/src/data/sites';
+
+const groups = Object.entries(MAINTAINERS)
+  .map(([key, m]) => ({key, ...m, sites: sites.filter((s) => maintainerOf(s) === m)}))
+  .filter((g) => g.sites.length > 0);
 
 export default function Infrastructure() {
   return (
     <Layout
       title="Infrastructure"
-      description="Community-maintained Meshtastic router infrastructure operated by the MeshMY team.">
+      description="Community-maintained Meshtastic router infrastructure in Malaysia, run by the MeshMY team and the Penang Meshtastic community.">
       <main className="container margin-vert--lg">
         <Heading as="h1">Infrastructure</Heading>
         <p>
-          Beyond individual community nodes, the MeshMY team builds and
-          maintains a small number of high-site routers to extend mesh
-          coverage across the Klang Valley and beyond. These are
-          volunteer-run, solar-powered installations at elevated sites.
+          Beyond individual community nodes, volunteers build and maintain
+          high-site routers to extend mesh coverage: the MeshMY team around
+          the Klang Valley, and the Penang Meshtastic community on Penang
+          Island.
         </p>
 
-        <div className="row margin-top--lg">
-          {sites.map((site) => (
+        {groups.map((group) => (
+          <section key={group.key} aria-labelledby={`maintainer-${group.key}`}>
+        <Heading as="h2" id={`maintainer-${group.key}`} className="margin-top--lg">
+          {group.name}
+        </Heading>
+        {group.key === 'penang' && (
+          <p>
+            Positions and elevations are approximate, as reported by the
+            nodes themselves.
+          </p>
+        )}
+        <div className="row">
+          {group.sites.map((site) => (
                 <div className="col col--6 margin-bottom--lg" key={site.shortName}>
                   <div className="card" style={{height: '100%'}}>
                     <div className="card__header">
@@ -39,7 +57,7 @@ export default function Infrastructure() {
                         <code>{site.shortName}</code>
                       </div>
                       <p className="margin-bottom--none">
-                        {site.area} · {formatMetres(site.elevation)} m AMSL · Grid{' '}
+                        {site.area} · {siteElevation(site)} AMSL · Grid{' '}
                         {site.grid}
                       </p>
                     </div>
@@ -116,6 +134,7 @@ export default function Infrastructure() {
                               Antenna
                             </div>
                             <p className="margin-bottom--none">{band.antenna}</p>
+                            {band.antennaPart !== UNKNOWN && (
                             <p className="margin-bottom--none">
                               {band.antennaUrl ? (
                                 <a
@@ -128,6 +147,7 @@ export default function Infrastructure() {
                                 band.antennaPart
                               )}
                             </p>
+                            )}
                           </div>
                         );
                       })}
@@ -140,7 +160,7 @@ export default function Infrastructure() {
                           href={googleMapsUrl(site.lat, site.lon)}
                           target="_blank"
                           rel="noreferrer">
-                          Google Maps
+                          {site.approx ? 'Approximate location' : 'Google Maps'}
                         </a>
                         <a
                           className="button button--secondary"
@@ -156,6 +176,8 @@ export default function Infrastructure() {
                 </div>
               ))}
         </div>
+          </section>
+        ))}
 
         <Heading as="h2">Get help</Heading>
         <p>
