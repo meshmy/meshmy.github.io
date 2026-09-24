@@ -498,6 +498,30 @@
   color: var(--mm-muted);
 }
 
+/* Checked pills and ticks are shown by fill, which forced-colours mode
+   (Windows High Contrast) removes: use the system highlight instead. */
+@media (forced-colors: active) {
+  .pill input:checked + span,
+  .doneToggle input:checked + span {
+    forced-color-adjust: none;
+    color: HighlightText;
+    background: Highlight;
+    border: 2px solid Highlight;
+  }
+  .bar span {
+    background: Highlight;
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 @media (max-width: 996px) {
   .questions {
     grid-template-columns: 1fr;

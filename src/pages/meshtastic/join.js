@@ -59,21 +59,25 @@ function CheckGlyph() {
 /** One numbered step, with its "Done" tick. */
 function Step({id, n, title, optional, done, onDone, autoDone, children}) {
   return (
-    <li className={clsx(styles.step, done && styles.stepDone)} aria-labelledby={`step-${id}`}>
+    <li className={clsx(styles.step, done && styles.stepDone)} aria-labelledby={`step-${id}-title`}>
       <span className={styles.stepNum} aria-hidden="true">
         {done ? <CheckGlyph /> : n}
       </span>
       <div className={styles.stepHead}>
         <Heading as="h2" id={`step-${id}`} className={styles.stepTitle}>
-          {title}
+          <span id={`step-${id}-title`}>{title}</span>
           {optional && <span className={styles.optional}>Optional</span>}
         </Heading>
         {autoDone ? (
-          <span className={styles.doneNote}>Done</span>
+          <span className={styles.doneNote}>
+            Done<span className={styles.srOnly}>: {title}</span>
+          </span>
         ) : (
           <label className={styles.doneToggle}>
             <input type="checkbox" checked={!!done} onChange={(e) => onDone(e.target.checked)} />
-            <span>Done</span>
+            <span>
+              Done<span className={styles.srOnly}>: {title}</span>
+            </span>
           </label>
         )}
       </div>
@@ -94,7 +98,16 @@ function Note({tone = 'info', label, children}) {
 export default function Join() {
   const [state, update, reset] = useStoredState('meshmy-join-v1', INITIAL);
   const {answers, done, area} = state;
-  const answer = (id) => (value) => update({answers: {[id]: value}});
+  // Changing which band you're on means step 3's settings (and step 5's
+  // check) no longer apply, so un-tick them.
+  const answer = (id) => (value) =>
+    update((s) => {
+      const next = {...s.answers, [id]: value};
+      const band = (a) => (a.licensed === 'yes' && a.band === '433' ? '433' : '919');
+      return band(next) === band(s.answers)
+        ? {answers: {[id]: value}}
+        : {answers: {[id]: value}, done: {settings: false, check: false}};
+    });
   const tick = (id) => (value) => update({done: {[id]: value}});
 
   const hasRadio = answers.hasRadio === 'yes';
@@ -383,15 +396,17 @@ export default function Join() {
             </Step>
           </ol>
 
-          {allDone && (
-            <section className={styles.success} aria-live="polite">
-              <Heading as="h2">You’re on the mesh</Heading>
-              <p>Say hi at the weekly net: one message, and everyone can see who’s reachable.</p>
-              <Link className={clsx('button button--lg', styles.cta)} to="/meshtastic/weekly-net">
-                Check in on the weekly net →
-              </Link>
-            </section>
-          )}
+          <div aria-live="polite">
+            {allDone && (
+              <section className={styles.success}>
+                <Heading as="h2">You’re on the mesh</Heading>
+                <p>Say hi at the weekly net: one message, and everyone can see who’s reachable.</p>
+                <Link className={clsx('button button--lg', styles.cta)} to="/meshtastic/weekly-net">
+                  Check in on the weekly net →
+                </Link>
+              </section>
+            )}
+          </div>
 
           <section className={styles.section} aria-labelledby="help-heading">
             <Heading as="h2" id="help-heading">
