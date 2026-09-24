@@ -1,0 +1,97 @@
+{
+  "source": "https://meshmap2.lucifernet.com/api/v1/nodes",
+  "asOf": "2026-09-24",
+  "since": "2025-12",
+  "nodes": 491,
+  "newInMonth": {
+    "month": "2026-08",
+    "count": 12
+  },
+  "byType": [
+    {
+      "label": "Clients",
+      "count": 435
+    },
+    {
+      "label": "Routers",
+      "count": 28
+    },
+    {
+      "label": "Trackers",
+      "count": 25
+    },
+    {
+      "label": "Other",
+      "count": 3
+    }
+  ],
+  "byArea": [
+    {
+      "label": "Klang Valley",
+      "count": 343
+    },
+    {
+      "label": "Penang",
+      "count": 48
+    },
+    {
+      "label": "Negeri Sembilan & Melaka",
+      "count": 36
+    },
+    {
+      "label": "Johor",
+      "count": 29
+    },
+    {
+      "label": "Sabah",
+      "count": 14
+    },
+    {
+      "label": "Kedah & Perlis",
+      "count": 10
+    },
+    {
+      "label": "Sarawak",
+      "count": 5
+    },
+    {
+      "label": "Perak",
+      "count": 4
+    },
+    {
+      "label": "Elsewhere",
+      "count": 2
+    }
+  ],
+  "byHardware": [
+    {
+      "label": "Heltec V3",
+      "count": 62
+    },
+    {
+      "label": "RAK WisBlock RAK4631",
+      "count": 45
+    },
+    {
+      "label": "Seeed Wio Tracker L1",
+      "count": 42
+    },
+    {
+      "label": "nRF52 Pro Micro (DIY)",
+      "count": 40
+    },
+    {
+      "label": "LilyGO T-Deck",
+      "count": 35
+    },
+    {
+      "label": "Heltec V4",
+      "count": 32
+    },
+    {
+      "label": "Other models",
+      "count": 235
+    }
+  ],
+  "noPosition": 0
+}
