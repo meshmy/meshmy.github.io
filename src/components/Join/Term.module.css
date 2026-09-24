@@ -1,0 +1,47 @@
+.term {
+  position: relative;
+  display: inline;
+}
+.button {
+  padding: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit; /* buttons don't inherit these by default */
+  color: inherit;
+  background: none;
+  border: 0;
+  text-decoration: underline dotted var(--brand-highlight-text);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+  cursor: help;
+}
+.button:hover,
+.button[aria-expanded='true'] {
+  color: var(--brand-highlight-text);
+}
+.button:focus-visible {
+  outline: 2px solid var(--brand-highlight-text);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+/* Always in the DOM (a live region must exist before it's filled); only
+   drawn when it has content. */
+.tip {
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  top: calc(100% + 0.375rem);
+  width: max-content;
+  max-width: min(20rem, calc(100vw - 1rem));
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+  color: var(--ifm-font-color-base);
+}
+.tip:not(:empty) {
+  padding: 0.625rem 0.75rem;
+  background: var(--mm-surface-2);
+  border: 1px solid var(--mm-line-strong);
+  border-radius: 0.625rem;
+}
