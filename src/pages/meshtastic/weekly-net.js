@@ -5,7 +5,7 @@ import CopyButton from '@site/src/components/Home/CopyButton';
 import {Choice, ConfigCard, SettingRow, Settings} from '@site/src/components/Setup';
 import useStoredState from '@site/src/components/Join/useStoredState';
 import NetStatus from '@site/src/components/WeeklyNet/NetStatus';
-import {buildAddChannelUrl, netChannel, weeklyNet} from '@site/src/data/meshtasticConfig';
+import {buildAddChannelUrl, netChannel, telegram, weeklyNet} from '@site/src/data/meshtasticConfig';
 import styles from './weekly-net.module.css';
 
 const INITIAL = {via: 'rf'};
@@ -22,7 +22,14 @@ const fixes = [
   },
   {
     q: 'CRF or CMQTT?',
-    a: 'CRF if your message leaves your node by radio and a nearby gateway puts it on MQTT. CMQTT if your own node has the MQTT module on and connects to the server itself. If you never set up the MQTT module, it’s CRF.',
+    a: (
+      <>
+        CRF if your message leaves your node by radio and a nearby gateway puts it
+        on MQTT. CMQTT if your own node has the MQTT module on and connects to the
+        server itself, through your phone or Wi-Fi. If you never set up the MQTT
+        module, it’s CRF. <Link to="/meshtastic/mqtt">MQTT setup →</Link>
+      </>
+    ),
   },
   {
     q: 'I sent the wrong message',
@@ -167,7 +174,12 @@ export default function WeeklyNet() {
                 <a href={weeklyNet.trackerUrl} target="_blank" rel="noreferrer">
                   MESH NET919 ↗
                 </a>
-                , so you can see who’s checked in each week.
+                , so you can see who’s checked in each week. Your message also
+                shows up on{' '}
+                <a href={telegram.url} target="_blank" rel="noreferrer">
+                  {telegram.handle} ↗
+                </a>{' '}
+                once it reaches MQTT.
               </p>
             </li>
           </ol>
