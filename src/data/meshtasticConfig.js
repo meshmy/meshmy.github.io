@@ -56,12 +56,37 @@ export const apps = [
 ];
 
 export const weeklyNet = {
+  name: 'Check In Net Mesh MY919',
+  tagline: 'Jom check in net! Kalau bukan anda, siapa lagi.',
+  taglineEnglish: 'Come check in to the net. If not you, then who else?',
+  // Every Wednesday, 10:00–22:00 Malaysia time (MYT, UTC+8, no DST).
+  day: 'Wednesday',
+  weekday: 3, // 0 = Sunday
+  opensHour: 10,
+  closesHour: 22,
+  utcOffsetHours: 8,
   hours: '10:00 AM – 10:00 PM',
   checkIns: [
-    {via: 'Over RF (relayed to MQTT by a gateway)', message: 'CRF CHECK IN NET MESH MY919'},
-    {via: 'Directly on MQTT (your node is a gateway)', message: 'CMQTT CHECK IN NET MESH MY919'},
+    {
+      id: 'rf',
+      via: 'Over RF (relayed to MQTT by a gateway)',
+      label: 'Through another node (RF)',
+      message: 'CRF CHECK IN NET MESH MY919',
+    },
+    {
+      id: 'mqtt',
+      via: 'Directly on MQTT (your node is a gateway)',
+      label: 'My node is its own gateway (MQTT)',
+      message: 'CMQTT CHECK IN NET MESH MY919',
+    },
   ],
 };
+
+// The net's public secondary channel. Fill in `name` and `psk` (the key as
+// base64, exactly as the app shows it) to enable the one-tap "add channel"
+// link and QR on the Weekly Net page. While null, the page tells people to
+// get the channel from net control instead.
+export const netChannel = null;
 
 // --- minimal protobuf writer ------------------------------------------------
 
@@ -106,6 +131,25 @@ function base64url(bytes) {
     typeof btoa === 'function' ? btoa(bin) : Buffer.from(bin, 'binary').toString('base64');
   return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
+
+// A link that ADDS channels (as secondary) and leaves the node's LoRa
+// settings and primary channel alone: ChannelSet with settings only, and
+// `?add=true`. `channel.psk` is base64.
+function fromBase64(b64) {
+  const bin = typeof atob === 'function' ? atob(b64) : Buffer.from(b64, 'base64').toString('binary');
+  return [...bin].map((c) => c.charCodeAt(0));
+}
+function encodeChannel(ch) {
+  const psk = fromBase64(ch.psk);
+  return [
+    ...bField(2, psk),
+    ...bField(3, [...new TextEncoder().encode(ch.name)]),
+    ...(ch.uplink ? vField(5, 1) : []),
+    ...(ch.downlink ? vField(6, 1) : []),
+  ];
+}
+export const buildAddChannelUrl = (channel) =>
+  `https://meshtastic.org/e/?add=true#${base64url(bField(1, encodeChannel(channel)))}`;
 
 export const buildConfigUrl = (settings) =>
   `https://meshtastic.org/e/#${base64url(encodeChannelSet(settings))}`;
