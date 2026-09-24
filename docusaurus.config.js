@@ -93,6 +93,7 @@ const config = {
             items: [
               {to: '/meshtastic/join', label: 'Join'},
               {to: '/meshtastic/weekly-net', label: 'Weekly Net'},
+              {to: '/meshtastic/mqtt', label: 'MQTT'},
               {to: '/meshtastic/infrastructure', label: 'Infrastructure'},
               {to: '/meshtastic/foliage-calculator', label: 'Foliage Calculator'},
             ],
@@ -121,6 +122,7 @@ const config = {
               {label: 'Overview', to: '/meshtastic'},
               {label: 'Join', to: '/meshtastic/join'},
               {label: 'Weekly Net', to: '/meshtastic/weekly-net'},
+              {label: 'MQTT', to: '/meshtastic/mqtt'},
               {label: 'Infrastructure', to: '/meshtastic/infrastructure'},
             ],
           },

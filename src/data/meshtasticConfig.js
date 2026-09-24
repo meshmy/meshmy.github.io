@@ -46,6 +46,27 @@ export const mqtt = {
   password: 'large4cats',
   rootTopic: 'msh/MY_919',
   rootTopic433: 'msh/MY_433',
+  encryption: true,
+  json: false,
+  tls: false,
+};
+
+// Public Telegram channel that relays what reaches MQTT: seeing your own
+// message there is the easiest proof that your MQTT path works.
+export const telegram = {
+  handle: '@MalaysiaMeshtastic',
+  name: 'Malaysia Meshtastic',
+  url: 'https://t.me/MalaysiaMeshtastic',
+  getUrl: 'https://telegram.org/apps',
+};
+
+// The community guide the MQTT page was adapted from (it predates the move
+// from LongFast to MediumFast).
+export const setupGuideSource = {
+  title: 'Meshtastic Setup Guide / Panduan Konfigurasi Meshtastic',
+  version: 'v1.1, June 2025',
+  url: 'https://docs.google.com/document/d/1dKiJDWhIf5FyKqlvvLSFU1IAkNaWpijS/edit',
+  credits: 'built on Abang Anonymous’ guide, with thanks to Guzman KH16',
 };
 
 // Official Meshtastic apps. `id` matches the Join page's platform answer.
