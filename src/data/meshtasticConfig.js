@@ -82,10 +82,11 @@ export const weeklyNet = {
   ],
 };
 
-// The net's public secondary channel. Fill in `name` and `psk` (the key as
-// base64, exactly as the app shows it) to enable the one-tap "add channel"
-// link and QR on the Weekly Net page. While null, the page tells people to
-// get the channel from net control instead.
+// The net's public secondary channel, e.g. {name: 'MyNet', psk: 'base64key'}.
+// `psk` is the key as base64, as the app shows it. Uplink and downlink are
+// on unless set to false, so check-ins reach MQTT through gateways. Filling
+// this in turns on the one-tap "add channel" link and QR on the Weekly Net
+// page; while null, the page tells people to get it from net control.
 export const netChannel = null;
 
 // --- minimal protobuf writer ------------------------------------------------
@@ -135,7 +136,9 @@ function base64url(bytes) {
 // A link that ADDS channels (as secondary) and leaves the node's LoRa
 // settings and primary channel alone: ChannelSet with settings only, and
 // `?add=true`. `channel.psk` is base64.
-function fromBase64(b64) {
+function fromBase64(input) {
+  // Accept base64url and stray whitespace from copy-pasting.
+  const b64 = input.trim().replace(/-/g, '+').replace(/_/g, '/');
   const bin = typeof atob === 'function' ? atob(b64) : Buffer.from(b64, 'base64').toString('binary');
   return [...bin].map((c) => c.charCodeAt(0));
 }
@@ -144,8 +147,8 @@ function encodeChannel(ch) {
   return [
     ...bField(2, psk),
     ...bField(3, [...new TextEncoder().encode(ch.name)]),
-    ...(ch.uplink ? vField(5, 1) : []),
-    ...(ch.downlink ? vField(6, 1) : []),
+    ...(ch.uplink !== false ? vField(5, 1) : []),
+    ...(ch.downlink !== false ? vField(6, 1) : []),
   ];
 }
 export const buildAddChannelUrl = (channel) =>

@@ -50,24 +50,28 @@ export function MeshtasticLink({href, children, pill = false, logo = !pill, exte
  * fieldset, so it works by keyboard (arrow keys) and screen reader.
  */
 export function Choice({name, label, options, value, onChange, className}) {
+  // `className` goes on a wrapper, so page spacing never competes with the
+  // fieldset's own reset across separately loaded CSS files.
   return (
-    <fieldset className={clsx(styles.choice, className)}>
-      <legend>{label}</legend>
-      <div className={styles.pills}>
-        {options.map((o) => (
-          <label key={o.value} className={styles.pill}>
-            <input
-              type="radio"
-              name={name}
-              value={o.value}
-              checked={value === o.value}
-              onChange={() => onChange(o.value)}
-            />
-            <span>{o.label}</span>
-          </label>
-        ))}
-      </div>
-    </fieldset>
+    <div className={className}>
+      <fieldset className={styles.choice}>
+        <legend>{label}</legend>
+        <div className={styles.pills}>
+          {options.map((o) => (
+            <label key={o.value} className={styles.pill}>
+              <input
+                type="radio"
+                name={name}
+                value={o.value}
+                checked={value === o.value}
+                onChange={() => onChange(o.value)}
+              />
+              <span>{o.label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+    </div>
   );
 }
 

@@ -259,7 +259,7 @@ function Next() {
         <div className={styles.cards}>
           <article className={clsx(styles.card, styles.cardNet)}>
             <p className={styles.cardKicker}>
-              Weekly net · {weeklyNet.day}s, {weeklyNet.hours}
+              Weekly net · {weeklyNet.day}s, {weeklyNet.hours} MYT
             </p>
             <Heading as="h3">Check in and say hello</Heading>
             <p>Send one message on the net channel so everyone can see who’s reachable.</p>

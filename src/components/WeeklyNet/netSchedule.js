@@ -32,9 +32,16 @@ export function netStatus(now = new Date(), net = weeklyNet) {
 export function relative(target, now = new Date()) {
   const ms = target.getTime() - now.getTime();
   const rtf = new Intl.RelativeTimeFormat('en-GB', {numeric: 'auto'});
+  // Days from 2 days, hours from 2 hours, else minutes. If rounding lands on
+  // the next unit's threshold, use that unit: 47.9 h reads "in 2 days", not
+  // "in 48 hours", while 36 h stays "in 36 hours".
   if (ms >= 2 * DAY) return rtf.format(Math.round(ms / DAY), 'day');
-  if (ms >= 2 * HOUR) return rtf.format(Math.round(ms / HOUR), 'hour');
-  return rtf.format(Math.max(1, Math.round(ms / 60e3)), 'minute');
+  if (ms >= 2 * HOUR) {
+    const hours = Math.round(ms / HOUR);
+    return hours >= 48 ? rtf.format(2, 'day') : rtf.format(hours, 'hour');
+  }
+  const minutes = Math.max(1, Math.round(ms / 60e3));
+  return minutes >= 120 ? rtf.format(2, 'hour') : rtf.format(minutes, 'minute');
 }
 
 /** A time as it reads in Malaysia, e.g. "Wednesday 10:00 AM". */

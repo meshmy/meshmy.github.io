@@ -14,7 +14,7 @@ const addChannelUrl = netChannel ? buildAddChannelUrl(netChannel) : null;
 const fixes = [
   {
     q: 'No acknowledgement came back',
-    a: `Check you sent it on the net channel, not MediumFast, and that the net is open (every ${weeklyNet.day}, ${weeklyNet.hours} Malaysia time). No tick on your message means no node heard you: try from higher ground, or check in as your own gateway with CMQTT.`,
+    a: `Check you sent it on the net channel, not MediumFast, and that the net is open (every ${weeklyNet.day}, ${weeklyNet.hours} Malaysia time). No tick on your message means no node heard you: try from higher ground. If your node has the MQTT module set up, check in with CMQTT instead.`,
   },
   {
     q: 'The net channel isn’t in my channel list',
@@ -79,8 +79,8 @@ export default function WeeklyNet() {
                 </ConfigCard>
               ) : (
                 <p>
-                  The net runs on its own secondary channel, so net traffic stays
-                  off MediumFast. Get the channel’s QR code or link from net
+                  The net runs on its own secondary channel, kept separate from
+                  the primary channel so net traffic doesn’t clutter it. Get the channel’s QR code or link from net
                   control, then in the app open <strong>Settings → Channels → Add
                   channel</strong> and scan or paste it. Your region, preset and
                   primary channel stay as they are.

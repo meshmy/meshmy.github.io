@@ -37,11 +37,11 @@ export default function NetStatus() {
       <span>
         {s.open ? (
           <>
-            <strong>Open now</strong> · closes {mytTime(s.closesAt, false)} ({relative(s.closesAt, now)})
+            <strong>Open now</strong> · closes {mytTime(s.closesAt, false)} MYT ({relative(s.closesAt, now)})
           </>
         ) : (
           <>
-            <strong>Next net</strong> · {mytTime(s.opensAt)} ({relative(s.opensAt, now)})
+            <strong>Next net</strong> · {mytTime(s.opensAt)} MYT ({relative(s.opensAt, now)})
           </>
         )}
       </span>
