@@ -66,6 +66,8 @@ export const weeklyNet = {
   closesHour: 22,
   utcOffsetHours: 8,
   hours: '10:00 AM – 10:00 PM',
+  // MESH NET919: the community site that tracks the weekly check-ins.
+  trackerUrl: 'https://sites.google.com/view/mesh-net919/home',
   checkIns: [
     {
       id: 'rf',

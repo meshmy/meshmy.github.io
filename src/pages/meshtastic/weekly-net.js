@@ -85,6 +85,14 @@ export default function WeeklyNet() {
                   <dt>Net</dt>
                   <dd>{weeklyNet.name}</dd>
                 </div>
+                <div>
+                  <dt>Check-ins</dt>
+                  <dd>
+                    <a href={weeklyNet.trackerUrl} target="_blank" rel="noreferrer">
+                      MESH NET919 tracker ↗
+                    </a>
+                  </dd>
+                </div>
               </dl>
             </aside>
           </header>
@@ -153,6 +161,13 @@ export default function WeeklyNet() {
                 Pick the net channel (not MediumFast), paste the message and send
                 it. A tick means a node heard you. You should then get an{' '}
                 <strong>acknowledgement</strong> back: that’s your check-in done.
+              </p>
+              <p className={styles.tracker}>
+                Check-ins are tracked on{' '}
+                <a href={weeklyNet.trackerUrl} target="_blank" rel="noreferrer">
+                  MESH NET919 ↗
+                </a>
+                , so you can see who’s checked in each week.
               </p>
             </li>
           </ol>
