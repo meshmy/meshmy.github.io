@@ -46,6 +46,32 @@ export function MeshtasticLink({href, children, pill = false, logo = !pill, exte
 }
 
 /**
+ * A question answered with pill-shaped radio buttons. Native inputs in a
+ * fieldset, so it works by keyboard (arrow keys) and screen reader.
+ */
+export function Choice({name, label, options, value, onChange, className}) {
+  return (
+    <fieldset className={clsx(styles.choice, className)}>
+      <legend>{label}</legend>
+      <div className={styles.pills}>
+        {options.map((o) => (
+          <label key={o.value} className={styles.pill}>
+            <input
+              type="radio"
+              name={name}
+              value={o.value}
+              checked={value === o.value}
+              onChange={() => onChange(o.value)}
+            />
+            <span>{o.label}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
+/**
  * The one-tap config: QR code, "Open in Meshtastic", "Copy link", and
  * whatever settings the caller lists as children.
  */
