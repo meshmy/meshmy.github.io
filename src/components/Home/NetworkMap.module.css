@@ -1,0 +1,185 @@
+.frame {
+  position: relative;
+  height: 100%;
+  min-height: 22rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--mm-line);
+  background: var(--mm-surface-1);
+  box-shadow: var(--mm-shadow);
+}
+.map {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--mm-surface-1);
+}
+.fallback {
+  padding: 1.5rem 1.5rem 1.5rem 2.5rem;
+  margin: 0;
+}
+.legend {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  z-index: 500;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.875rem;
+  max-width: calc(100% - 4.5rem);
+  padding: 0.4rem 0.75rem;
+  font-size: 0.75rem;
+  color: var(--ifm-font-color-base);
+  background: color-mix(in srgb, var(--ifm-background-color) 86%, transparent);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--mm-line);
+  border-radius: 999px;
+  pointer-events: none;
+}
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+.legend :global(.mm-marker) {
+  position: static;
+  transform: none;
+}
+.legend :global(.mm-marker__pin) {
+  width: 12px;
+  height: 12px;
+  box-shadow: none;
+  animation: none !important;
+}
+.linkKey {
+  display: inline-block;
+  width: 16px;
+  border-top: 2px dashed var(--brand-highlight-text);
+}
+
+/* ---- Leaflet-rendered elements (plain class names from divIcon HTML) ---- */
+
+:global(.leaflet-container) {
+  font: inherit;
+  background: var(--mm-surface-1);
+}
+:global(.mm-marker__label) {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 1px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-family: var(--ifm-font-family-monospace);
+  color: var(--ifm-font-color-base);
+  background: color-mix(in srgb, var(--ifm-background-color) 82%, transparent);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+:global(.mm-marker--retired .mm-marker__label) {
+  color: var(--mm-muted);
+}
+:global(.mm-link) {
+  stroke: var(--brand-highlight-text);
+  stroke-width: 2;
+  stroke-opacity: 0.7;
+  stroke-dasharray: 4 6;
+  fill: none;
+}
+:global(.mm-popup .leaflet-popup-content-wrapper),
+:global(.mm-popup .leaflet-popup-tip) {
+  color: var(--ifm-font-color-base);
+  background: var(--ifm-background-color);
+  border: 1px solid var(--mm-line-strong);
+  box-shadow: var(--mm-shadow);
+}
+:global(.mm-popup .leaflet-popup-content-wrapper) {
+  border-radius: 0.75rem;
+}
+:global(.mm-popup .leaflet-popup-content) {
+  margin: 0.75rem 0.875rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+:global(.mm-popup a.leaflet-popup-close-button) {
+  color: var(--mm-muted);
+}
+:global(.mm-pop__head) {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-right: 1rem;
+  font-size: 0.9375rem;
+}
+:global(.mm-pop__meta) {
+  color: var(--mm-muted);
+}
+:global(.mm-pop__bands) {
+  list-style: none;
+  margin: 0.5rem 0;
+  padding: 0;
+}
+:global(.mm-pop__foot) {
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--mm-line);
+}
+:global(.mm-pop__foot a) {
+  color: var(--brand-highlight-text);
+  font-weight: 600;
+}
+:global(.mm-dot) {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 0.4rem;
+  border-radius: 50%;
+  background: var(--brand-highlight-text);
+}
+:global(.mm-dot--maintenance) {
+  background: transparent;
+  border: 2px solid var(--mm-status-down);
+}
+:global(.mm-dot--decommissioned) {
+  background: transparent;
+  border: 1.5px dashed var(--mm-muted);
+}
+:global(.leaflet-control-attribution) {
+  font-size: 10px;
+  background: color-mix(in srgb, var(--ifm-background-color) 75%, transparent) !important;
+  color: var(--mm-muted);
+}
+:global(.leaflet-control-attribution a) {
+  color: var(--mm-muted);
+}
+:global(.leaflet-bar a) {
+  color: var(--ifm-font-color-base);
+  background: var(--ifm-background-color);
+  border-color: var(--mm-line-strong);
+}
+:global(.leaflet-bar a:hover) {
+  background: var(--mm-surface-2);
+}
+
+@media (max-width: 640px) {
+  .frame {
+    display: flex;
+    flex-direction: column;
+  }
+  .map {
+    position: relative;
+    inset: auto;
+    flex: 1;
+    min-height: 18rem;
+  }
+  .legend {
+    position: static;
+    order: 2;
+    max-width: none;
+    border: 0;
+    border-top: 1px solid var(--mm-line);
+    border-radius: 0;
+    backdrop-filter: none;
+  }
+}

@@ -8,6 +8,14 @@ import {themes as prismThemes} from 'prism-react-renderer';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
+// Local secrets live in the git-ignored .env.local. Variables already set in
+// the environment (e.g. CI secrets) take precedence.
+try {
+  process.loadEnvFile('.env.local');
+} catch {
+  // No .env.local: fine, everything has a fallback.
+}
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'MeshMY',
@@ -23,6 +31,14 @@ const config = {
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
+
+  // Environment variables are listed in README.md.
+  customFields: {
+    // CARTO basemap key for the homepage map, read at build time. Tiles are
+    // fetched by the browser, so the key ends up public in the built site;
+    // it comes from the environment only to keep it out of the repo.
+    cartoApiKey: process.env.CARTO_API_KEY || '',
+  },
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -120,7 +136,8 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} MeshMY. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} MeshMY. Built with Docusaurus.<br/>
+<small>Meshtastic® is a registered trademark of Meshtastic LLC. Meshtastic logo trademark is the trademark of Meshtastic LLC. This site is not affiliated with or endorsed by the Meshtastic project.</small>`,
       },
       prism: {
         theme: prismThemes.github,
