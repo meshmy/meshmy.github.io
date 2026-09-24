@@ -17,7 +17,7 @@ Rules that apply to every change:
 - Meshtastic green (`--mt-green` fill, `--mt-ink` text, `--mt-border`) is only for buttons that lead into Meshtastic (meshtastic.org config links, app stores). Never use it as text on light backgrounds.
 - The Meshtastic logo (`static/img/meshtastic/Mesh_Logo_Black.svg`) is used unaltered, only inside those buttons, and must link to meshtastic.org. Keep the ® on the first "Meshtastic" on a page and the trademark lines in the footer (`docusaurus.config.js`).
 - Show status by shape plus a word, never by hue alone: filled = online, half-filled = partly online, red ring = offline, dashed and struck through = decommissioned.
-- Use system fonts only (no webfonts). Use borders, not shadows (`--mm-shadow` is only for things over the map). Check dark and light, at desktop width and at 390px.
+- Use system fonts only (no webfonts). Use borders, not shadows (`--mm-shadow` is only for the map frame and map popups). Check dark and light, at desktop width and at 390px.
 
 ## Where things live
 

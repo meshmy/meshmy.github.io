@@ -207,6 +207,9 @@ export const links = [
   ['BGKL', 'BCPH'],
 ];
 
+/** Metres with a fixed locale, so the build and the browser render the same text. */
+export const formatMetres = (m) => m.toLocaleString('en-GB');
+
 export function googleMapsUrl(lat, lon) {
   return `https://www.google.com/maps?q=${lat},${lon}`;
 }

@@ -3,6 +3,7 @@ import Heading from '@theme/Heading';
 import {
   sites,
   STATUS,
+  formatMetres,
   googleMapsUrl,
   meshmapUrl,
 } from '@site/src/data/sites';
@@ -38,7 +39,7 @@ export default function Infrastructure() {
                         <code>{site.shortName}</code>
                       </div>
                       <p className="margin-bottom--none">
-                        {site.area} · {site.elevation} m AMSL · Grid{' '}
+                        {site.area} · {formatMetres(site.elevation)} m AMSL · Grid{' '}
                         {site.grid}
                       </p>
                     </div>

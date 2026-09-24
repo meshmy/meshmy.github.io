@@ -1,7 +1,7 @@
 import {useEffect, useRef} from 'react';
 import {useColorMode} from '@docusaurus/theme-common';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import {sites, links, siteStatus, SITE_STATUS, STATUS, meshmapUrl} from '@site/src/data/sites';
+import {sites, links, siteStatus, SITE_STATUS, STATUS, meshmapUrl, formatMetres} from '@site/src/data/sites';
 import 'leaflet/dist/leaflet.css';
 import styles from './NetworkMap.module.css';
 
@@ -21,16 +21,16 @@ function popupHtml(site) {
   const bands = site.bands
     .map((b) => {
       const s = b.status || 'active';
-      const {label} = STATUS[s];
-      return `<li><span class="mm-dot mm-dot--${s}"></span><strong>${escape(b.freq)}</strong> · ${label}</li>`;
+      const label = STATUS[s]?.label ?? s;
+      return `<li><span class="mm-dot mm-dot--${escape(s)}"></span><strong>${escape(b.freq)}</strong> · ${label}</li>`;
     })
     .join('');
   return `<div class="mm-pop">
     <div class="mm-pop__head"><strong>${escape(site.name)}</strong><code>${escape(site.shortName)}</code></div>
-    <div class="mm-pop__meta">${escape(site.area)} · ${site.elevation.toLocaleString()} m</div>
+    <div class="mm-pop__meta">${escape(site.area)} · ${formatMetres(site.elevation)} m</div>
     <ul class="mm-pop__bands">${bands}</ul>
     <div class="mm-pop__foot">${SITE_STATUS[status].label} ·
-      <a href="${meshmapUrl(site.meshmapId)}" target="_blank" rel="noreferrer">Live telemetry ↗</a></div>
+      <a href="${escape(meshmapUrl(site.meshmapId))}" target="_blank" rel="noreferrer">Live telemetry ↗</a></div>
   </div>`;
 }
 
@@ -46,6 +46,15 @@ export default function NetworkMap({focus, onSelect}) {
   const markers = useRef({});
   const {colorMode} = useColorMode();
   const {cartoApiKey} = useDocusaurusContext().siteConfig.customFields;
+  const pending = useRef(focus);
+  pending.current = focus;
+
+  const flyTo = (name) => {
+    const mk = markers.current[name];
+    if (!mk || !map.current) return;
+    map.current.flyTo(mk.getLatLng(), Math.max(map.current.getZoom(), 11), {duration: 0.6});
+    mk.openPopup();
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -101,6 +110,8 @@ export default function NetworkMap({focus, onSelect}) {
         attribution: ATTRIBUTION,
         maxZoom: 18,
       }).addTo(m);
+      // A site picked before Leaflet finished loading.
+      if (pending.current) flyTo(pending.current.name);
     });
     return () => {
       cancelled = true;
@@ -115,13 +126,10 @@ export default function NetworkMap({focus, onSelect}) {
     tiles.current?.setUrl(tileUrl(colorMode, cartoApiKey));
   }, [colorMode, cartoApiKey]);
 
-  // Fly to a site picked from the list below the map.
+  // Fly to a site picked from the list below the map. `focus` is
+  // {name, n}; a new object on every pick, so re-picking works.
   useEffect(() => {
-    if (!focus || !map.current) return;
-    const mk = markers.current[focus];
-    if (!mk) return;
-    map.current.flyTo(mk.getLatLng(), Math.max(map.current.getZoom(), 11), {duration: 0.6});
-    mk.openPopup();
+    if (focus) flyTo(focus.name);
   }, [focus]);
 
   return (

@@ -8,7 +8,7 @@ import Heading from '@theme/Heading';
 import NetworkMap from '@site/src/components/Home/NetworkMap';
 import CopyButton from '@site/src/components/Home/CopyButton';
 import ConfigQr from '@site/src/components/Home/ConfigQr';
-import {sites, siteStatus, SITE_STATUS} from '@site/src/data/sites';
+import {sites, siteStatus, STATUS, SITE_STATUS, formatMetres} from '@site/src/data/sites';
 import {configUrl, recommended, mqtt, weeklyNet} from '@site/src/data/meshtasticConfig';
 import styles from './index.module.css';
 
@@ -20,7 +20,7 @@ const bandsOnAir = [
   ),
 ].sort((a, b) => parseInt(b) - parseInt(a));
 
-function Hero({focus, setFocus}) {
+function Hero({focus, onSelect}) {
   return (
     <header className={styles.hero}>
       <div className={clsx('container', styles.heroGrid)}>
@@ -51,7 +51,7 @@ function Hero({focus, setFocus}) {
             <div>
               <dt>Highest site</dt>
               <dd>
-                {highest.elevation.toLocaleString()}
+                {formatMetres(highest.elevation)}
                 <small> m</small>
               </dd>
             </div>
@@ -64,15 +64,15 @@ function Hero({focus, setFocus}) {
             </div>
           </dl>
         </div>
-        <div className={styles.heroMap}>
-          <NetworkMap focus={focus} onSelect={setFocus} />
+        <div className={styles.heroMap} id="network-map">
+          <NetworkMap focus={focus} onSelect={onSelect} />
         </div>
       </div>
     </header>
   );
 }
 
-function SiteStrip({focus, setFocus}) {
+function SiteStrip({focused, onSelect}) {
   return (
     <section className={styles.section} aria-labelledby="network-heading">
       <div className="container">
@@ -100,12 +100,17 @@ function SiteStrip({focus, setFocus}) {
                   className={clsx(
                     styles.site,
                     styles[`site--${status}`],
-                    focus === site.shortName && styles.siteActive,
+                    focused === site.shortName && styles.siteActive,
                   )}
-                  aria-pressed={focus === site.shortName}
+                  aria-pressed={focused === site.shortName}
                   onClick={() => {
-                    setFocus(site.shortName);
-                    document.getElementById('top')?.scrollIntoView({behavior: 'smooth', block: 'start'});
+                    onSelect(site.shortName);
+                    // The map sits above the cards on wide screens and under
+                    // the hero copy on narrow ones: scroll to the map itself.
+                    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    document
+                      .getElementById('network-map')
+                      ?.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'center'});
                   }}>
                   <span className={styles.siteTop}>
                     <code>{site.shortName}</code>
@@ -118,7 +123,7 @@ function SiteStrip({focus, setFocus}) {
                   </span>
                   <span className={styles.siteName}>{site.name}</span>
                   <span className={styles.siteMeta}>
-                    {site.area} · {site.elevation.toLocaleString()} m
+                    {site.area} · {formatMetres(site.elevation)} m
                   </span>
                   <span className={styles.bands}>
                     {site.bands.map((b) => (
@@ -127,6 +132,9 @@ function SiteStrip({focus, setFocus}) {
                         className={clsx(styles.band, styles[`band--${b.status || 'active'}`])}
                         title={b.statusNote}>
                         {b.freq}
+                        <span className={styles.srOnly}>
+                          {' '}· {STATUS[b.status || 'active'].label}
+                        </span>
                       </span>
                     ))}
                   </span>
@@ -203,7 +211,7 @@ function Join() {
             <span className={styles.stepNum} aria-hidden="true">2</span>
             <Heading as="h3">Install the app</Heading>
             <p>Pair your radio over Bluetooth or USB and finish the app’s first-run setup.</p>
-            <div className={styles.appLinks} aria-label="Get the Meshtastic app">
+            <div className={styles.appLinks} role="group" aria-label="Get the Meshtastic app">
               <a href="https://play.google.com/store/apps/details?id=com.geeksville.mesh" target="_blank" rel="noreferrer">
                 Android
               </a>
@@ -331,15 +339,17 @@ function Next() {
 }
 
 export default function Home() {
+  // `n` changes on every pick, so choosing the same site again re-focuses it.
   const [focus, setFocus] = useState(null);
+  const select = (name) => setFocus((f) => ({name, n: (f?.n ?? 0) + 1}));
   return (
     <Layout
       title="Off-grid messaging for Malaysia"
       description="MeshMY is a volunteer Meshtastic community running solar-powered LoRa routers around the Klang Valley. Join the mesh on 919 MHz in three steps.">
       <div id="top" />
-      <Hero focus={focus} setFocus={setFocus} />
+      <Hero focus={focus} onSelect={select} />
       <main>
-        <SiteStrip focus={focus} setFocus={setFocus} />
+        <SiteStrip focused={focus?.name} onSelect={select} />
         <Join />
         <Next />
       </main>

@@ -254,6 +254,14 @@
   color: var(--mm-status-down);
   border-color: var(--mm-status-down);
 }
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 .band--decommissioned {
   color: var(--mm-muted);
   border-style: dashed;

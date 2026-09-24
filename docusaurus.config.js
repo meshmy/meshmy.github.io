@@ -12,8 +12,10 @@ import {themes as prismThemes} from 'prism-react-renderer';
 // the environment (e.g. CI secrets) take precedence.
 try {
   process.loadEnvFile('.env.local');
-} catch {
-  // No .env.local: fine, everything has a fallback.
+} catch (err) {
+  // No .env.local is fine: everything has a fallback. Anything else (an
+  // unreadable file, or Node < 20.12 without loadEnvFile) should fail loudly.
+  if (err?.code !== 'ENOENT') throw err;
 }
 
 /** @type {import('@docusaurus/types').Config} */

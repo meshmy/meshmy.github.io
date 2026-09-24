@@ -7,7 +7,9 @@ async function copyText(text) {
     await navigator.clipboard.writeText(text);
     return true;
   } catch {
-    // Fallback for older browsers / insecure contexts.
+    // Fallback for older browsers / insecure contexts. Put focus back
+    // afterwards so keyboard users stay on the button.
+    const previous = document.activeElement;
     const ta = document.createElement('textarea');
     ta.value = text;
     ta.setAttribute('readonly', '');
@@ -17,6 +19,7 @@ async function copyText(text) {
     ta.select();
     const ok = document.execCommand('copy');
     ta.remove();
+    previous?.focus?.();
     return ok;
   }
 }
@@ -46,7 +49,7 @@ export default function CopyButton({text, label = 'Copy', className, variant = '
         )}
       </span>
       <span aria-live="polite">
-        {state === 'copied' ? 'Copied' : state === 'failed' ? 'Press Ctrl+C' : label}
+        {state === 'copied' ? 'Copied' : state === 'failed' ? 'Copy failed' : label}
       </span>
     </button>
   );
