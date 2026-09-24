@@ -1,0 +1,547 @@
+/* Join page. Colours come only from the tokens in src/css/custom.css. */
+
+.page {
+  padding: 3rem 0 4rem;
+}
+.header {
+  max-width: 44rem;
+  margin-bottom: 2rem;
+}
+.header h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2.25rem, 5vw, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-highlight-text);
+}
+.lead {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--mm-muted);
+}
+.muted {
+  color: var(--mm-muted);
+}
+.fine {
+  margin: 1rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--mm-muted);
+}
+
+/* ---------- Your setup ---------- */
+
+.setup {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: var(--mm-surface-1);
+  border: 1px solid var(--mm-line);
+  border-radius: 1rem;
+}
+.setupHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.setupTitle {
+  margin: 0;
+  font-size: 1.1875rem;
+}
+.reset {
+  padding: 0;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--brand-highlight-text);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.reset:hover {
+  text-decoration: underline;
+}
+.reset:focus-visible {
+  outline: 2px solid var(--brand-highlight-text);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.questions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+/* Pill radio group: native radios, visually replaced by the label. */
+.choice {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.choice legend {
+  margin-bottom: 0.5rem;
+  padding: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.inlineChoice {
+  margin: 0 0 1rem;
+}
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+.pill {
+  position: relative;
+  cursor: pointer;
+}
+.pill input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.pill span {
+  display: inline-block;
+  padding: 0.375rem 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid var(--mm-line-strong);
+  border-radius: 999px;
+  transition: border-color var(--ifm-transition-fast), background-color var(--ifm-transition-fast);
+}
+.pill:hover span {
+  border-color: var(--brand-highlight-text);
+}
+.pill input:checked + span {
+  color: var(--brand-primary-fill-foreground);
+  background: var(--brand-highlight-text);
+  border-color: transparent;
+}
+.pill input:focus-visible + span {
+  outline: 2px solid var(--brand-highlight-text);
+  outline-offset: 2px;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--mm-muted);
+  border-top: 1px solid var(--mm-line);
+}
+.bar {
+  flex: 1;
+  height: 0.5rem;
+  overflow: hidden;
+  background: var(--mm-surface-2);
+  border-radius: 999px;
+}
+.bar span {
+  display: block;
+  height: 100%;
+  background: var(--brand-highlight-text);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bar span {
+    transition: none;
+  }
+}
+
+/* ---------- Steps ---------- */
+
+.steps {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.step {
+  position: relative;
+  margin: 0;
+  padding: 1.5rem 1.5rem 1.5rem 4.25rem;
+  background: var(--ifm-background-color);
+  border: 1px solid var(--mm-line);
+  border-radius: 1rem;
+}
+.stepDone {
+  border-color: var(--mm-line-strong);
+}
+.stepNum {
+  position: absolute;
+  left: 1.5rem;
+  top: 1.5rem;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  font-weight: 800;
+  border-radius: 50%;
+  color: var(--mm-cta-fg);
+  background: var(--mm-cta-bg);
+}
+.stepDone .stepNum {
+  color: var(--brand-primary-fill-foreground);
+  background: var(--brand-highlight-text);
+}
+.stepHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+.stepTitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.25rem 0 0;
+  font-size: 1.1875rem;
+}
+.optional {
+  padding: 0.125rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mm-muted);
+  border: 1px solid var(--mm-line-strong);
+  border-radius: 999px;
+}
+.doneToggle {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.doneToggle input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.doneToggle span,
+.doneNote {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-shrink: 0;
+  min-height: 2rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border-radius: 999px;
+}
+.doneToggle span {
+  color: var(--ifm-font-color-base);
+  border: 1px solid var(--mm-line-strong);
+}
+/* An empty box before the word; filled with a tick when checked. */
+.doneToggle span::before {
+  content: '';
+  width: 0.875rem;
+  height: 0.875rem;
+  border: 2px solid currentColor;
+  border-radius: 3px;
+}
+.doneToggle:hover span {
+  border-color: var(--brand-highlight-text);
+}
+.doneToggle input:checked + span {
+  color: var(--brand-primary-fill-foreground);
+  background: var(--brand-highlight-text);
+  border-color: transparent;
+}
+.doneToggle input:checked + span::before {
+  border: 0;
+  background: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3 3 7-7' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.doneToggle input:focus-visible + span {
+  outline: 2px solid var(--brand-highlight-text);
+  outline-offset: 2px;
+}
+.doneNote {
+  color: var(--mm-muted);
+}
+.stepBody > :last-child {
+  margin-bottom: 0;
+}
+.stepBody p {
+  color: var(--mm-muted);
+}
+.stepBody strong {
+  color: var(--ifm-font-color-base);
+}
+.list,
+.numbered {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+  color: var(--mm-muted);
+}
+.numbered {
+  list-style: decimal; /* nested in the steps list, which would make it roman */
+}
+.list li,
+.numbered li {
+  margin-bottom: 0.375rem;
+}
+.appRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+.others {
+  font-size: 0.875rem;
+  color: var(--mm-muted);
+}
+
+/* Bordered notes instead of Infima alerts. */
+.note {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.9375rem;
+  border: 1px solid var(--mm-line-strong);
+  border-left-width: 4px;
+  border-radius: 0.625rem;
+}
+.note--warn {
+  border-color: var(--mm-status-down);
+}
+.noteLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mm-status-down);
+  line-height: 1.8;
+}
+
+/* Expandable blocks: "Set it by hand" and troubleshooting. */
+.more {
+  margin-top: 1rem;
+  padding: 0 1.25rem;
+  border: 1px solid var(--mm-line);
+  border-radius: 0.75rem;
+}
+.more summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 0;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+.more summary::-webkit-details-marker {
+  display: none;
+}
+.more summary:focus-visible {
+  outline: 2px solid var(--brand-highlight-text);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.more[open] {
+  padding-bottom: 1.25rem;
+}
+.more > p {
+  margin: 0;
+  color: var(--mm-muted);
+}
+.chev {
+  width: 0.5625rem;
+  height: 0.5625rem;
+  flex-shrink: 0;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform var(--ifm-transition-fast);
+}
+.more[open] .chev {
+  transform: rotate(-135deg);
+}
+.path {
+  margin: 0.75rem 0 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--mm-muted);
+}
+.path + dl {
+  margin-bottom: 0.5rem;
+}
+
+.hello {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 34rem;
+  margin: 0.625rem 0 0.25rem;
+}
+.areaField {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+.areaField input {
+  padding: 0.5rem 0.75rem;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--ifm-font-color-base);
+  background: var(--ifm-background-color);
+  border: 1px solid var(--mm-line-strong);
+  border-radius: 0.5rem;
+}
+.areaField input:focus-visible {
+  outline: 2px solid var(--brand-highlight-text);
+  outline-offset: 1px;
+}
+.helloRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.375rem 0.375rem 0.375rem 0.75rem;
+  background: var(--mm-surface-1);
+  border-radius: 0.625rem;
+}
+.helloRow code {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+  color: var(--brand-highlight-text);
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+/* ---------- After the steps ---------- */
+
+.success {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: var(--mm-surface-1);
+  border: 1px solid var(--brand-highlight-text);
+  border-radius: 1rem;
+}
+.success h2 {
+  margin: 0 0 0.5rem;
+}
+.success p {
+  color: var(--mm-muted);
+}
+.cta {
+  color: var(--mm-cta-fg);
+  background: var(--mm-cta-bg);
+  border: 1px solid var(--mm-cta-bg);
+}
+.cta:hover {
+  color: var(--mm-cta-fg);
+  background: var(--mm-cta-bg-hover);
+  border-color: var(--mm-cta-bg-hover);
+}
+.cta:focus-visible {
+  outline: 2px solid var(--brand-highlight-text);
+  outline-offset: 2px;
+}
+.section {
+  margin-top: 3rem;
+}
+.section > h2 {
+  margin-bottom: 1rem;
+}
+.faq .more {
+  margin-top: 0.5rem;
+}
+.glossary {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+}
+.glossary div {
+  padding: 0.875rem 1rem;
+  background: var(--mm-surface-1);
+  border-radius: 0.625rem;
+}
+.glossary dt {
+  font-weight: 700;
+}
+.glossary dd {
+  margin: 0.25rem 0 0;
+  font-size: 0.9375rem;
+  color: var(--mm-muted);
+}
+
+/* Checked pills and ticks are shown by fill, which forced-colours mode
+   (Windows High Contrast) removes: use the system highlight instead. */
+@media (forced-colors: active) {
+  .pill input:checked + span,
+  .doneToggle input:checked + span {
+    forced-color-adjust: none;
+    color: HighlightText;
+    background: Highlight;
+    border: 2px solid Highlight;
+  }
+  .bar span {
+    background: Highlight;
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 996px) {
+  .questions {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .page {
+    padding-top: 2rem;
+  }
+  .setup {
+    padding: 1.25rem;
+  }
+  .step {
+    padding: 1.25rem;
+  }
+  .stepNum {
+    position: static;
+    margin-bottom: 0.5rem;
+  }
+  .more {
+    padding: 0 1rem;
+  }
+}
