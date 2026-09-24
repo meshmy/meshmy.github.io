@@ -33,12 +33,27 @@ export const recommended = {
   positionPrecision: 14,
 };
 
+// Licensed amateur radio operators only: the same settings on 433 MHz.
+export const recommended433 = {
+  ...recommended,
+  region: 'MY_433',
+  regionLabel: '433 MHz (MY_433)',
+};
+
 export const mqtt = {
   address: 'mqtt.lucifernet.com',
   username: 'meshdev',
   password: 'large4cats',
   rootTopic: 'msh/MY_919',
+  rootTopic433: 'msh/MY_433',
 };
+
+// Official Meshtastic apps. `id` matches the Join page's platform answer.
+export const apps = [
+  {id: 'android', label: 'Android', href: 'https://play.google.com/store/apps/details?id=com.geeksville.mesh'},
+  {id: 'ios', label: 'iOS', href: 'https://apps.apple.com/us/app/meshtastic/id1586432531'},
+  {id: 'web', label: 'Web', href: 'https://client.meshtastic.org/'},
+];
 
 export const weeklyNet = {
   hours: '10:00 AM – 10:00 PM',
@@ -92,6 +107,8 @@ function base64url(bytes) {
   return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
-export const configUrl = `https://meshtastic.org/e/#${base64url(
-  encodeChannelSet(recommended),
-)}`;
+export const buildConfigUrl = (settings) =>
+  `https://meshtastic.org/e/#${base64url(encodeChannelSet(settings))}`;
+
+export const configUrl = buildConfigUrl(recommended);
+export const configUrl433 = buildConfigUrl(recommended433);
