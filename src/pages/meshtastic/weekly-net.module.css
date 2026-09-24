@@ -123,6 +123,9 @@
 .step strong {
   color: var(--ifm-font-color-base);
 }
+.step > p.tracker {
+  margin-top: 0.75rem;
+}
 .stepNum {
   position: absolute;
   left: 1.5rem;
