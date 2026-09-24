@@ -42,18 +42,51 @@ export default function WeeklyNet() {
       <main className={styles.page}>
         <div className="container">
           <header className={styles.header}>
-            <p className={styles.eyebrow}>
-              Weekly net · {weeklyNet.name}
-            </p>
-            <Heading as="h1" className={styles.tagline} lang="ms">
-              {weeklyNet.tagline}
-            </Heading>
-            <p className={styles.lead}>
-              {weeklyNet.taglineEnglish} Every {weeklyNet.day}, the MeshMY
-              community checks in on Meshtastic<sup>®</sup> with one message, so
-              everyone can see who’s reachable.
-            </p>
-            <NetStatus />
+            <div className={styles.headerCopy}>
+              <p className={styles.eyebrow}>Weekly net</p>
+              <Heading as="h1" className={styles.tagline} lang="ms">
+                {weeklyNet.tagline}
+              </Heading>
+              <p className={styles.lead}>
+                {weeklyNet.taglineEnglish} Every {weeklyNet.day}, the MeshMY
+                community checks in on Meshtastic<sup>®</sup> with one message, so
+                everyone can see who’s reachable.
+              </p>
+              <div className={styles.note}>
+                <strong className={styles.noteLabel}>Not the main channel</strong>
+                <p>
+                  The net has its own channel{netChannel && <> (<code>{netChannel.name}</code>)</>},
+                  added alongside your primary MediumFast channel. It doesn’t
+                  replace it. First time on the mesh?{' '}
+                  <Link to="/meshtastic/join">Set up your node first →</Link>
+                </p>
+              </div>
+            </div>
+            <aside className={styles.glance} aria-label="The net at a glance">
+              <NetStatus />
+              <dl>
+                <div>
+                  <dt>When</dt>
+                  <dd>Every {weeklyNet.day}</dd>
+                </div>
+                <div>
+                  <dt>Hours</dt>
+                  <dd>{weeklyNet.hours} MYT</dd>
+                </div>
+                {netChannel && (
+                  <div>
+                    <dt>Channel</dt>
+                    <dd>
+                      <code>{netChannel.name}</code>
+                    </dd>
+                  </div>
+                )}
+                <div>
+                  <dt>Net</dt>
+                  <dd>{weeklyNet.name}</dd>
+                </div>
+              </dl>
+            </aside>
           </header>
 
           <ol className={styles.steps}>

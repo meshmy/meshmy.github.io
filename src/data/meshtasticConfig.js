@@ -82,12 +82,15 @@ export const weeklyNet = {
   ],
 };
 
-// The net's public secondary channel, e.g. {name: 'MyNet', psk: 'base64key'}.
-// `psk` is the key as base64, as the app shows it. Uplink and downlink are
-// on unless set to false, so check-ins reach MQTT through gateways. Filling
-// this in turns on the one-tap "add channel" link and QR on the Weekly Net
-// page; while null, the page tells people to get it from net control.
-export const netChannel = null;
+// The net's public secondary channel. `psk` is the key as base64, as the app
+// shows it. Uplink and downlink are on unless set to false, so check-ins
+// reach MQTT through gateways. This drives the one-tap "add channel" link
+// and QR on the Weekly Net page; set it to null and the page tells people
+// to get the channel from net control instead.
+export const netChannel = {
+  name: 'Mesh_Net919',
+  psk: 'AQ==', // Meshtastic's well-known default key: a public channel
+};
 
 // --- minimal protobuf writer ------------------------------------------------
 
