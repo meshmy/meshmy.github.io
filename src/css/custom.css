@@ -237,3 +237,135 @@ html,
   transition-duration: var(--ifm-transition-fast);
   transition-timing-function: var(--ifm-transition-timing-default);
 }
+
+/* ---------------------------------------------------------------------
+ * MeshMY surface / line / status tokens (--mm-*), used by the homepage
+ * components. They sit alongside the --brand-* roles above: surfaces are
+ * tints of each theme's background, lines are translucent so they work on
+ * any surface, and status colors reuse the brand hues (never a new green):
+ * "online" is the highlight color, "down" is the red role, "retired" is
+ * the muted grey — each also differs in shape (filled / ring / dashed) so
+ * status never relies on hue alone.
+ * ------------------------------------------------------------------- */
+[data-theme='dark'] {
+  --mm-surface-1: #0c2554;
+  --mm-surface-2: #20345b;
+  --mm-line: rgba(255, 255, 255, 0.12);
+  --mm-line-strong: rgba(255, 255, 255, 0.26);
+  --mm-muted: #b9c4dc; /* 9.4:1 on #071d49, 8.5:1 on --mm-surface-1 */
+  --mm-status-down: #ff616f; /* primary-light: 5.6:1 on navy, 5.1:1 on --mm-surface-1 */
+  --mm-glow: rgba(92, 131, 205, 0.22);
+  --mm-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  --mm-flag-red: #d9003d;
+  --mm-flag-white: #ffffff;
+  /* Main call to action: "ink" — inverted page colors, so the one main
+     action stands out without borrowing red's error connotation. */
+  --mm-cta-bg: #ffffff;
+  --mm-cta-bg-hover: #e4e9f3;
+  --mm-cta-fg: #071d49; /* 16.4:1 */
+  --mt-border: transparent;
+}
+[data-theme='light'] {
+  --mm-surface-1: #f2f4fa;
+  --mm-surface-2: #e4e9f3;
+  --mm-line: rgba(7, 29, 73, 0.12);
+  --mm-line-strong: rgba(7, 29, 73, 0.26);
+  --mm-muted: #4a5468; /* 7.6:1 on white, 6.9:1 on --mm-surface-1 */
+  --mm-status-down: #d1063c; /* secondary: 5.5:1 on white */
+  --mm-glow: rgba(48, 84, 153, 0.09);
+  --mm-shadow: 0 12px 32px rgba(7, 29, 73, 0.08);
+  --mm-flag-red: #d1063c;
+  --mm-flag-white: #ffffff;
+  --mm-cta-bg: #071d49;
+  --mm-cta-bg-hover: #20345b;
+  --mm-cta-fg: #ffffff; /* 16.4:1 */
+  /* Meshtastic's green is ~1.5:1 on white, so give its fills an edge. */
+  --mt-border: #3fb86d;
+}
+
+/* Meshtastic brand colors (meshtastic/design, design standards §7), used
+   ONLY on calls to action that lead into Meshtastic itself (the app, the
+   config link). Green is a fill with dark text, never text on light. */
+:root {
+  --mt-green: #67ea94; /* Green 500, brand secondary */
+  --mt-green-hover: #8ff0b2; /* Green 400 */
+  --mt-ink: #2c2d3c; /* Neutral 800 — 8.9:1 on --mt-green */
+}
+
+/* Infima picks primary-button text from its own palette; use the brand's
+   fill-foreground role instead (dark text on dark mode's bright red,
+   white on light mode's blue). */
+.button.button--primary {
+  --ifm-button-color: var(--brand-primary-fill-foreground);
+}
+
+/* ---------------------------------------------------------------------
+ * Status marks: brand hue + shape, always next to a word (never hue alone,
+ * never a new green).
+ * Global because Leaflet's divIcon HTML, the homepage cards and the
+ * Infrastructure page all use them.
+ *   .mm-marker--online   filled, slow pulse
+ *   .mm-marker--partial  half-filled
+ *   .mm-marker--down     --mm-status-down ring
+ *   .mm-marker--retired  dashed --mm-muted ring
+ * ------------------------------------------------------------------- */
+.mm-marker {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.mm-marker__pin {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 2px solid var(--brand-highlight-text);
+  background: var(--brand-highlight-text);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ifm-background-color) 70%, transparent);
+}
+.mm-marker--online .mm-marker__pin {
+  animation: mmPulse 2.4s ease-out infinite;
+}
+.mm-marker--partial .mm-marker__pin {
+  background: linear-gradient(90deg, var(--brand-highlight-text) 50%, var(--ifm-background-color) 50%);
+}
+.mm-marker--down .mm-marker__pin {
+  border-color: var(--mm-status-down);
+  background: var(--ifm-background-color);
+}
+.mm-marker--retired .mm-marker__pin {
+  border: 2px dashed var(--mm-muted);
+  background: transparent;
+}
+@keyframes mmPulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--brand-highlight-text) 55%, transparent); }
+  70% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--brand-highlight-text) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mm-marker--online .mm-marker__pin { animation: none; }
+}
+
+/* Inline status: a small still mark before its label. */
+.mm-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--mm-muted);
+}
+.mm-status .mm-marker__pin {
+  width: 10px;
+  height: 10px;
+  box-shadow: none;
+  animation: none;
+}
+
+/* Text arrows (→ ↗) are affordances, not emoji. Windows' bold Segoe UI
+   has no ↗, so the browser falls back to the colour emoji font; ask for
+   the text presentation everywhere. */
+html {
+  font-variant-emoji: text;
+}

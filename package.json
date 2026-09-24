@@ -20,7 +20,9 @@
     "@mdx-js/react": "^3.0.0",
     "chart.js": "^4.5.1",
     "clsx": "^2.0.0",
+    "leaflet": "^1.9.4",
     "prism-react-renderer": "^2.3.0",
+    "qrcode": "^1.5.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
@@ -41,6 +43,6 @@
     ]
   },
   "engines": {
-    "node": ">=20.0"
+    "node": ">=20.12"
   }
 }

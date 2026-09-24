@@ -1,201 +1,12 @@
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
-
-// Hardware product pages (manufacturer where available).
-const SEEED_SENSECAP_P1 =
-  'https://www.seeedstudio.com/SenseCAP-Solar-Node-P1-for-Meshtastic-LoRa-p-6425.html';
-const HELTEC_WSL_V3 = 'https://heltec.org/project/wireless-stick-lite-v2/';
-const HELTEC_T114 = 'https://heltec.org/project/mesh-node-t114/';
-const GAT562 = 'https://www.aliexpress.com/item/1005009830660794.html';
-
-// Antenna product pages: Taobao listings from the team's own equipment
-// list where provided, otherwise the manufacturer's product page.
-const RF_EXPLORER_919 =
-  'https://www.seeedstudio.com/RF-Explorer-LoRa-Fiberglass-Antenna-Kit-902-928MHz-8dBi-1300mm-p-5278.html';
-const ZIISOR_FIBERGLASS_919 = 'https://item.taobao.com/item.htm?id=650436686182';
-const ZIISOR_FIBERGLASS_433 = 'https://item.taobao.com/item.htm?id=650462589156';
-const ZIISOR_RUBBER_DUCKY_919 = 'https://www.ziisor.com/products/TX915-JKD-20/1';
-const ZIISOR_RUBBER_DUCKY_433 = 'https://www.ziisor.com/products/TX433-JKD-20/1';
-
-const STATUS = {
-  active: {label: 'Online', badgeClass: 'badge--success'},
-  maintenance: {label: 'Maintenance', badgeClass: 'badge--warning'},
-  decommissioned: {label: 'Decomm', badgeClass: 'badge--danger'},
-};
-
-const sites = [
-  {
-    shortName: 'BDKL',
-    name: 'Bukit Dinding',
-    area: 'Kuala Lumpur',
-    elevation: 340,
-    grid: 'OJ03ve',
-    bands: [
-      {
-        freq: '919 MHz',
-        hardware: 'Seeed Studio SenseCAP Solar Node P1',
-        hardwareUrl: SEEED_SENSECAP_P1,
-        antenna: '8 dBi omnidirectional, fiberglass',
-        antennaPart: 'RF Explorer RFELA-5/8X9',
-        antennaUrl: RF_EXPLORER_919,
-      },
-      {
-        freq: '433 MHz',
-        hardware: 'Heltec Wireless Stick Lite (WSL v3)',
-        hardwareUrl: HELTEC_WSL_V3,
-        antenna: '4 dBi omnidirectional, fiberglass',
-        antennaPart: 'Ziisor TX433-BLG-48',
-        antennaUrl: ZIISOR_FIBERGLASS_433,
-      },
-    ],
-    lat: 3.1904,
-    lon: 101.7511,
-    meshmapId: '3759327064',
-  },
-  {
-    shortName: 'BGKL',
-    name: 'Bukit Gasing',
-    area: 'Petaling Jaya, Selangor',
-    elevation: 170,
-    grid: 'OJ03tc',
-    bands: [
-      {
-        freq: '919 MHz',
-        hardware: 'Seeed Studio SenseCAP Solar Node P1',
-        hardwareUrl: SEEED_SENSECAP_P1,
-        antenna: '8 dBi omnidirectional, fiberglass',
-        antennaPart: 'RF Explorer RFELA-5/8X9',
-        antennaUrl: RF_EXPLORER_919,
-        status: 'maintenance',
-        statusNote: 'Node is offline and needs a physical visit.',
-      },
-      {
-        freq: '433 MHz',
-        hardware: 'Heltec Wireless Stick Lite (WSL v3)',
-        hardwareUrl: HELTEC_WSL_V3,
-        antenna: '4 dBi omnidirectional, fiberglass',
-        antennaPart: 'Ziisor TX433-BLG-48',
-        antennaUrl: ZIISOR_FIBERGLASS_433,
-      },
-    ],
-    lat: 3.0916,
-    lon: 101.659,
-    meshmapId: '729420782',
-  },
-  {
-    shortName: 'BTSL',
-    name: 'Bukit Tadun',
-    area: 'Rawang, Selangor',
-    elevation: 150,
-    grid: 'OJ03sg',
-    bands: [
-      {
-        freq: '919 MHz',
-        hardware: 'Seeed Studio SenseCAP Solar Node P1',
-        hardwareUrl: SEEED_SENSECAP_P1,
-        antenna: '9 dBi omnidirectional, fiberglass',
-        antennaPart: 'Ziisor TX915-BLG-85',
-        antennaUrl: ZIISOR_FIBERGLASS_919,
-        status: 'decommissioned',
-        statusNote: 'Decommissioned due to lack of users.',
-      },
-      {
-        freq: '433 MHz',
-        hardware: 'Heltec Wireless Stick Lite (WSL v3)',
-        hardwareUrl: HELTEC_WSL_V3,
-        antenna: '4 dBi omnidirectional, fiberglass',
-        antennaPart: 'Ziisor TX433-BLG-48',
-        antennaUrl: ZIISOR_FIBERGLASS_433,
-        status: 'decommissioned',
-        statusNote: 'Decommissioned due to lack of users.',
-      },
-    ],
-    lat: 3.2531,
-    lon: 101.5441,
-    meshmapId: '2422982884',
-  },
-  {
-    shortName: 'BBKL',
-    name: 'Bukit Besi',
-    area: 'Kuala Lumpur',
-    elevation: 212,
-    grid: 'OJ03ub',
-    bands: [
-      {
-        freq: '919 MHz',
-        hardware: 'GAT562 Mesh Solar Relay',
-        hardwareUrl: GAT562,
-        antenna: '3 dBi omnidirectional, rubber ducky',
-        antennaPart: 'Ziisor TX915-JKD-20',
-        antennaUrl: ZIISOR_RUBBER_DUCKY_919,
-      },
-    ],
-    lat: 3.0749,
-    lon: 101.7334,
-    meshmapId: '3959129294',
-  },
-  {
-    shortName: 'BCPH',
-    name: 'Bukit Cermin',
-    area: 'Subang Jaya, Selangor',
-    elevation: 203,
-    grid: 'OJ03sa',
-    bands: [
-      {
-        freq: '919 MHz',
-        hardware: 'Seeed Studio SenseCAP Solar Node P1',
-        hardwareUrl: SEEED_SENSECAP_P1,
-        antenna: '2 dBi omnidirectional, rubber ducky',
-        antennaPart: 'Seeed Studio (stock antenna)',
-      },
-      {
-        freq: '433 MHz',
-        hardware: 'Heltec Wireless Stick Lite (WSL v3)',
-        hardwareUrl: HELTEC_WSL_V3,
-        antenna: '4 dBi omnidirectional, rubber ducky',
-        antennaPart: 'Ziisor TX433-JKD-20',
-        antennaUrl: ZIISOR_RUBBER_DUCKY_433,
-      },
-    ],
-    lat: 3.0053,
-    lon: 101.5765,
-    meshmapId: '2769232366',
-  },
-  {
-    shortName: 'GUK',
-    name: 'Gunung Ulu Kali',
-    area: 'Genting Highlands, Pahang',
-    elevation: 1730,
-    grid: 'OJ03vk',
-    bands: [
-      {
-        freq: '919 MHz',
-        hardware: 'Heltec Mesh Node T114 v1 + D5 Solar',
-        hardwareUrl: HELTEC_T114,
-        antenna: '5.8 dBi omnidirectional, fiberglass',
-        antennaPart: 'GT-BLG20-35-915',
-      },
-      {
-        freq: '433 MHz',
-        hardware: 'Heltec WSL v3 + D5 Solar',
-        hardwareUrl: HELTEC_WSL_V3,
-        antenna: '3.5 dBi omnidirectional, rubber ducky',
-        antennaPart: 'Ziisor TX433-JKD-20',
-      },
-    ],
-    lat: 3.4247,
-    lon: 101.7896,
-    meshmapId: '688514662',
-  },
-];
-
-function googleMapsUrl(lat, lon) {
-  return `https://www.google.com/maps?q=${lat},${lon}`;
-}
-
-function meshmapUrl(nodeId) {
-  return `https://meshmap2.lucifernet.com/?node_id=${nodeId}`;
-}
+import {
+  sites,
+  STATUS,
+  formatMetres,
+  googleMapsUrl,
+  meshmapUrl,
+} from '@site/src/data/sites';
 
 export default function Infrastructure() {
   return (
@@ -228,7 +39,7 @@ export default function Infrastructure() {
                         <code>{site.shortName}</code>
                       </div>
                       <p className="margin-bottom--none">
-                        {site.area} · {site.elevation} m AMSL · Grid{' '}
+                        {site.area} · {formatMetres(site.elevation)} m AMSL · Grid{' '}
                         {site.grid}
                       </p>
                     </div>
@@ -254,8 +65,18 @@ export default function Infrastructure() {
                                 justifyContent: 'space-between',
                                 marginBottom: '0.5rem',
                               }}>
-                              <strong>{band.freq}</strong>
-                              <span className={`badge ${status.badgeClass}`}>
+                              <strong
+                                style={
+                                  status.mark === 'retired'
+                                    ? {color: 'var(--mm-muted)', textDecoration: 'line-through'}
+                                    : undefined
+                                }>
+                                {band.freq}
+                              </strong>
+                              <span className="mm-status">
+                                <i className={`mm-marker mm-marker--${status.mark}`}>
+                                  <i className="mm-marker__pin" />
+                                </i>
                                 {status.label}
                               </span>
                             </div>
