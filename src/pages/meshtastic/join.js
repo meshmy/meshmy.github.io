@@ -3,7 +3,7 @@ import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import CopyButton from '@site/src/components/Home/CopyButton';
-import {ConfigCard, MeshtasticLink, SettingRow, Settings} from '@site/src/components/Setup';
+import {Choice, ConfigCard, MeshtasticLink, SettingRow, Settings} from '@site/src/components/Setup';
 import Term from '@site/src/components/Join/Term';
 import useStoredState from '@site/src/components/Join/useStoredState';
 import {
@@ -24,29 +24,6 @@ const INITIAL = {
   area: '',
 };
 const REQUIRED = ['radio', 'app', 'settings', 'check'];
-
-/** A row of pill-shaped radio buttons. Native inputs, so it works by keyboard. */
-function Choice({name, label, options, value, onChange, className}) {
-  return (
-    <fieldset className={clsx(styles.choice, className)}>
-      <legend>{label}</legend>
-      <div className={styles.pills}>
-        {options.map((o) => (
-          <label key={o.value} className={styles.pill}>
-            <input
-              type="radio"
-              name={name}
-              value={o.value}
-              checked={value === o.value}
-              onChange={() => onChange(o.value)}
-            />
-            <span>{o.label}</span>
-          </label>
-        ))}
-      </div>
-    </fieldset>
-  );
-}
 
 function CheckGlyph() {
   return (

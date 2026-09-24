@@ -81,57 +81,8 @@
 }
 
 /* Pill radio group: native radios, visually replaced by the label. */
-.choice {
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-.choice legend {
-  margin-bottom: 0.5rem;
-  padding: 0;
-  font-size: 0.875rem;
-  font-weight: 600;
-}
 .inlineChoice {
   margin: 0 0 1rem;
-}
-.pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.375rem;
-}
-.pill {
-  position: relative;
-  cursor: pointer;
-}
-.pill input {
-  position: absolute;
-  opacity: 0;
-  inset: 0;
-  margin: 0;
-  cursor: pointer;
-}
-.pill span {
-  display: inline-block;
-  padding: 0.375rem 0.875rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  border: 1px solid var(--mm-line-strong);
-  border-radius: 999px;
-  transition: border-color var(--ifm-transition-fast), background-color var(--ifm-transition-fast);
-}
-.pill:hover span {
-  border-color: var(--brand-highlight-text);
-}
-.pill input:checked + span {
-  color: var(--brand-primary-fill-foreground);
-  background: var(--brand-highlight-text);
-  border-color: transparent;
-}
-.pill input:focus-visible + span {
-  outline: 2px solid var(--brand-highlight-text);
-  outline-offset: 2px;
 }
 
 .progress {
@@ -498,10 +449,9 @@
   color: var(--mm-muted);
 }
 
-/* Checked pills and ticks are shown by fill, which forced-colours mode
+/* Ticks are shown by fill, which forced-colours mode
    (Windows High Contrast) removes: use the system highlight instead. */
 @media (forced-colors: active) {
-  .pill input:checked + span,
   .doneToggle input:checked + span {
     forced-color-adjust: none;
     color: HighlightText;

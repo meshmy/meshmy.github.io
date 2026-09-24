@@ -1,0 +1,240 @@
+/* Weekly net page. Colours come only from the tokens in src/css/custom.css. */
+
+.page {
+  padding: 3rem 0 4rem;
+}
+.header {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(16rem, 1fr);
+  gap: 2.5rem;
+  align-items: start;
+  margin-bottom: 2rem;
+}
+.headerCopy {
+  min-width: 0;
+}
+
+/* Bordered note (not an Infima alert). */
+.note {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--mm-line-strong);
+  border-left: 4px solid var(--brand-highlight-text);
+  border-radius: 0.625rem;
+}
+.note p {
+  margin: 0.125rem 0 0;
+  font-size: 0.9375rem;
+  color: var(--mm-muted);
+}
+.noteLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--brand-highlight-text);
+}
+.note code {
+  font-size: 0.875rem;
+}
+
+/* The net at a glance: live status + the facts people look up. */
+.glance {
+  padding: 1.25rem;
+  background: var(--mm-surface-1);
+  border: 1px solid var(--mm-line);
+  border-radius: 1rem;
+}
+.glance > p:first-child {
+  display: flex;
+  border-radius: 0.75rem; /* the pill may wrap in this narrow column */
+}
+.glance dl {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.25rem 0 0;
+}
+.glance dt {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mm-muted);
+}
+.glance dd {
+  margin: 0.125rem 0 0;
+  font-weight: 600;
+}
+.glance code {
+  font-weight: 700;
+  color: var(--brand-highlight-text);
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+.eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-highlight-text);
+}
+/* The community's tagline is the headline. */
+.tagline {
+  margin: 0 0 0.875rem;
+  font-size: clamp(2rem, 4.5vw, 2.625rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.lead {
+  margin: 0 0 1.25rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--mm-muted);
+}
+.fine {
+  margin: 0.75rem 0 0;
+  font-size: 0.875rem;
+  color: var(--mm-muted);
+}
+.fine code {
+  font-size: 0.8125rem;
+}
+
+.steps {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.step {
+  position: relative;
+  margin: 0;
+  padding: 1.5rem 1.5rem 1.5rem 4.25rem;
+  background: var(--ifm-background-color);
+  border: 1px solid var(--mm-line);
+  border-radius: 1rem;
+}
+.step > p {
+  margin: 0;
+  color: var(--mm-muted);
+}
+.step strong {
+  color: var(--ifm-font-color-base);
+}
+.stepNum {
+  position: absolute;
+  left: 1.5rem;
+  top: 1.5rem;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  font-weight: 800;
+  border-radius: 50%;
+  color: var(--mm-cta-fg);
+  background: var(--mm-cta-bg);
+}
+.stepTitle {
+  margin: 0.25rem 0 0.75rem;
+  font-size: 1.1875rem;
+}
+.choice {
+  margin-bottom: 1rem;
+}
+
+/* The message itself: big, mono, one tap to copy. */
+.message {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.875rem 0.875rem 0.875rem 1.125rem;
+  background: var(--mm-surface-1);
+  border: 1px solid var(--mm-line);
+  border-radius: 0.75rem;
+}
+.message code {
+  font-size: clamp(0.9375rem, 2.6vw, 1.1875rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
+  color: var(--brand-highlight-text);
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.section {
+  margin-top: 3rem;
+}
+.section > h2 {
+  margin-bottom: 1rem;
+}
+.more {
+  margin-top: 0.5rem;
+  padding: 0 1.25rem;
+  border: 1px solid var(--mm-line);
+  border-radius: 0.75rem;
+}
+.more summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 0;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+.more summary::-webkit-details-marker {
+  display: none;
+}
+.more summary:focus-visible {
+  outline: 2px solid var(--brand-highlight-text);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.more[open] {
+  padding-bottom: 1.25rem;
+}
+.more > p {
+  margin: 0;
+  color: var(--mm-muted);
+}
+.chev {
+  width: 0.5625rem;
+  height: 0.5625rem;
+  flex-shrink: 0;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform var(--ifm-transition-fast);
+}
+.more[open] .chev {
+  transform: rotate(-135deg);
+}
+
+@media (max-width: 996px) {
+  .header {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+@media (max-width: 640px) {
+  .page {
+    padding-top: 2rem;
+  }
+  .step {
+    padding: 1.25rem;
+  }
+  .stepNum {
+    position: static;
+    margin-bottom: 0.5rem;
+  }
+  .more {
+    padding: 0 1rem;
+  }
+}

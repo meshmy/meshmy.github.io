@@ -1,85 +1,181 @@
+import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
+import CopyButton from '@site/src/components/Home/CopyButton';
+import {Choice, ConfigCard, SettingRow, Settings} from '@site/src/components/Setup';
+import useStoredState from '@site/src/components/Join/useStoredState';
+import NetStatus from '@site/src/components/WeeklyNet/NetStatus';
+import {buildAddChannelUrl, netChannel, weeklyNet} from '@site/src/data/meshtasticConfig';
+import styles from './weekly-net.module.css';
+
+const INITIAL = {via: 'rf'};
+const addChannelUrl = netChannel ? buildAddChannelUrl(netChannel) : null;
+
+const fixes = [
+  {
+    q: 'No acknowledgement came back',
+    a: `Check you sent it on the net channel, not MediumFast, and that the net is open (every ${weeklyNet.day}, ${weeklyNet.hours} Malaysia time). No tick on your message means no node heard you: try from higher ground. If your node has the MQTT module set up, check in with CMQTT instead.`,
+  },
+  {
+    q: 'The net channel isn’t in my channel list',
+    a: 'Add it in step 1. It sits alongside your primary channel in the channel list, and you pick it when sending.',
+  },
+  {
+    q: 'CRF or CMQTT?',
+    a: 'CRF if your message leaves your node by radio and a nearby gateway puts it on MQTT. CMQTT if your own node has the MQTT module on and connects to the server itself. If you never set up the MQTT module, it’s CRF.',
+  },
+  {
+    q: 'I sent the wrong message',
+    a: 'No harm done: just send the right one.',
+  },
+];
 
 export default function WeeklyNet() {
+  const [state, update] = useStoredState('meshmy-weekly-net-v1', INITIAL);
+  const checkIn = weeklyNet.checkIns.find((c) => c.id === state.via) ?? weeklyNet.checkIns[0];
+  const other = weeklyNet.checkIns.find((c) => c.id !== checkIn.id);
+
   return (
     <Layout
-      title="Weekly Net"
-      description="MeshMY's weekly Check In Net Mesh MY919, and how to set up the net's secondary channel.">
-      <main className="container margin-vert--lg">
-        <Heading as="h1">Weekly Net</Heading>
-        <p>
-          MeshMY runs a weekly check-in net on MY919 — "Check In Net Mesh
-          MY919". Check-ins are open from{' '}
-          <strong>10:00 AM to 10:00 PM</strong>.
-        </p>
+      title="Weekly net"
+      description={`${weeklyNet.tagline} MeshMY's weekly check-in net, every ${weeklyNet.day} ${weeklyNet.hours} Malaysia time: add the net channel and send your check-in.`}>
+      <main className={styles.page}>
+        <div className="container">
+          <header className={styles.header}>
+            <div className={styles.headerCopy}>
+              <p className={styles.eyebrow}>Weekly net</p>
+              <Heading as="h1" className={styles.tagline} lang="ms">
+                {weeklyNet.tagline}
+              </Heading>
+              <p className={styles.lead}>
+                {weeklyNet.taglineEnglish} Every {weeklyNet.day}, the MeshMY
+                community checks in on Meshtastic<sup>®</sup> with one message, so
+                everyone can see who’s reachable.
+              </p>
+              <div className={styles.note}>
+                <strong className={styles.noteLabel}>Not the main channel</strong>
+                <p>
+                  The net has its own channel{netChannel && <> (<code>{netChannel.name}</code>)</>},
+                  added alongside your primary MediumFast channel. It doesn’t
+                  replace it. First time on the mesh?{' '}
+                  <Link to="/meshtastic/join">Set up your node first →</Link>
+                </p>
+              </div>
+            </div>
+            <aside className={styles.glance} aria-label="The net at a glance">
+              <NetStatus />
+              <dl>
+                <div>
+                  <dt>When</dt>
+                  <dd>Every {weeklyNet.day}</dd>
+                </div>
+                <div>
+                  <dt>Hours</dt>
+                  <dd>{weeklyNet.hours} MYT</dd>
+                </div>
+                {netChannel && (
+                  <div>
+                    <dt>Channel</dt>
+                    <dd>
+                      <code>{netChannel.name}</code>
+                    </dd>
+                  </div>
+                )}
+                <div>
+                  <dt>Net</dt>
+                  <dd>{weeklyNet.name}</dd>
+                </div>
+              </dl>
+            </aside>
+          </header>
 
-        <Heading as="h2">Set up the net's secondary channel</Heading>
-        <p>
-          The weekly net runs on its own secondary channel, kept
-          separate from the primary default channel you set up in{' '}
-          <a href="/meshtastic/join">Join the Mesh</a>, so net traffic
-          doesn't clutter everyone's day-to-day channel. To add it:
-        </p>
-        <ol>
-          <li>
-            Open <em>Settings → Channels</em> in the Meshtastic app (see
-            the official{' '}
-            <a
-              href="https://meshtastic.org/docs/configuration/radio/channels/"
-              target="_blank"
-              rel="noreferrer">
-              Channels
-            </a>{' '}
-            docs for background on primary vs. secondary channels).
-          </li>
-          <li>
-            Tap <strong>Add Channel</strong>, then import the net
-            channel by scanning its QR code or pasting its channel URL —
-            net control shares this ahead of each net; check with the
-            community if you don't have it yet.
-          </li>
-          <li>
-            Save and enable the channel. It'll appear alongside your
-            primary channel, and you can select it when sending your
-            check-in message.
-          </li>
-        </ol>
-        <p>
-          Because it's a secondary channel, it doesn't affect your
-          primary channel's region, modem preset, or MQTT settings —
-          it's purely an additional, separately-keyed channel for net
-          traffic.
-        </p>
+          <ol className={styles.steps}>
+            <li className={styles.step}>
+              <span className={styles.stepNum} aria-hidden="true">1</span>
+              <Heading as="h2" className={styles.stepTitle}>
+                Add the net channel
+              </Heading>
+              {addChannelUrl ? (
+                <ConfigCard
+                  url={addChannelUrl}
+                  qrTitle="QR code that adds the MeshMY weekly net channel"
+                  intro={
+                    <p>
+                      This adds the net as a secondary channel. Your region,
+                      preset, primary channel and MQTT settings stay as they are.
+                    </p>
+                  }>
+                  <Settings>
+                    <SettingRow label="Channel name" value={netChannel.name} copy />
+                    <SettingRow label="Key (PSK)" value={netChannel.psk} copy />
+                  </Settings>
+                </ConfigCard>
+              ) : (
+                <p>
+                  The net runs on its own secondary channel, kept separate from
+                  the primary channel so net traffic doesn’t clutter it. Get the channel’s QR code or link from net
+                  control, then in the app open <strong>Settings → Channels → Add
+                  channel</strong> and scan or paste it. Your region, preset and
+                  primary channel stay as they are.
+                </p>
+              )}
+            </li>
 
-        <Heading as="h2">How to check in</Heading>
-        <p>Send one of the following messages to check in:</p>
-        <ul>
-          <li>
-            <code>CMQTT CHECK IN NET MESH MY919</code> — if your node is
-            connected directly to MQTT (e.g. running as its own gateway).
-          </li>
-          <li>
-            <code>CRF CHECK IN NET MESH MY919</code> — if you're checking
-            in over RF and relying on another node to relay you to MQTT.
-          </li>
-        </ul>
-        <p>
-          <em>Jom check in net! Kalau bukan anda, siapa lagi.</em>{' '}
-          ("Come check in to the net — if not you, then who else.")
-        </p>
+            <li className={styles.step}>
+              <span className={styles.stepNum} aria-hidden="true">2</span>
+              <Heading as="h2" className={styles.stepTitle}>
+                Pick your check-in message
+              </Heading>
+              <Choice
+                name="via"
+                label="How does your node reach MQTT?"
+                options={weeklyNet.checkIns.map((c) => ({value: c.id, label: c.label}))}
+                value={checkIn.id}
+                onChange={(via) => update({via})}
+                className={styles.choice}
+              />
+              <div className={styles.message}>
+                <code>{checkIn.message}</code>
+                <CopyButton text={checkIn.message} label="Copy message" variant="solid" />
+              </div>
+              <p className={styles.fine}>
+                {checkIn.via}. The other one, {checkIn.id === 'rf' ? 'for your own gateway' : 'over RF'}:{' '}
+                <code>{other.message}</code>
+              </p>
+            </li>
 
-        <Heading as="h2">Get help</Heading>
-        <p>
-          New to the mesh? Start with{' '}
-          <a href="/meshtastic/join">Join the Mesh</a> first. For
-          anything else, check our <a href="/events">events page</a> or
-          browse the community's repositories on{' '}
-          <a href="https://github.com/meshmy" target="_blank" rel="noreferrer">
-            GitHub
-          </a>
-          .
-        </p>
+            <li className={styles.step}>
+              <span className={styles.stepNum} aria-hidden="true">3</span>
+              <Heading as="h2" className={styles.stepTitle}>
+                Send it on the net channel
+              </Heading>
+              <p>
+                Pick the net channel (not MediumFast), paste the message and send
+                it. A tick means a node heard you. You should then get an{' '}
+                <strong>acknowledgement</strong> back: that’s your check-in done.
+              </p>
+            </li>
+          </ol>
+
+          <section className={styles.section} aria-labelledby="fixes-heading">
+            <Heading as="h2" id="fixes-heading">
+              Quick fixes
+            </Heading>
+            {fixes.map((f) => (
+              <details key={f.q} className={styles.more}>
+                <summary>
+                  {f.q}
+                  <span className={styles.chev} aria-hidden="true" />
+                </summary>
+                <p>{f.a}</p>
+              </details>
+            ))}
+            <p className={styles.fine}>
+              Not on the mesh yet? Start with <Link to="/meshtastic/join">Join the mesh →</Link>.
+              For anything else, come to a <Link to="/events">meetup →</Link>.
+            </p>
+          </section>
+        </div>
       </main>
     </Layout>
   );

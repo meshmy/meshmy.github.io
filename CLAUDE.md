@@ -25,7 +25,8 @@ Rules that apply to every change:
 - `src/data/sites.js`: router sites, RF links and status helpers, shared by the homepage and Infrastructure. Update status here by hand.
 - `src/data/meshtasticConfig.js`: recommended settings, MQTT details, weekly-net messages, and the generated one-tap config URL.
 - `src/components/Home/`: NetworkMap (Leaflet, client-only), CopyButton, ConfigQr.
-- `src/components/Setup/`: shared "get on the mesh" UI (SettingRow/Settings, MeshtasticLink, ConfigCard with the QR), used by the homepage and Join.
+- `src/components/Setup/`: shared "get on the mesh" UI (SettingRow/Settings, MeshtasticLink, ConfigCard with the QR, Choice pill radios), used by the homepage, Join and Weekly Net.
 - `src/pages/meshtastic/join.js`: interactive beginner setup. Answers and ticks persist in `localStorage` via `src/components/Join/useStoredState.js`; `Term` is the glossary toggletip. Its words (questions, glossary, pairing tips, troubleshooting) live in `src/data/joinGuide.js`.
 - Map tiles are CARTO basemaps and need `CARTO_API_KEY` in the environment at build time (git-ignored `.env.local` locally, a repo secret in `deploy.yml` for production; see README). Without it the map still works, but its tiles carry an "API key required" watermark.
 - `src/pages/index.js` + `index.module.css`: homepage.
+- `src/pages/meshtastic/weekly-net.js`: the weekly net. Keep the tagline "Jom check in net! Kalau bukan anda, siapa lagi." verbatim. The schedule, tagline and check-in messages live in `weeklyNet` (`meshtasticConfig.js`); `src/components/WeeklyNet/` has the MYT schedule maths and the open/next status pill. Fill in `netChannel` to turn on the one-tap "add channel" link.
