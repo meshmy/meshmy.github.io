@@ -194,7 +194,8 @@
 }
 .breakdowns {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  /* Two by two, so the four breakdowns never leave one alone on a row. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
 }
 .breakdown {
@@ -576,5 +577,8 @@
   }
   .gateway {
     padding: 0 1.25rem;
+  }
+  .breakdowns {
+    grid-template-columns: 1fr;
   }
 }

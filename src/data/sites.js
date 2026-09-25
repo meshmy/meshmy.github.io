@@ -2,7 +2,9 @@
  * Community router sites — the single source of truth for both the homepage
  * network map and the Infrastructure page. Status is maintained by hand:
  * update a band's `status` ('active' | 'maintenance' | 'decommissioned')
- * and optional `statusNote` when a site changes.
+ * and optional `statusNote` when a site changes. A band's `nodeId` is its
+ * node's Meshtastic ID: `npm run stats` checks each against when the node
+ * was last heard and prints any status that looks out of date.
  *
  * A band's optional `power` is its transmit power class (e.g. '1 W').
  * `maintainer` is a key of MAINTAINERS. `UNKNOWN` marks details we don't
@@ -57,6 +59,7 @@ export const sites = [
     bands: [
       {
         freq: '919 MHz',
+        nodeId: '!e012c758',
         hardware: 'Seeed Studio SenseCAP Solar Node P1',
         hardwareUrl: SEEED_SENSECAP_P1,
         antenna: '8 dBi omnidirectional, fiberglass',
@@ -65,6 +68,7 @@ export const sites = [
       },
       {
         freq: '433 MHz',
+        nodeId: '!43b6ca7c',
         hardware: 'Heltec Wireless Stick Lite (WSL v3)',
         hardwareUrl: HELTEC_WSL_V3,
         antenna: '4 dBi omnidirectional, fiberglass',
@@ -86,6 +90,7 @@ export const sites = [
     bands: [
       {
         freq: '919 MHz',
+        nodeId: '!163bfe90',
         hardware: 'Seeed Studio SenseCAP Solar Node P1',
         hardwareUrl: SEEED_SENSECAP_P1,
         antenna: '8 dBi omnidirectional, fiberglass',
@@ -115,6 +120,7 @@ export const sites = [
     bands: [
       {
         freq: '919 MHz',
+        nodeId: '!906bc8e4',
         hardware: 'Seeed Studio SenseCAP Solar Node P1',
         hardwareUrl: SEEED_SENSECAP_P1,
         antenna: '9 dBi omnidirectional, fiberglass',
@@ -148,6 +154,7 @@ export const sites = [
     bands: [
       {
         freq: '919 MHz',
+        nodeId: '!ebfb84ce',
         hardware: 'GAT562 Mesh Solar Relay',
         hardwareUrl: GAT562,
         antenna: '3 dBi omnidirectional, rubber ducky',
@@ -169,6 +176,7 @@ export const sites = [
     bands: [
       {
         freq: '919 MHz',
+        nodeId: '!a50f21ee',
         hardware: 'Seeed Studio SenseCAP Solar Node P1',
         hardwareUrl: SEEED_SENSECAP_P1,
         antenna: '2 dBi omnidirectional, rubber ducky',
@@ -176,6 +184,7 @@ export const sites = [
       },
       {
         freq: '433 MHz',
+        nodeId: '!db2ace74',
         hardware: 'Heltec Wireless Stick Lite (WSL v3)',
         hardwareUrl: HELTEC_WSL_V3,
         antenna: '4 dBi omnidirectional, rubber ducky',
@@ -197,6 +206,7 @@ export const sites = [
     bands: [
       {
         freq: '919 MHz',
+        nodeId: '!2909e666',
         hardware: 'Heltec Mesh Node T114 v1 + D5 Solar',
         hardwareUrl: HELTEC_T114,
         antenna: '5.8 dBi omnidirectional, fiberglass',
@@ -204,6 +214,7 @@ export const sites = [
       },
       {
         freq: '433 MHz',
+        nodeId: '!433d87e0',
         hardware: 'Heltec WSL v3 + D5 Solar',
         hardwareUrl: HELTEC_WSL_V3,
         antenna: '3.5 dBi omnidirectional, rubber ducky',
@@ -227,6 +238,7 @@ export const sites = [
     bands: [
       {
         freq: '919 MHz',
+        nodeId: '!fd031111',
         hardware: 'RAK WisBlock RAK4631',
         hardwareUrl: RAK4631,
         power: '1 W',
@@ -249,6 +261,7 @@ export const sites = [
     bands: [
       {
         freq: '919 MHz',
+        nodeId: '!f2c15841',
         hardware: 'RAK WisBlock RAK4631',
         hardwareUrl: RAK4631,
         power: '1 W',
@@ -271,6 +284,7 @@ export const sites = [
     bands: [
       {
         freq: '919 MHz',
+        nodeId: '!390c8412',
         hardware: 'RAK WisBlock RAK4631',
         hardwareUrl: RAK4631,
         power: '1 W',
@@ -293,6 +307,7 @@ export const sites = [
     bands: [
       {
         freq: '919 MHz',
+        nodeId: '!60ca19ad',
         hardware: 'nRF52 Pro Micro (DIY)',
         power: 'milliwatt',
         antenna: '4 dBi omnidirectional, fiberglass',
@@ -314,6 +329,7 @@ export const sites = [
     bands: [
       {
         freq: '919 MHz',
+        nodeId: '!d468a1a3',
         hardware: 'nRF52 Pro Micro (DIY)',
         power: 'milliwatt',
         antenna: '4 dBi omnidirectional, fiberglass',

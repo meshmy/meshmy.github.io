@@ -184,9 +184,20 @@ function Breakdown({title, rows}) {
 
 /** Counts from src/data/networkStats.json (`npm run stats` refreshes it). */
 function MeshNumbers() {
-  const {asOf, since, nodes, newInMonth, byType, byArea, byHardware} = networkStats;
+  const {asOf, active, activeShort, newByMonth, byType, byArea, byHardware} = networkStats;
   const count = (label) => byType.find((t) => t.label === label)?.count ?? 0;
   const areas = byArea.filter((a) => a.label !== 'Elsewhere').length;
+
+  // "April", or "April 2026" if the months on show cross a year boundary;
+  // the asOf month is still in progress, so it's flagged rather than final.
+  const asOfMonth = asOf.slice(0, 7);
+  const spansYears = new Set(newByMonth.map((m) => m.month.slice(0, 4))).size > 1;
+  const monthRows = newByMonth.map(({month, count}) => {
+    const [year, m] = month.split('-');
+    const label = `${MONTHS[Number(m) - 1]}${spansYears ? ` ${year}` : ''}${month === asOfMonth ? ' (so far)' : ''}`;
+    return {label, count};
+  });
+
   return (
     <section className={clsx(styles.section, styles.numbers)} aria-labelledby="numbers-heading">
       <div className="container">
@@ -196,9 +207,9 @@ function MeshNumbers() {
               The mesh in numbers
             </Heading>
             <p>
-              Nodes heard over MQTT since {formatDate(since)} that share a
-              position in Malaysia. Nodes that stay radio-only or keep their
-              position private aren’t counted, so the mesh is bigger than this.
+              These count nodes heard over MQTT that share a position in
+              Malaysia. Nodes that stay radio-only or keep their position
+              private aren’t counted, so the mesh is bigger than this.
             </p>
           </div>
           <a href="https://meshmap2.lucifernet.com/" target="_blank" rel="noreferrer" className={styles.moreLink}>
@@ -207,36 +218,38 @@ function MeshNumbers() {
         </div>
         <dl className={styles.tiles}>
           <div>
-            <dt>Nodes heard</dt>
-            <dd>{formatCount(nodes)}</dd>
-            <dd className={styles.tileNote}>since {formatDate(since)}</dd>
+            <dt>Active nodes</dt>
+            <dd>{formatCount(active.count)}</dd>
+            <dd className={styles.tileNote}>in the {active.days} days to {formatDate(asOf)}</dd>
+          </div>
+          <div>
+            <dt>Recently active</dt>
+            <dd>{formatCount(activeShort.count)}</dd>
+            <dd className={styles.tileNote}>in the {activeShort.days} days to {formatDate(asOf)}</dd>
           </div>
           <div>
             <dt>Set up as routers</dt>
             <dd>{formatCount(count('Routers'))}</dd>
-            <dd className={styles.tileNote}>by their owners</dd>
+            <dd className={styles.tileNote}>active, set by their owners</dd>
           </div>
           <div>
             <dt>Areas</dt>
             <dd>{areas}</dd>
             <dd className={styles.tileNote}>across Malaysia</dd>
           </div>
-          {newInMonth.count != null && (
-            <div>
-              <dt>New nodes</dt>
-              <dd>{formatCount(newInMonth.count)}</dd>
-              <dd className={styles.tileNote}>in {formatDate(newInMonth.month)}</dd>
-            </div>
-          )}
         </dl>
         <div className={styles.breakdowns}>
           <Breakdown title="By type" rows={byType} />
           <Breakdown title="By area" rows={byArea} />
           <Breakdown title="Popular radios" rows={byHardware} />
+          <Breakdown title="New nodes by month" rows={monthRows} />
         </div>
         <p className={styles.numbersNote}>
-          Snapshot from {formatDate(asOf)}. Types are the role each owner
-          chose; areas are approximate, from the positions nodes share.
+          Snapshot from {formatDate(asOf)}. Types, areas and radios cover
+          the {active.days}-day window above; types are the role each owner
+          chose and areas are approximate. New nodes by month counts only
+          nodes heard in the 90 days before the snapshot, as the source
+          keeps no older history.
         </p>
       </div>
     </section>

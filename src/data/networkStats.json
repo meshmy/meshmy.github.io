@@ -1,97 +1,116 @@
 {
-  "source": "https://meshmap2.lucifernet.com/api/v1/nodes",
-  "asOf": "2026-09-24",
-  "since": "2025-12",
-  "nodes": 491,
-  "newInMonth": {
-    "month": "2026-08",
-    "count": 12
+  "source": "https://api.lucifernet.com/meshtastic/",
+  "asOf": "2026-09-25",
+  "active": {
+    "days": 30,
+    "count": 206
   },
+  "activeShort": {
+    "days": 7,
+    "count": 141
+  },
+  "newByMonth": [
+    {
+      "month": "2026-04",
+      "count": 17
+    },
+    {
+      "month": "2026-05",
+      "count": 24
+    },
+    {
+      "month": "2026-06",
+      "count": 20
+    },
+    {
+      "month": "2026-07",
+      "count": 27
+    },
+    {
+      "month": "2026-08",
+      "count": 11
+    },
+    {
+      "month": "2026-09",
+      "count": 21
+    }
+  ],
   "byType": [
     {
       "label": "Clients",
-      "count": 435
+      "count": 179
     },
     {
       "label": "Routers",
-      "count": 28
+      "count": 16
     },
     {
       "label": "Trackers",
-      "count": 25
-    },
-    {
-      "label": "Other",
-      "count": 3
+      "count": 11
     }
   ],
   "byArea": [
     {
       "label": "Klang Valley",
-      "count": 343
+      "count": 148
     },
     {
       "label": "Penang",
-      "count": 48
+      "count": 16
     },
     {
       "label": "Negeri Sembilan & Melaka",
-      "count": 36
-    },
-    {
-      "label": "Johor",
-      "count": 29
+      "count": 15
     },
     {
       "label": "Sabah",
-      "count": 14
+      "count": 11
     },
     {
-      "label": "Kedah & Perlis",
+      "label": "Johor",
       "count": 10
     },
     {
-      "label": "Sarawak",
-      "count": 5
-    },
-    {
-      "label": "Perak",
+      "label": "Kedah & Perlis",
       "count": 4
     },
     {
+      "label": "Sarawak",
+      "count": 1
+    },
+    {
       "label": "Elsewhere",
-      "count": 2
+      "count": 1
     }
   ],
   "byHardware": [
     {
       "label": "Heltec V3",
-      "count": 62
+      "count": 34
     },
     {
       "label": "RAK WisBlock RAK4631",
-      "count": 45
-    },
-    {
-      "label": "Seeed Wio Tracker L1",
-      "count": 42
-    },
-    {
-      "label": "nRF52 Pro Micro (DIY)",
-      "count": 40
+      "count": 24
     },
     {
       "label": "LilyGO T-Deck",
-      "count": 35
+      "count": 17
     },
     {
-      "label": "Heltec V4",
-      "count": 32
+      "label": "Heltec T114",
+      "count": 15
+    },
+    {
+      "label": "nRF52 Pro Micro (DIY)",
+      "count": 15
+    },
+    {
+      "label": "Seeed Wio Tracker L1",
+      "count": 14
     },
     {
       "label": "Other models",
-      "count": 235
+      "count": 87
     }
-  ],
-  "noPosition": 0
+  ]
 }
