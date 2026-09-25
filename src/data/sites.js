@@ -71,8 +71,6 @@ export const sites = [
         antenna: '8 dBi omnidirectional, fiberglass',
         antennaPart: 'RF Explorer RFELA-5/8X9',
         antennaUrl: RF_EXPLORER_919,
-        status: 'maintenance',
-        statusNote: 'Node is offline and needs a physical visit.',
       },
       {
         freq: '433 MHz',
@@ -85,7 +83,7 @@ export const sites = [
     ],
     lat: 3.0916,
     lon: 101.659,
-    meshmapId: '729420782',
+    meshmapId: '373030544',
   },
   {
     shortName: 'BTSL',
@@ -199,10 +197,11 @@ export const sites = [
  * on meshmap2.lucifernet.com. A static snapshot (see LINKS_AS_OF) — refresh
  * it by hand when the topology changes. Pairs use `shortName`s.
  */
-export const LINKS_AS_OF = '2026-09-24';
+export const LINKS_AS_OF = '2026-09-25';
 export const links = [
   ['BDKL', 'BBKL'],
   ['BDKL', 'BCPH'],
+  ['BGKL', 'BBKL'],
   ['BGKL', 'BDKL'],
   ['BGKL', 'BCPH'],
 ];
