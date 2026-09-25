@@ -5,15 +5,22 @@ import CopyButton from '@site/src/components/Home/CopyButton';
 import {Choice, ConfigCard, SettingRow, Settings} from '@site/src/components/Setup';
 import useStoredState from '@site/src/components/Join/useStoredState';
 import NetStatus from '@site/src/components/WeeklyNet/NetStatus';
-import {buildAddChannelUrl, netChannel, telegram, weeklyNet} from '@site/src/data/meshtasticConfig';
+import {buildAddChannelUrl, netChannel, weeklyNet} from '@site/src/data/meshtasticConfig';
 import styles from './weekly-net.module.css';
 
 const INITIAL = {via: 'rf'};
 const addChannelUrl = netChannel ? buildAddChannelUrl(netChannel) : null;
+const {reply} = weeklyNet;
+
+/** The sample reply as the app shows it, naming the check-in `message`. */
+function replyText(message) {
+  const fields = reply.fields.map(([k, v]) => `${k} : ${v ?? message}`);
+  return [reply.title, '', ...fields, '', reply.footer].join('\n');
+}
 
 const fixes = [
   {
-    q: 'No acknowledgement came back',
+    q: `No reply from ${reply.from} came back`,
     a: `Check you sent it on the net channel, not MediumFast, and that the net is open (every ${weeklyNet.day}, ${weeklyNet.hours} Malaysia time). No tick on your message means no node heard you: try from higher ground. If your node has the MQTT module set up, check in with CMQTT instead.`,
   },
   {
@@ -166,8 +173,17 @@ export default function WeeklyNet() {
               </Heading>
               <p>
                 Pick the net channel (not MediumFast), paste the message and send
-                it. A tick means a node heard you. You should then get an{' '}
-                <strong>acknowledgement</strong> back: that’s your check-in done.
+                it. A tick means a node heard you. You should then get an
+                automatic reply from <strong>{reply.from}</strong> ({reply.fromLong})
+                like this one: that’s your check-in done.
+              </p>
+              <figure className={styles.reply}>
+                <figcaption>Sample reply, with made-up details</figcaption>
+                <pre>{replyText(checkIn.message)}</pre>
+              </figure>
+              <p className={styles.fine}>
+                RSSI and SNR show how strong your signal was where the net heard
+                it; HOP is how many nodes passed it on.
               </p>
               <p className={styles.tracker}>
                 Check-ins are tracked on{' '}
