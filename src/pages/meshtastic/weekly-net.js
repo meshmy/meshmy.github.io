@@ -174,12 +174,7 @@ export default function WeeklyNet() {
                 <a href={weeklyNet.trackerUrl} target="_blank" rel="noreferrer">
                   MESH NET919 ↗
                 </a>
-                , so you can see who’s checked in each week. Your message also
-                shows up on{' '}
-                <a href={telegram.url} target="_blank" rel="noreferrer">
-                  {telegram.handle} ↗
-                </a>{' '}
-                once it reaches MQTT.
+                , so you can see who’s checked in each week.
               </p>
             </li>
           </ol>
