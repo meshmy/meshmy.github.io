@@ -91,9 +91,11 @@ const config = {
             label: 'Meshtastic',
             position: 'left',
             items: [
-              {to: '/meshtastic/join', label: 'Join'},
-              {to: '/meshtastic/weekly-net', label: 'Weekly Net'},
+              {to: '/meshtastic/join', label: 'Connect to mesh'},
+              {to: '/meshtastic/weekly-net', label: 'Weekly Check-in'},
               {to: '/meshtastic/infrastructure', label: 'Infrastructure'},
+              // Not a link: a separator with a group label.
+              {type: 'html', value: 'Tools', className: 'mm-dropdown-heading'},
               {to: '/meshtastic/foliage-calculator', label: 'Foliage Calculator'},
             ],
           },
@@ -119,8 +121,8 @@ const config = {
             title: 'Meshtastic',
             items: [
               {label: 'Overview', to: '/meshtastic'},
-              {label: 'Join', to: '/meshtastic/join'},
-              {label: 'Weekly Net', to: '/meshtastic/weekly-net'},
+              {label: 'Connect to mesh', to: '/meshtastic/join'},
+              {label: 'Weekly Check-in', to: '/meshtastic/weekly-net'},
               {label: 'Infrastructure', to: '/meshtastic/infrastructure'},
             ],
           },
