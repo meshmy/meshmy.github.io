@@ -1,8 +1,13 @@
 /**
- * MeshMY router sites — the single source of truth for both the homepage
+ * Community router sites — the single source of truth for both the homepage
  * network map and the Infrastructure page. Status is maintained by hand:
  * update a band's `status` ('active' | 'maintenance' | 'decommissioned')
  * and optional `statusNote` when a site changes.
+ *
+ * A band's optional `power` is its transmit power class (e.g. '1 W').
+ * `maintainer` is a key of MAINTAINERS. `UNKNOWN` marks details we don't
+ * have yet; `approx: true` marks a position and elevation taken from what
+ * the node itself reports (its position is deliberately imprecise).
  */
 
 // Hardware product pages (manufacturer where available).
@@ -10,6 +15,7 @@ const SEEED_SENSECAP_P1 =
   'https://www.seeedstudio.com/SenseCAP-Solar-Node-P1-for-Meshtastic-LoRa-p-6425.html';
 const HELTEC_WSL_V3 = 'https://heltec.org/project/wireless-stick-lite-v2/';
 const HELTEC_T114 = 'https://heltec.org/project/mesh-node-t114/';
+const RAK4631 = 'https://store.rakwireless.com/products/rak4631-lpwan-node';
 const GAT562 = 'https://www.aliexpress.com/item/1005009830660794.html';
 
 // Antenna product pages: Taobao listings from the team's own equipment
@@ -21,6 +27,18 @@ const ZIISOR_FIBERGLASS_433 = 'https://item.taobao.com/item.htm?id=650462589156'
 const ZIISOR_RUBBER_DUCKY_919 = 'https://www.ziisor.com/products/TX915-JKD-20/1';
 const ZIISOR_RUBBER_DUCKY_433 = 'https://www.ziisor.com/products/TX433-JKD-20/1';
 
+/** Shown for details a site's maintainers haven't shared yet. */
+export const UNKNOWN = '?';
+
+// `heading` titles the maintainer's group on Infrastructure (default: `name`).
+export const MAINTAINERS = {
+  meshmy: {name: 'MeshMY', heading: 'Klang Valley'},
+  penang: {name: 'Penang Meshtastic community'},
+};
+
+/** Who looks after a site; MeshMY unless the site says otherwise. */
+export const maintainerOf = (site) => MAINTAINERS[site.maintainer] ?? MAINTAINERS.meshmy;
+
 // Per-band status. `mark` is the .mm-marker variant it shows as.
 export const STATUS = {
   active: {label: 'Online', mark: 'online'},
@@ -31,6 +49,7 @@ export const STATUS = {
 export const sites = [
   {
     shortName: 'BDKL',
+    maintainer: 'meshmy',
     name: 'Bukit Dinding',
     area: 'Kuala Lumpur',
     elevation: 340,
@@ -59,6 +78,7 @@ export const sites = [
   },
   {
     shortName: 'BGKL',
+    maintainer: 'meshmy',
     name: 'Bukit Gasing',
     area: 'Petaling Jaya, Selangor',
     elevation: 170,
@@ -89,6 +109,7 @@ export const sites = [
   },
   {
     shortName: 'BTSL',
+    maintainer: 'meshmy',
     name: 'Bukit Tadun',
     area: 'Rawang, Selangor',
     elevation: 150,
@@ -121,6 +142,7 @@ export const sites = [
   },
   {
     shortName: 'BBKL',
+    maintainer: 'meshmy',
     name: 'Bukit Besi',
     area: 'Kuala Lumpur',
     elevation: 212,
@@ -141,6 +163,7 @@ export const sites = [
   },
   {
     shortName: 'BCPH',
+    maintainer: 'meshmy',
     name: 'Bukit Cermin',
     area: 'Subang Jaya, Selangor',
     elevation: 203,
@@ -168,6 +191,7 @@ export const sites = [
   },
   {
     shortName: 'GUK',
+    maintainer: 'meshmy',
     name: 'Gunung Ulu Kali',
     area: 'Genting Highlands, Pahang',
     elevation: 1730,
@@ -192,12 +216,124 @@ export const sites = [
     lon: 101.7896,
     meshmapId: '688514662',
   },
+  // Penang: the PG-RTR-* routers. Positions and elevations are as the nodes
+  // report them to meshmap2.lucifernet.com (2026-09-24); hardware, antennas
+  // and power are from the Penang community. All are 919 MHz only.
+  {
+    shortName: 'PGCH',
+    maintainer: 'penang',
+    name: 'Carpet Hill',
+    area: 'Penang Island',
+    elevation: 410,
+    grid: 'OJ05dh',
+    bands: [
+      {
+        freq: '919 MHz',
+        hardware: 'RAK WisBlock RAK4631',
+        hardwareUrl: RAK4631,
+        power: '1 W',
+        antenna: '4 dBi omnidirectional, fiberglass',
+        antennaPart: 'Ziisor',
+      },
+    ],
+    lat: 5.3281,
+    lon: 100.2504,
+    approx: true,
+    meshmapId: '4244836625',
+  },
+  {
+    shortName: 'PGJB',
+    maintainer: 'penang',
+    name: 'Bukit Jambul',
+    area: 'Penang Island',
+    elevation: 235,
+    grid: 'OJ05di',
+    bands: [
+      {
+        freq: '919 MHz',
+        hardware: 'RAK WisBlock RAK4631',
+        hardwareUrl: RAK4631,
+        power: '1 W',
+        antenna: '4 dBi omnidirectional, fiberglass',
+        antennaPart: 'Ziisor',
+      },
+    ],
+    lat: 5.3412,
+    lon: 100.2897,
+    approx: true,
+    meshmapId: '4072757313',
+  },
+  {
+    shortName: 'PGFH',
+    maintainer: 'penang',
+    name: 'Fortress Hill',
+    area: 'Penang Island',
+    elevation: 517,
+    grid: 'OJ05di',
+    bands: [
+      {
+        freq: '919 MHz',
+        hardware: 'RAK WisBlock RAK4631',
+        hardwareUrl: RAK4631,
+        power: '1 W',
+        antenna: '4 dBi omnidirectional, fiberglass',
+        antennaPart: 'Ziisor',
+      },
+    ],
+    lat: 5.3674,
+    lon: 100.2635,
+    approx: true,
+    meshmapId: '957121554',
+  },
+  {
+    shortName: '19ad',
+    maintainer: 'penang',
+    name: 'Bukit Hijau (NW)',
+    area: 'Penang Island',
+    elevation: 200,
+    grid: 'OJ05dj',
+    bands: [
+      {
+        freq: '919 MHz',
+        hardware: 'nRF52 Pro Micro (DIY)',
+        power: 'milliwatt',
+        antenna: '4 dBi omnidirectional, fiberglass',
+        antennaPart: 'Ziisor',
+      },
+    ],
+    lat: 5.3887,
+    lon: 100.2914,
+    approx: true,
+    meshmapId: '1623857581',
+  },
+  {
+    shortName: 'a1a3',
+    maintainer: 'penang',
+    name: 'Pearl Hill (S)',
+    area: 'Penang Island',
+    elevation: 209,
+    grid: 'OJ05dl',
+    bands: [
+      {
+        freq: '919 MHz',
+        hardware: 'nRF52 Pro Micro (DIY)',
+        power: 'milliwatt',
+        antenna: '4 dBi omnidirectional, fiberglass',
+        antennaPart: 'Ziisor',
+      },
+    ],
+    lat: 5.4608,
+    lon: 100.2947,
+    approx: true,
+    meshmapId: '3563626915',
+  },
 ];
 
 /**
- * RF links between router sites, as reported by each node's NeighborInfo
- * on meshmap2.lucifernet.com. A static snapshot (see LINKS_AS_OF) — refresh
- * it by hand when the topology changes. Pairs use `shortName`s.
+ * RF links between router sites, as reported on meshmap2.lucifernet.com by
+ * each node's NeighborInfo and by traceroutes (its /api/v1/links). A static
+ * snapshot (see LINKS_AS_OF) — refresh it by hand when the topology
+ * changes. Pairs use `shortName`s.
  */
 export const LINKS_AS_OF = '2026-09-24';
 export const links = [
@@ -205,10 +341,17 @@ export const links = [
   ['BDKL', 'BCPH'],
   ['BGKL', 'BDKL'],
   ['BGKL', 'BCPH'],
+  ['19ad', 'a1a3'],
+  ['19ad', 'PGFH'],
+  ['PGJB', 'PGFH'],
 ];
 
 /** Metres with a fixed locale, so the build and the browser render the same text. */
 export const formatMetres = (m) => m.toLocaleString('en-GB');
+
+/** A site's elevation, e.g. "340 m", or "≈ 410 m" when it's approximate. */
+export const siteElevation = (site) =>
+  `${site.approx ? '≈ ' : ''}${formatMetres(site.elevation)} m`;
 
 export function googleMapsUrl(lat, lon) {
   return `https://www.google.com/maps?q=${lat},${lon}`;

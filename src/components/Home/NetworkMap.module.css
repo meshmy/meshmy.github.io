@@ -78,6 +78,9 @@
   border-radius: 4px;
   white-space: nowrap;
 }
+.far :global(.mm-marker__label) {
+  display: none;
+}
 :global(.mm-marker--retired .mm-marker__label) {
   color: var(--mm-muted);
 }
