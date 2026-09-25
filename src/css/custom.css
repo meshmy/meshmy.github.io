@@ -369,3 +369,20 @@ html,
 html {
   font-variant-emoji: text;
 }
+
+/* Navbar dropdown group label with a separator above it ("Tools"). */
+.mm-dropdown-heading {
+  margin-top: 0.375rem;
+  padding: 0.625rem 0.75rem 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mm-muted);
+  border-top: 1px solid var(--mm-line);
+  cursor: default;
+}
+.menu__list .mm-dropdown-heading {
+  margin: 0.5rem 0 0;
+  padding: 0.75rem var(--ifm-menu-link-padding-horizontal) 0.25rem;
+}
