@@ -32,7 +32,7 @@ export default function Infrastructure() {
         {groups.map((group) => (
           <section key={group.key} aria-labelledby={`maintainer-${group.key}`}>
         <Heading as="h2" id={`maintainer-${group.key}`} className="margin-top--lg">
-          {group.name}
+          {group.heading ?? group.name}
         </Heading>
         {group.key === 'penang' && (
           <p>

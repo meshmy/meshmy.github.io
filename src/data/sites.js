@@ -30,8 +30,9 @@ const ZIISOR_RUBBER_DUCKY_433 = 'https://www.ziisor.com/products/TX433-JKD-20/1'
 /** Shown for details a site's maintainers haven't shared yet. */
 export const UNKNOWN = '?';
 
+// `heading` titles the maintainer's group on Infrastructure (default: `name`).
 export const MAINTAINERS = {
-  meshmy: {name: 'MeshMY'},
+  meshmy: {name: 'MeshMY', heading: 'Klang Valley'},
   penang: {name: 'Penang Meshtastic community'},
 };
 
