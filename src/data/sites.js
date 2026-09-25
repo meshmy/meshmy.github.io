@@ -197,10 +197,11 @@ export const sites = [
  * on meshmap2.lucifernet.com. A static snapshot (see LINKS_AS_OF) — refresh
  * it by hand when the topology changes. Pairs use `shortName`s.
  */
-export const LINKS_AS_OF = '2026-09-24';
+export const LINKS_AS_OF = '2026-09-25';
 export const links = [
   ['BDKL', 'BBKL'],
   ['BDKL', 'BCPH'],
+  ['BGKL', 'BBKL'],
   ['BGKL', 'BDKL'],
   ['BGKL', 'BCPH'],
 ];
