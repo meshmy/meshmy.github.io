@@ -189,7 +189,7 @@ export default function Join() {
                     </li>
                   </ul>
                   <p>
-                    Popular first radios: Heltec T114, LilyGO T-Echo, RAK WisBlock.{' '}
+                    Not sure which? <Link to="/meshtastic/buying-guide">Buying guide →</Link>{' '}
                     <a href="https://meshtastic.org/docs/hardware/devices/" target="_blank" rel="noreferrer">
                       Supported hardware ↗
                     </a>

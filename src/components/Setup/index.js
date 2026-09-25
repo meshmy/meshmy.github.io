@@ -1,3 +1,4 @@
+import {useId} from 'react';
 import clsx from 'clsx';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import CopyButton from '@site/src/components/Home/CopyButton';
@@ -48,14 +49,21 @@ export function MeshtasticLink({href, children, pill = false, logo = !pill, exte
 /**
  * A question answered with pill-shaped radio buttons. Native inputs in a
  * fieldset, so it works by keyboard (arrow keys) and screen reader.
+ * `hint` is an optional line under the question, read out with the group.
  */
-export function Choice({name, label, options, value, onChange, className}) {
+export function Choice({name, label, hint, options, value, onChange, className}) {
+  const hintId = `${useId()}-hint`;
   // `className` goes on a wrapper, so page spacing never competes with the
   // fieldset's own reset across separately loaded CSS files.
   return (
     <div className={className}>
-      <fieldset className={styles.choice}>
+      <fieldset className={styles.choice} aria-describedby={hint ? hintId : undefined}>
         <legend>{label}</legend>
+        {hint && (
+          <p id={hintId} className={styles.choiceHint}>
+            {hint}
+          </p>
+        )}
         <div className={styles.pills}>
           {options.map((o) => (
             <label key={o.value} className={styles.pill}>
