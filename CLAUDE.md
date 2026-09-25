@@ -22,7 +22,8 @@ Rules that apply to every change:
 ## Where things live
 
 - `work-docs/`: internal tracking and knowledge base (design system, issue drafts, screenshots). It ignores itself and is never checked in. Docs that get checked in go only where they're asked for (`docs/`, `README.md`, `CLAUDE.md`).
-- `src/data/sites.js`: router sites, RF links and status helpers, shared by the homepage and Infrastructure. Update status here by hand.
+- `src/data/sites.js`: router sites (MeshMY's and the Penang community's, by `maintainer`), RF links and status helpers, shared by the homepage and Infrastructure. Update status here by hand. `UNKNOWN` ('?') marks details a site's maintainers haven't shared; `approx` marks positions and elevations taken from the node itself.
+- `src/data/networkStats.json`: the homepage's "mesh in numbers" counts (Malaysian nodes heard over MQTT). Aggregates only; never commit a raw node dump (it holds names and positions). Regenerate with `npm run stats`, which runs `scripts/network-stats.mjs` against https://meshmap2.lucifernet.com/api/v1/nodes (`npm run stats -- dump.json` reads a saved dump instead).
 - `src/data/meshtasticConfig.js`: recommended settings, MQTT details, weekly-net messages, and the generated one-tap config URL.
 - `src/components/Home/`: NetworkMap (Leaflet, client-only), CopyButton, ConfigQr.
 - `src/components/Setup/`: shared "get on the mesh" UI (SettingRow/Settings, MeshtasticLink, ConfigCard with the QR, Choice pill radios), used by the homepage, Join and Weekly Net.

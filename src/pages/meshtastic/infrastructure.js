@@ -123,6 +123,7 @@ export default function Infrastructure() {
                               ) : (
                                 band.hardware
                               )}
+                              {band.power && ` · ${band.power}`}
                             </p>
                             <div
                               style={{

@@ -4,6 +4,7 @@
  * update a band's `status` ('active' | 'maintenance' | 'decommissioned')
  * and optional `statusNote` when a site changes.
  *
+ * A band's optional `power` is its transmit power class (e.g. '1 W').
  * `maintainer` is a key of MAINTAINERS. `UNKNOWN` marks details we don't
  * have yet; `approx: true` marks a position and elevation taken from what
  * the node itself reports (its position is deliberately imprecise).
@@ -214,8 +215,9 @@ export const sites = [
     lon: 101.7896,
     meshmapId: '688514662',
   },
-  // Penang: the PG-RTR-* routers. Hardware, positions and elevations are
-  // as the nodes report them to meshmap2.lucifernet.com (2026-09-24).
+  // Penang: the PG-RTR-* routers. Positions and elevations are as the nodes
+  // report them to meshmap2.lucifernet.com (2026-09-24); hardware, antennas
+  // and power are from the Penang community. All are 919 MHz only.
   {
     shortName: 'PGCH',
     maintainer: 'penang',
@@ -228,8 +230,9 @@ export const sites = [
         freq: '919 MHz',
         hardware: 'RAK WisBlock RAK4631',
         hardwareUrl: RAK4631,
-        antenna: UNKNOWN,
-        antennaPart: UNKNOWN,
+        power: '1 W',
+        antenna: '4 dBi omnidirectional, fiberglass',
+        antennaPart: 'Ziisor',
       },
     ],
     lat: 5.3281,
@@ -249,8 +252,9 @@ export const sites = [
         freq: '919 MHz',
         hardware: 'RAK WisBlock RAK4631',
         hardwareUrl: RAK4631,
-        antenna: UNKNOWN,
-        antennaPart: UNKNOWN,
+        power: '1 W',
+        antenna: '4 dBi omnidirectional, fiberglass',
+        antennaPart: 'Ziisor',
       },
     ],
     lat: 5.3412,
@@ -268,9 +272,11 @@ export const sites = [
     bands: [
       {
         freq: '919 MHz',
-        hardware: UNKNOWN,
-        antenna: UNKNOWN,
-        antennaPart: UNKNOWN,
+        hardware: 'RAK WisBlock RAK4631',
+        hardwareUrl: RAK4631,
+        power: '1 W',
+        antenna: '4 dBi omnidirectional, fiberglass',
+        antennaPart: 'Ziisor',
       },
     ],
     lat: 5.3674,
@@ -289,8 +295,9 @@ export const sites = [
       {
         freq: '919 MHz',
         hardware: 'nRF52 Pro Micro (DIY)',
-        antenna: UNKNOWN,
-        antennaPart: UNKNOWN,
+        power: 'milliwatt',
+        antenna: '4 dBi omnidirectional, fiberglass',
+        antennaPart: 'Ziisor',
       },
     ],
     lat: 5.3887,
@@ -309,8 +316,9 @@ export const sites = [
       {
         freq: '919 MHz',
         hardware: 'nRF52 Pro Micro (DIY)',
-        antenna: UNKNOWN,
-        antennaPart: UNKNOWN,
+        power: 'milliwatt',
+        antenna: '4 dBi omnidirectional, fiberglass',
+        antennaPart: 'Ziisor',
       },
     ],
     lat: 5.4608,
