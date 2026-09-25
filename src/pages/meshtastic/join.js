@@ -10,16 +10,16 @@ import {
   apps,
   configUrl,
   configUrl433,
-  mqtt,
   recommended,
   recommended433,
+  telegram,
 } from '@site/src/data/meshtasticConfig';
 import {glossary, pairing, questions, troubleshooting} from '@site/src/data/joinGuide';
 import styles from './join.module.css';
 
 // Build-time defaults: the most common newcomer. Also what shows without JS.
 const INITIAL = {
-  answers: {hasRadio: 'no', platform: 'android', licensed: 'no', band: '919', gateway: 'no'},
+  answers: {hasRadio: 'no', platform: 'android', licensed: 'no', band: '919'},
   done: {},
   area: '',
 };
@@ -92,7 +92,6 @@ export default function Join() {
   const on433 = licensed && answers.band === '433';
   const settings = on433 ? recommended433 : recommended;
   const url = on433 ? configUrl433 : configUrl;
-  const rootTopic = on433 ? mqtt.rootTopic433 : mqtt.rootTopic;
   const app = apps.find((a) => a.id === answers.platform) ?? apps[0];
   const isDone = (id) => (id === 'radio' && hasRadio) || !!done[id];
   const doneCount = REQUIRED.filter(isDone).length;
@@ -303,37 +302,11 @@ export default function Join() {
                 <Term id="gateway" /> already relays your messages over{' '}
                 <Term id="mqtt" /> for you.
               </p>
-              <Choice
-                name="gateway"
-                label="Is your node often out of radio range, with Wi-Fi or phone data nearby?"
-                className={styles.inlineChoice}
-                options={[
-                  {value: 'no', label: 'No'},
-                  {value: 'yes', label: 'Yes'},
-                ]}
-                value={answers.gateway}
-                onChange={answer('gateway')}
-              />
-              {answers.gateway === 'yes' ? (
-                <>
-                  <p>
-                    In <strong>Module configuration → MQTT</strong>, turn MQTT on and
-                    use MeshMY’s community server (run by 9W2LWK):
-                  </p>
-                  <Settings>
-                    <SettingRow label="Address" value={mqtt.address} copy />
-                    <SettingRow label="Username" value={mqtt.username} copy />
-                    <SettingRow label="Password" value={mqtt.password} copy />
-                    <SettingRow label="Root topic" value={rootTopic} copy />
-                    <SettingRow label="Encryption" value="Enabled" />
-                  </Settings>
-                </>
-              ) : (
-                <p className={styles.muted}>
-                  Leave the MQTT module off. Don’t turn off OK to MQTT either: that
-                  keeps you on local radio only, out of reach of the wider mesh.
-                </p>
-              )}
+              <p>
+                If your node is often out of range of a gateway, it can reach MQTT
+                itself: through your phone, or over Wi-Fi on some radios.{' '}
+                <Link to="/meshtastic/mqtt">MQTT setup →</Link>
+              </p>
             </Step>
 
             <Step id="check" n={5} title="Check you’re on the mesh" done={isDone('check')} onDone={tick('check')}>
@@ -361,6 +334,14 @@ export default function Join() {
                       <CopyButton text={hello} />
                     </span>
                   </div>
+                </li>
+                <li>
+                  Look for your hello on MeshMY’s Telegram channel,{' '}
+                  <a href={telegram.url} target="_blank" rel="noreferrer">
+                    {telegram.handle} ↗
+                  </a>
+                  . It relays what reaches MQTT, so seeing it there means a gateway
+                  carried your message.
                 </li>
                 <li>
                   Find yourself on the{' '}

@@ -92,6 +92,7 @@ const config = {
             position: 'left',
             items: [
               {to: '/meshtastic/join', label: 'Connect to mesh'},
+              {to: '/meshtastic/mqtt', label: 'Set up MQTT'},
               {to: '/meshtastic/weekly-net', label: 'Weekly Check-in'},
               {to: '/meshtastic/infrastructure', label: 'Infrastructure'},
               // Not a link: a separator with a group label.
@@ -122,6 +123,7 @@ const config = {
             items: [
               {label: 'Overview', to: '/meshtastic'},
               {label: 'Connect to mesh', to: '/meshtastic/join'},
+              {label: 'Set up MQTT', to: '/meshtastic/mqtt'},
               {label: 'Weekly Check-in', to: '/meshtastic/weekly-net'},
               {label: 'Infrastructure', to: '/meshtastic/infrastructure'},
             ],

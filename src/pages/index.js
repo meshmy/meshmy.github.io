@@ -8,7 +8,7 @@ import NetworkMap from '@site/src/components/Home/NetworkMap';
 import CopyButton from '@site/src/components/Home/CopyButton';
 import {ConfigCard, MeshtasticLink, SettingRow, Settings} from '@site/src/components/Setup';
 import {sites, siteStatus, STATUS, SITE_STATUS, formatMetres} from '@site/src/data/sites';
-import {apps, configUrl, recommended, mqtt, weeklyNet} from '@site/src/data/meshtasticConfig';
+import {apps, configUrl, recommended, weeklyNet} from '@site/src/data/meshtasticConfig';
 import styles from './index.module.css';
 
 const onAir = sites.filter((s) => ['online', 'partial'].includes(siteStatus(s)));
@@ -223,27 +223,17 @@ function Join() {
           </li>
         </ol>
 
-        <details className={styles.gateway}>
-          <summary>
+        <div className={styles.gateway}>
+          <p className={styles.gatewayLine}>
             <span>
-              <strong>Out of RF range?</strong> Make your node its own MQTT
-              gateway
+              <strong>Out of radio range?</strong> Your node can reach MQTT
+              itself, through your phone or over Wi-Fi.
             </span>
-            <span className={styles.chev} aria-hidden="true" />
-          </summary>
-          <p>
-            Enable <em>Module Configuration → MQTT</em> and use MeshMY’s
-            community server (run by 9W2LWK). Your node will also show up on
-            the <a href="https://meshmap2.lucifernet.com/" target="_blank" rel="noreferrer">community mesh map</a>.
+            <Link to="/meshtastic/mqtt" className={styles.moreLink}>
+              MQTT setup →
+            </Link>
           </p>
-          <Settings>
-            <SettingRow label="Address" value={mqtt.address} copy />
-            <SettingRow label="Username" value={mqtt.username} copy />
-            <SettingRow label="Password" value={mqtt.password} copy />
-            <SettingRow label="Root topic" value={mqtt.rootTopic} copy />
-            <SettingRow label="Encryption" value="Enabled" />
-          </Settings>
-        </details>
+        </div>
       </div>
     </section>
   );

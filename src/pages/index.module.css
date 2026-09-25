@@ -334,6 +334,15 @@
   border: 1px solid var(--mm-line);
   border-radius: 1rem;
 }
+.gatewayLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin: 0;
+  padding: 1.125rem 0;
+}
 .gateway summary {
   display: flex;
   align-items: center;

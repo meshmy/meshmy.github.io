@@ -1,0 +1,244 @@
+/* MQTT page. Colours come only from the tokens in src/css/custom.css. */
+
+.page {
+  padding: 3rem 0 4rem;
+}
+.header {
+  max-width: 46rem;
+  margin-bottom: 2.5rem;
+}
+.header h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2.25rem, 5vw, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-highlight-text);
+}
+.lead {
+  margin: 0 0 0.75rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--mm-muted);
+}
+.fine {
+  margin: 0.75rem 0 0;
+  font-size: 0.875rem;
+  color: var(--mm-muted);
+}
+.sectionTitle {
+  margin-bottom: 1rem;
+}
+.section {
+  margin-top: 3rem;
+}
+
+/* ---------- Methods: collapsed cards ---------- */
+
+.methods {
+  display: grid;
+  gap: 0.75rem;
+}
+.method {
+  background: var(--ifm-background-color);
+  border: 1px solid var(--mm-line);
+  border-radius: 1rem;
+}
+.method[open] {
+  border-color: var(--mm-line-strong);
+}
+.method summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.125rem 1.5rem;
+  cursor: pointer;
+  list-style: none;
+}
+.method summary::-webkit-details-marker {
+  display: none;
+}
+.method summary:focus-visible {
+  outline: 2px solid var(--brand-highlight-text);
+  outline-offset: 2px;
+  border-radius: 1rem;
+}
+.summaryText {
+  display: grid;
+  gap: 0.25rem;
+}
+.methodTitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+.methodSummary {
+  font-size: 0.9375rem;
+  color: var(--mm-muted);
+}
+.badge {
+  padding: 0.125rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--mm-muted);
+  border: 1px solid var(--mm-line-strong);
+  border-radius: 999px;
+}
+.methodBody {
+  padding: 0 1.5rem 1.5rem;
+}
+.methodBody > p {
+  margin: 0 0 0.75rem;
+  color: var(--mm-muted);
+}
+.methodBody strong {
+  color: var(--ifm-font-color-base);
+}
+.path {
+  margin: 1rem 0 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--mm-muted);
+}
+
+/* ---------- Check it works ---------- */
+
+.check {
+  padding: 1.5rem;
+  background: var(--mm-surface-1);
+  border: 1px solid var(--mm-line);
+  border-left: 4px solid var(--brand-highlight-text);
+  border-radius: 1rem;
+}
+.numbered,
+.list {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+  color: var(--mm-muted);
+}
+.numbered {
+  list-style: decimal;
+}
+.numbered li,
+.list li {
+  margin-bottom: 0.375rem;
+}
+.numbered strong,
+.list strong {
+  color: var(--ifm-font-color-base);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+}
+/* Quiet button: no third-party brand colour (only Meshtastic gets one). */
+.quiet {
+  color: var(--ifm-font-color-base);
+  background: transparent;
+  border: 1px solid var(--mm-line-strong);
+}
+.quiet:hover {
+  color: var(--ifm-font-color-base);
+  border-color: var(--brand-highlight-text);
+}
+.quiet:focus-visible,
+.getApp:focus-visible {
+  outline: 2px solid var(--brand-highlight-text);
+  outline-offset: 2px;
+}
+.getApp {
+  font-weight: 600;
+}
+
+/* ---------- Expanders ---------- */
+
+.more {
+  margin-top: 0.5rem;
+  padding: 0 1.25rem;
+  border: 1px solid var(--mm-line);
+  border-radius: 0.75rem;
+}
+.more--warn {
+  border-left: 4px solid var(--mm-status-down);
+}
+.more summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 0;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+.more summary::-webkit-details-marker {
+  display: none;
+}
+.more summary:focus-visible {
+  outline: 2px solid var(--brand-highlight-text);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.more[open] {
+  padding-bottom: 1.25rem;
+}
+.more > p {
+  margin: 0;
+  color: var(--mm-muted);
+}
+.more > p + p,
+.more > ul + p {
+  margin-top: 0.75rem;
+}
+.more strong {
+  color: var(--ifm-font-color-base);
+}
+.chev {
+  width: 0.5625rem;
+  height: 0.5625rem;
+  flex-shrink: 0;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform var(--ifm-transition-fast);
+}
+details[open] > summary .chev {
+  transform: rotate(-135deg);
+}
+.credit {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--mm-line);
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding-top: 2rem;
+  }
+  .method summary {
+    padding: 1rem 1.25rem;
+  }
+  .methodBody {
+    padding: 0 1.25rem 1.25rem;
+  }
+  .check {
+    padding: 1.25rem;
+  }
+  .more {
+    padding: 0 1rem;
+  }
+}
