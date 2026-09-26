@@ -170,6 +170,34 @@
   padding: 0;
 }
 
+/* A sample of net control's automatic reply, laid out as the app shows it. */
+.reply {
+  margin: 1rem 0 0;
+  padding: 0.875rem 1.125rem;
+  background: var(--mm-surface-1);
+  border: 1px solid var(--mm-line);
+  border-radius: 0.75rem;
+}
+.reply figcaption {
+  margin-bottom: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--mm-muted);
+}
+.reply pre {
+  margin: 0;
+  padding: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--ifm-font-color-base);
+  background: transparent;
+  border: 0;
+}
+.step > .reply + p {
+  margin-top: 0.75rem;
+}
+
 .section {
   margin-top: 3rem;
 }

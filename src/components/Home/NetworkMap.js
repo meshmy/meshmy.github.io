@@ -1,7 +1,7 @@
 import {useEffect, useRef} from 'react';
 import {useColorMode} from '@docusaurus/theme-common';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import {sites, links, siteStatus, SITE_STATUS, STATUS, meshmapUrl, formatMetres} from '@site/src/data/sites';
+import {sites, links, siteStatus, siteElevation, SITE_STATUS, STATUS, maintainerOf, meshmapUrl} from '@site/src/data/sites';
 import 'leaflet/dist/leaflet.css';
 import styles from './NetworkMap.module.css';
 
@@ -12,6 +12,8 @@ const tileUrl = (theme, key) =>
   (key ? `?key=${encodeURIComponent(key)}` : '');
 const ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>';
+
+const LABEL_ZOOM = 10;
 
 const escape = (s) =>
   String(s).replace(/[&<>"']/g, (c) => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'})[c]);
@@ -27,7 +29,8 @@ function popupHtml(site) {
     .join('');
   return `<div class="mm-pop">
     <div class="mm-pop__head"><strong>${escape(site.name)}</strong><code>${escape(site.shortName)}</code></div>
-    <div class="mm-pop__meta">${escape(site.area)} · ${formatMetres(site.elevation)} m</div>
+    <div class="mm-pop__meta">${escape(site.area)} · ${escape(siteElevation(site))}</div>
+    <div class="mm-pop__meta">Maintained by ${escape(maintainerOf(site).name)}${site.approx ? ' · approximate position' : ''}</div>
     <ul class="mm-pop__bands">${bands}</ul>
     <div class="mm-pop__foot">${SITE_STATUS[status].label} ·
       <a href="${escape(meshmapUrl(site.meshmapId))}" target="_blank" rel="noreferrer">Live telemetry ↗</a></div>
@@ -35,7 +38,7 @@ function popupHtml(site) {
 }
 
 /**
- * Leaflet map of MeshMY router sites and the RF links between them.
+ * Leaflet map of community router sites and the RF links between them.
  * Leaflet touches `window`, so it's imported lazily on the client; the
  * server render is a sized placeholder listing the sites.
  */
@@ -102,10 +105,15 @@ export default function NetworkMap({focus, onSelect}) {
         markers.current[site.shortName] = mk;
       });
 
+      // Zoomed out far enough to show every region, nearby sites' labels
+      // overlap: show them only from LABEL_ZOOM in.
+      const syncLabels = () => el.current?.classList.toggle(styles.far, m.getZoom() < LABEL_ZOOM);
+      m.on('zoomend', syncLabels);
       m.fitBounds(
         L.latLngBounds(sites.map((s) => [s.lat, s.lon])),
         {padding: [36, 36]},
       );
+      syncLabels();
       tiles.current = L.tileLayer(tileUrl(document.documentElement.dataset.theme, cartoApiKey), {
         attribution: ATTRIBUTION,
         maxZoom: 18,
@@ -134,7 +142,7 @@ export default function NetworkMap({focus, onSelect}) {
 
   return (
     <div className={styles.frame}>
-      <div ref={el} className={styles.map} role="region" aria-label="Map of MeshMY router sites">
+      <div ref={el} className={styles.map} role="region" aria-label="Map of community router sites">
         <noscript>
           <ul className={styles.fallback}>
             {sites.map((s) => (

@@ -37,9 +37,7 @@ export default function Events() {
       <main className="container margin-vert--lg">
         <Heading as="h1">Events</Heading>
         <p>
-          Upcoming meetups and events for the MeshMY community. Add your
-          own events by editing{' '}
-          <code>src/pages/events.js</code>.
+          Upcoming meetups and events for the MeshMY community.
         </p>
         {events.map((event, idx) => (
           <EventCard key={idx} {...event} />

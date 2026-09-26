@@ -7,8 +7,9 @@ import Heading from '@theme/Heading';
 import NetworkMap from '@site/src/components/Home/NetworkMap';
 import CopyButton from '@site/src/components/Home/CopyButton';
 import {ConfigCard, MeshtasticLink, SettingRow, Settings} from '@site/src/components/Setup';
-import {sites, siteStatus, STATUS, SITE_STATUS, formatMetres} from '@site/src/data/sites';
+import {sites, siteStatus, siteElevation, STATUS, SITE_STATUS, maintainerOf, formatMetres} from '@site/src/data/sites';
 import {apps, configUrl, recommended, weeklyNet} from '@site/src/data/meshtasticConfig';
+import networkStats from '@site/src/data/networkStats.json';
 import styles from './index.module.css';
 
 const onAir = sites.filter((s) => ['online', 'partial'].includes(siteStatus(s)));
@@ -30,9 +31,9 @@ function Hero({focus, onSelect}) {
           </Heading>
           <p className={styles.heroLead}>
             MeshMY is a volunteer community running solar-powered LoRa
-            routers on hilltops around the Klang Valley. No SIM, no
-            internet, no subscription — anyone in Malaysia can join on
-            919&nbsp;MHz.
+            routers on hilltops around the Klang Valley, alongside the Penang
+            community’s routers. No SIM, no internet, no subscription — anyone
+            in Malaysia can join on 919&nbsp;MHz.
           </p>
           <div className={styles.heroActions}>
             <Link className={clsx('button button--lg', styles.cta)} to="#join">
@@ -81,8 +82,8 @@ function SiteStrip({focused, onSelect}) {
               The backbone
             </Heading>
             <p>
-              High-site routers the MeshMY team builds and maintains. Pick one
-              to see it on the map.
+              High-site routers built and maintained by the MeshMY team and
+              the Penang Meshtastic community. Pick one to see it on the map.
             </p>
           </div>
           <Link to="/meshtastic/infrastructure" className={styles.moreLink}>
@@ -122,8 +123,9 @@ function SiteStrip({focused, onSelect}) {
                   </span>
                   <span className={styles.siteName}>{site.name}</span>
                   <span className={styles.siteMeta}>
-                    {site.area} · {formatMetres(site.elevation)} m
+                    {site.area} · {siteElevation(site)}
                   </span>
+                  <span className={styles.siteMeta}>{maintainerOf(site).name}</span>
                   <span className={styles.bands}>
                     {site.bands.map((b) => (
                       <span
@@ -142,6 +144,113 @@ function SiteStrip({focused, onSelect}) {
             );
           })}
         </ul>
+      </div>
+    </section>
+  );
+}
+
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+  'August', 'September', 'October', 'November', 'December'];
+/** Counts with a fixed locale, like formatMetres. */
+const formatCount = (n) => n.toLocaleString('en-GB');
+
+/** "2025-12" → "December 2025"; "2026-09-24" → "24 September 2026". Fixed, so SSR and browser agree. */
+function formatDate(iso) {
+  const [y, m, d] = iso.split('-');
+  return `${d ? `${Number(d)} ` : ''}${MONTHS[Number(m) - 1]} ${y}`;
+}
+
+function Breakdown({title, rows}) {
+  // Bars show each row's share of the whole, so a catch-all row doesn't
+  // look like the biggest group.
+  const total = rows.reduce((sum, r) => sum + r.count, 0) || 1;
+  return (
+    <div className={styles.breakdown}>
+      <Heading as="h3">{title}</Heading>
+      <ul>
+        {rows.map((r) => (
+          <li key={r.label}>
+            <span className={styles.breakdownLabel}>{r.label}</span>
+            <span className={styles.breakdownCount}>{formatCount(r.count)}</span>
+            <span className={styles.bar} aria-hidden="true">
+              <span style={{width: `${(r.count / total) * 100}%`}} />
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/** Counts from src/data/networkStats.json (`npm run stats` refreshes it). */
+function MeshNumbers() {
+  const {asOf, active, activeShort, newByMonth, byType, byArea, byHardware} = networkStats;
+  const count = (label) => byType.find((t) => t.label === label)?.count ?? 0;
+  const areas = byArea.filter((a) => a.label !== 'Elsewhere').length;
+
+  // "April", or "April 2026" if the months on show cross a year boundary;
+  // the asOf month is still in progress, so it's flagged rather than final.
+  const asOfMonth = asOf.slice(0, 7);
+  const spansYears = new Set(newByMonth.map((m) => m.month.slice(0, 4))).size > 1;
+  const monthRows = newByMonth.map(({month, count}) => {
+    const [year, m] = month.split('-');
+    const label = `${MONTHS[Number(m) - 1]}${spansYears ? ` ${year}` : ''}${month === asOfMonth ? ' (so far)' : ''}`;
+    return {label, count};
+  });
+
+  return (
+    <section className={clsx(styles.section, styles.numbers)} aria-labelledby="numbers-heading">
+      <div className="container">
+        <div className={styles.sectionHead}>
+          <div>
+            <Heading as="h2" id="numbers-heading">
+              The mesh in numbers
+            </Heading>
+            <p>
+              These count nodes heard over MQTT that share a position in
+              Malaysia. Nodes that stay radio-only or keep their position
+              private aren’t counted, so the mesh is bigger than this.
+            </p>
+          </div>
+          <a href="https://meshmap2.lucifernet.com/" target="_blank" rel="noreferrer" className={styles.moreLink}>
+            Live mesh map ↗
+          </a>
+        </div>
+        <dl className={styles.tiles}>
+          <div>
+            <dt>Active nodes</dt>
+            <dd>{formatCount(active.count)}</dd>
+            <dd className={styles.tileNote}>in the {active.days} days to {formatDate(asOf)}</dd>
+          </div>
+          <div>
+            <dt>Recently active</dt>
+            <dd>{formatCount(activeShort.count)}</dd>
+            <dd className={styles.tileNote}>in the {activeShort.days} days to {formatDate(asOf)}</dd>
+          </div>
+          <div>
+            <dt>Set up as routers</dt>
+            <dd>{formatCount(count('Routers'))}</dd>
+            <dd className={styles.tileNote}>active, set by their owners</dd>
+          </div>
+          <div>
+            <dt>Areas</dt>
+            <dd>{areas}</dd>
+            <dd className={styles.tileNote}>across Malaysia</dd>
+          </div>
+        </dl>
+        <div className={styles.breakdowns}>
+          <Breakdown title="By type" rows={byType} />
+          <Breakdown title="By area" rows={byArea} />
+          <Breakdown title="Popular radios" rows={byHardware} />
+          <Breakdown title="New nodes by month" rows={monthRows} />
+        </div>
+        <p className={styles.numbersNote}>
+          Snapshot from {formatDate(asOf)}. Types, areas and radios cover
+          the {active.days}-day window above; types are the role each owner
+          chose and areas are approximate. New nodes by month counts only
+          nodes heard in the 90 days before the snapshot, as the source
+          keeps no older history.
+        </p>
       </div>
     </section>
   );
@@ -300,11 +409,12 @@ export default function Home() {
   return (
     <Layout
       title="Off-grid messaging for Malaysia"
-      description="MeshMY is a volunteer Meshtastic community running solar-powered LoRa routers around the Klang Valley. Join the mesh on 919 MHz in three steps.">
+      description="MeshMY is a volunteer Meshtastic community running solar-powered LoRa routers around the Klang Valley, alongside Penang's community routers. Join the mesh on 919 MHz in three steps.">
       <div id="top" />
       <Hero focus={focus} onSelect={select} />
       <main>
         <SiteStrip focused={focus?.name} onSelect={select} />
+        <MeshNumbers />
         <Join />
         <Next />
       </main>
