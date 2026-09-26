@@ -164,15 +164,15 @@ export default function BuyingGuide() {
             <Heading as="h1">Choose your first radio</Heading>
             <p className={styles.lead}>
               Any Meshtastic radio in its 915&nbsp;MHz version can join the
-              MeshMY mesh on MY_919, so there’s no wrong choice. What changes is battery life, the
-              screen, and how much you put together yourself. Answer four
-              questions for a shortlist, or read on to compare.
+              MeshMY mesh on MY_919. The radios differ in battery life, screen,
+              and how much you put together yourself. Answer four questions for
+              a shortlist, or read on to compare.
             </p>
           </header>
 
           <section className={styles.before} aria-labelledby="before-heading">
             <Heading as="h2" id="before-heading" className={styles.beforeTitle}>
-              Before you buy anything
+              Before you buy
             </Heading>
             <ol className={styles.beforeList}>
               {beforeYouBuy.map((b) => (
@@ -188,7 +188,7 @@ export default function BuyingGuide() {
           <Section
             id="compare"
             title="How the options compare"
-            lead="The four questions above come down to a few choices. Here’s what each one means.">
+            lead="More detail on the four questions above.">
             <Heading as="h3" className={styles.sub}>
               The chip: nRF52 or ESP32
             </Heading>
@@ -243,11 +243,10 @@ export default function BuyingGuide() {
               The LoRa chip
             </Heading>
             <p className={styles.body}>
-              The radio chip itself matters less, as long as it’s a recent one.
-              Look for <strong>SX1262</strong>, or <strong>LR1110 / LR1121</strong>, in the
-              specs. Meshtastic strongly recommends these over the older{' '}
-              <strong>SX1276</strong>, found on the original T-Beam and Heltec V2:
-              skip those, even when they’re cheap.
+              Look for <strong>SX1262</strong>, <strong>LR1110</strong> or{' '}
+              <strong>LR1121</strong> in the specs. Meshtastic strongly recommends
+              these over the older <strong>SX1276</strong>, used on the original
+              T-Beam and the Heltec V2, so skip boards with the SX1276.
             </p>
 
             <Heading as="h3" className={styles.sub}>
@@ -280,8 +279,8 @@ export default function BuyingGuide() {
 
           <Section
             id="upgrade"
-            title="Start, then upgrade"
-            lead="Start with one radio. Upgrade when something bothers you, one thing at a time.">
+            title="What to buy first, and what to upgrade"
+            lead="Start with one radio. Upgrade one thing at a time, when you need to.">
             <div className={styles.startGrid}>
               {starts.map((s) => (
                 <div key={s.title} className={styles.start}>
@@ -319,14 +318,14 @@ export default function BuyingGuide() {
               ))}
             </div>
             <p className={styles.routerNote}>
-              <strong>Thinking about a router?</strong> A router on a roof or a
-              hill needs a site, solar power, weatherproofing and a word with
-              MeshMY first. It gets its own guide, coming later.
+              <strong>Routers aren’t covered here.</strong> A router on a roof or
+              a hill needs a site, solar power and weatherproofing, and you should
+              talk to MeshMY first. A separate guide will cover them.
             </p>
           </Section>
 
-          <Section id="picks" title="Every pick at a glance">
-            <div className={styles.tableWrap} role="region" aria-label="Every pick at a glance" tabIndex={0}>
+          <Section id="picks" title="All the picks">
+            <div className={styles.tableWrap} role="region" aria-label="All the picks" tabIndex={0}>
               <table className={clsx(styles.table, styles.picksTable)}>
                 <caption>
                   {priced ? `Typical prices in Malaysia, ${pricesAsOf}. ` : ''}
@@ -400,9 +399,9 @@ export default function BuyingGuide() {
           <section className={styles.cta} aria-labelledby="cta-heading">
             <div>
               <Heading as="h2" id="cta-heading" className={styles.ctaTitle}>
-                Got your radio?
+                Set up your radio
               </Heading>
-              <p>Charge it, fit the antenna, and set it up for MeshMY in a few minutes.</p>
+              <p>When it arrives, charge it, fit the antenna, and follow the setup steps for MeshMY.</p>
             </div>
             <Link to="/meshtastic/join" className={clsx('button', 'button--lg', styles.ctaButton)}>
               Connect to the mesh →

@@ -24,22 +24,22 @@ export const chips = {
   nrf52: {
     name: 'nRF52 radios',
     short: 'nRF52',
-    headline: 'Days on a charge',
-    summary: 'sip power, so they last days on a small battery. No Wi-Fi.',
+    headline: 'Long battery life, no Wi-Fi',
+    summary: 'use little power, so a small battery lasts days. No Wi-Fi.',
     points: [
-      'Uses a fraction of the power: a small battery lasts days, not hours.',
+      'Uses little power. A small battery lasts days.',
       'No Wi-Fi. Your phone can still connect it to MQTT over Bluetooth.',
-      'What most of Malaysia’s hilltop routers run.',
+      'Most of Malaysia’s hilltop routers use it.',
     ],
   },
   esp32: {
     name: 'ESP32 radios',
     short: 'ESP32',
-    headline: 'Wi-Fi, but charge it daily',
-    summary: 'have Wi-Fi, but drain a small battery in under a day (about 10 hours in the bench test). Fine on USB power.',
+    headline: 'Wi-Fi, short battery life',
+    summary: 'have Wi-Fi, but a small battery lasts under a day (about 10 hours in the bench test). Fine on USB power.',
     points: [
       'Has Wi-Fi, so it can reach MQTT without your phone.',
-      'Uses much more power: expect to charge a pocket radio every day.',
+      'Uses much more power. A pocket radio needs charging every day.',
       'Turning Wi-Fi on turns Bluetooth off, so you can’t use both at once.',
     ],
   },
@@ -71,7 +71,7 @@ export const devices = [
     maker: 'Seeed',
     chip: 'nrf52',
     form: 'ready',
-    why: 'Card-sized and waterproof, with GPS. No screen and no antenna plug: it’s sealed.',
+    why: 'Card-sized and waterproof, with GPS. It has no screen and no antenna plug.',
     screen: 'None',
     gps: 'Yes',
     inBox: 'Ready to use: 700 mAh battery, sealed IP65 case',
@@ -87,7 +87,7 @@ export const devices = [
     maker: 'Seeed',
     chip: 'nrf52',
     form: 'ready',
-    why: 'A screen, GPS and a big battery in a case. Get the Pro: the plain L1 has no case.',
+    why: 'A screen, GPS and a 2000 mAh battery in a case. The plain L1 has no case, so get the Pro.',
     screen: 'OLED',
     gps: 'Yes',
     inBox: 'Ready to use: 2000 mAh battery, case',
@@ -153,7 +153,7 @@ export const devices = [
     maker: 'Seeed',
     chip: 'nrf52',
     form: 'diy',
-    why: 'The cheapest way in, and very frugal. No screen, so you do everything in the app.',
+    why: 'The cheapest option, and it uses very little power. It has no screen, so you do everything in the app.',
     screen: 'None',
     gps: 'Optional',
     inBox: 'Two small boards: add a LiPo and a case',
@@ -201,7 +201,7 @@ export const devices = [
     maker: 'Heltec',
     chip: 'esp32',
     form: 'diy',
-    why: 'The V3’s successor, with a GPS socket and solar input. A good home radio on USB power, with Wi-Fi for MQTT.',
+    why: 'The V3’s successor, with a GPS socket and solar input. At home on USB power, it can use Wi-Fi for MQTT.',
     screen: 'OLED',
     gps: 'Optional',
     inBox: 'Bare board: add a LiPo. Case optional',
@@ -233,7 +233,7 @@ export const devices = [
     maker: 'LilyGO',
     chip: 'esp32',
     form: 'ready',
-    why: 'A keyboard, a screen and GPS: send messages without a phone.',
+    why: 'A keyboard, a screen and GPS, so you can send messages without a phone.',
     screen: 'Colour + keyboard',
     gps: 'Yes',
     inBox: 'Ready to use: 2000 mAh battery, case',
@@ -264,7 +264,7 @@ export const devices = [
 export const beforeYouBuy = [
   {
     title: 'Buy the 915 MHz version.',
-    text: 'Radios are built for one band. Look for “915 MHz”, “902–928 MHz”, “US915” or “863–928 MHz”: that covers MY_919. Avoid 868 MHz (Europe) and 470–510 MHz (China only; it isn’t a 433 MHz radio either).',
+    text: 'Each radio is made for one band. For MY_919, look for “915 MHz”, “902–928 MHz”, “US915” or “863–928 MHz”. Avoid 868 MHz (Europe) and 470–510 MHz (China only, and not 433 MHz either).',
   },
   {
     title: 'Fit the antenna before you switch it on.',
@@ -293,7 +293,7 @@ export const pickerQuestions = [
   {
     id: 'phone',
     label: 'Will you use it with your phone?',
-    why: 'Most radios have no keyboard: you type in the Meshtastic app, and the phone talks to the radio over Bluetooth. A few have their own keyboard.',
+    why: 'Most radios have no keyboard. You type in the Meshtastic app, and your phone talks to the radio over Bluetooth. A few radios have their own keyboard.',
     options: [
       {value: 'phone', label: 'With my phone'},
       {value: 'standalone', label: 'On its own'},
@@ -335,11 +335,11 @@ export function pickRadios({where, phone, diy, wifi}) {
       return ready
         ? {
             ids: ['heltec-v4', 'tdeck-plus'],
-            note: 'Ready-made radios with Wi-Fi are rare. At home, most people use a Heltec V4 in Heltec’s optional case, on USB power.',
+            note: 'The only ready-made radios with Wi-Fi have keyboards. The Heltec V4 is a bare board, but at home it runs on USB power, so all it needs is a case (Heltec sells one).',
           }
         : {
             ids: ['heltec-v4', 'heltec-v3'],
-            note: 'At home it can stay on USB power, so an ESP32 board’s appetite doesn’t matter, and you get Wi-Fi.',
+            note: 'At home it can stay on USB power, so the ESP32’s power use doesn’t matter, and you get Wi-Fi.',
           };
     }
     return ready
@@ -356,7 +356,7 @@ export function pickRadios({where, phone, diy, wifi}) {
     return ready
       ? {
           ids: ['tdeck-plus', 'tlora-pager'],
-          note: 'The ready-made radios here with Wi-Fi both have keyboards. For a small pocket radio, answer “No” to Wi-Fi: your phone can connect an nRF52 radio to MQTT instead.',
+          note: 'The ready-made radios here with Wi-Fi both have keyboards. For a small pocket radio, answer “No” to Wi-Fi. Your phone can connect an nRF52 radio to MQTT instead.',
         }
       : {
           ids: ['heltec-v3', 'heltec-tracker'],
@@ -364,7 +364,7 @@ export function pickRadios({where, phone, diy, wifi}) {
         };
   }
   return ready
-    ? {ids: ['t1000e', 'wio-l1-pro', 'techo'], note: 'All three are nRF52 with GPS, a battery and a case. Charge, pair and go.'}
+    ? {ids: ['t1000e', 'wio-l1-pro', 'techo'], note: 'All three are nRF52, with GPS, a battery and a case.'}
     : {ids: ['heltec-t114', 'xiao-kit', 'rak-kit'], note: 'All three are nRF52. Check the battery plug’s polarity before you connect it (see the checklist below).'};
 }
 
@@ -376,7 +376,7 @@ export const formFactors = [
   },
   {
     title: 'Pocket radio',
-    text: 'In a case with a battery, paired to your phone. The easiest start.',
+    text: 'In a case with a battery, paired to your phone. The easiest way to start.',
     examples: 'WisMesh Pocket V2, Wio Tracker L1 Pro, T-Echo',
   },
   {
@@ -398,23 +398,23 @@ export const formFactors = [
 export const features = [
   {
     title: 'Screen',
-    text: 'Shows the pairing PIN, messages and who’s nearby. OLED is sharp but small. E-ink reads well in sunlight and uses almost no power. Optional: without one, you do everything in the app.',
+    text: 'Shows the pairing PIN, messages and who’s nearby. OLED is sharp but small. E-ink reads well in sunlight and uses almost no power. You can do without one and use the app for everything.',
   },
   {
     title: 'GPS',
-    text: 'Shares your position on the map and sets the clock. You can skip it: the app can use your phone’s location instead.',
+    text: 'Shares your position on the map and sets the clock. You can skip it, because the app can share your phone’s location instead.',
   },
   {
     title: 'Battery',
-    text: 'Ready-made radios include one. Bare boards take a single-cell 3.7 V LiPo with a small JST plug: check the plug’s polarity before you connect it.',
+    text: 'Ready-made radios include one. Bare boards take a single-cell 3.7 V LiPo with a small JST plug. Check the plug’s polarity before you connect it.',
   },
   {
     title: 'Buttons',
-    text: 'Useful for waking the screen or sending a quick message. Most radios have one or two.',
+    text: 'A button wakes the screen or sends a quick message. Most radios have one or two.',
   },
   {
     title: 'Antenna plug',
-    text: 'SMA is sturdy and easy to swap. IPEX (U.FL) is a tiny snap-on plug that wears out if you swap it often: use a short IPEX-to-SMA cable if you plan to upgrade.',
+    text: 'SMA is sturdy and easy to swap. IPEX (U.FL) is a tiny snap-on plug that wears out if you swap it often. If you plan to upgrade, use a short IPEX-to-SMA cable.',
   },
   {
     title: 'Sensors',
@@ -425,14 +425,14 @@ export const features = [
 export const starts = [
   {
     kicker: 'Ready-made',
-    title: 'Charge it and go',
-    text: 'In a case with a battery. The easiest way to start.',
+    title: 'In a case, with a battery',
+    text: 'The easiest way to start.',
     ids: ['wio-l1-pro', 't1000e'],
   },
   {
     kicker: 'Build it yourself',
-    title: 'Cheaper, with a little work',
-    text: 'Add a LiPo battery and a case. No soldering needed.',
+    title: 'Add a battery and a case',
+    text: 'Cheaper than ready-made. No soldering needed.',
     ids: ['heltec-t114', 'xiao-kit'],
   },
 ];
@@ -440,13 +440,13 @@ export const starts = [
 export const upgrades = [
   {
     kicker: 'Better range',
-    title: 'Antenna first, then height',
-    text: 'A good 915 MHz antenna is the cheapest upgrade: stock antennas are often poorly tuned. Then get it higher, at a window or on a higher floor. Match the plug (SMA, RP-SMA or IPEX). The T1000-E’s antenna is built in, so it can’t be upgraded.',
+    title: 'A better antenna, then height',
+    text: 'A good 915 MHz antenna is the cheapest upgrade, because stock antennas are often poorly tuned. Then move the radio higher, to a window or a higher floor. Match the plug (SMA, RP-SMA or IPEX). The T1000-E’s antenna is built in and can’t be changed.',
   },
   {
     kicker: 'Longer battery',
     title: 'Move to nRF52',
-    text: 'If an ESP32 radio dies by the evening, an nRF52 radio lasts days. A bigger battery helps too.',
+    text: 'An nRF52 radio lasts days on a battery that runs an ESP32 radio for hours. A bigger battery also helps.',
     ids: ['rak-kit', 'wismesh-pocket'],
   },
   {
@@ -464,7 +464,7 @@ export const upgrades = [
   {
     kicker: 'A node at home',
     title: 'A radio by the window',
-    text: 'Leave a radio on USB power by a high window, with a better antenna. It stays on the mesh when you’re out. Set its role to CLIENT_BASE.',
+    text: 'A radio on USB power by a high window, with a better antenna, keeps you on the mesh when you’re out. Set its role to CLIENT_BASE.',
     ids: ['heltec-v4', 'wismesh-pocket'],
   },
 ];
