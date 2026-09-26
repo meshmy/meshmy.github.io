@@ -6,8 +6,7 @@
  *
  * Specs are from each maker's product page, checked against Meshtastic's
  * hardware docs (meshtastic.org/docs/hardware/devices/) in September 2026.
- * MeshCore support is from the MeshCore flasher's device list
- * (flasher.meshcore.io/config.json). Re-check both when updating.
+ * Re-check them when updating.
  */
 
 // Shown with the prices. Update it whenever `priceRm` values change.
@@ -36,7 +35,7 @@ export const chips = {
     name: 'ESP32 radios',
     short: 'ESP32',
     headline: 'Wi-Fi, short battery life',
-    summary: 'have Wi-Fi, but a small battery lasts under a day (about 10 hours in the bench test). Fine on USB power.',
+    summary: 'have Wi-Fi, but draw over ten times the current of an nRF52 board, so a small battery lasts hours. Fine on USB power.',
     points: [
       'Has Wi-Fi, so it can reach MQTT without your phone.',
       'Uses much more power. A pocket radio needs charging every day.',
@@ -45,23 +44,24 @@ export const chips = {
   },
 };
 
-// Default settings, from keepteen.com's bench test of 20 radios.
-export const batteryTest = {
-  source:
-    'https://www.keepteen.com/blog-Solar-Lora-12710/After-testing-20-devices-I-finally-figured-out-the-secret-of-Meshtastics-battery-life-11946561.html',
+// Current draw measured by Meshtastic users from a 3.7 V battery, on
+// firmware 2.3.10. Bluetooth on, in mA.
+export const powerTest = {
+  source: 'https://github.com/HarukiToreda/Meshtastic-Experiments/blob/main/LoRa-Boards-Power-Measurements.md',
   rows: [
-    {radio: 'RAK WisBlock (RAK19007)', chip: 'nrf52', battery: '1100 mAh', hours: '154 hours'},
-    {radio: 'Heltec T114', chip: 'nrf52', battery: '1100 mAh', hours: '104 hours'},
-    {radio: 'SenseCAP T1000-E', chip: 'nrf52', battery: '700 mAh', hours: '64 hours'},
-    {radio: 'Heltec V3.1', chip: 'esp32', battery: '700 mAh', hours: '10 hours'},
-    {radio: 'LilyGO T-Deck', chip: 'esp32', battery: '700 mAh', hours: '10 hours'},
+    {radio: 'RAK WisBlock (RAK19007)', chip: 'nrf52', screenOn: null, screenOff: 7},
+    {radio: 'Heltec T114', chip: 'nrf52', screenOn: 19, screenOff: 7},
+    {radio: 'Wio Tracker L1 Pro', chip: 'nrf52', screenOn: 16, screenOff: 7},
+    {radio: 'Heltec V3', chip: 'esp32', screenOn: 109, screenOff: 101},
+    {radio: 'Heltec V4', chip: 'esp32', screenOn: 111, screenOff: 105},
+    {radio: 'LilyGO T-Deck', chip: 'esp32', screenOn: 140, screenOff: 113},
   ],
 };
 
 /*
  * The picked radios. `form` is 'ready' (case and battery in the box) or
- * 'diy' (a bare board: add a LiPo, and a case). `band433` and `meshcore`
- * are {value: 'yes' | 'no' | 'partly' | 'unconfirmed', note}.
+ * 'diy' (a bare board: add a LiPo, and a case). `lowBand` is true when a
+ * 433 MHz version exists, a note when there's a catch, or null.
  * `priceRm` is [low, high], or null until someone checks local prices.
  */
 export const devices = [
@@ -76,8 +76,7 @@ export const devices = [
     gps: 'Yes',
     inBox: 'Ready to use: 700 mAh battery, sealed IP65 case',
     connector: 'Built in',
-    band433: {value: 'no'},
-    meshcore: {value: 'yes'},
+    lowBand: null,
     priceRm: null,
     url: 'https://www.seeedstudio.com/SenseCAP-Card-Tracker-T1000-E-for-Meshtastic-p-5913.html',
   },
@@ -92,8 +91,7 @@ export const devices = [
     gps: 'Yes',
     inBox: 'Ready to use: 2000 mAh battery, case',
     connector: 'IPEX',
-    band433: {value: 'no'},
-    meshcore: {value: 'yes'},
+    lowBand: null,
     priceRm: null,
     url: 'https://www.seeedstudio.com/Wio-Tracker-L1-Pro-p-6454.html',
   },
@@ -108,8 +106,7 @@ export const devices = [
     gps: 'Yes',
     inBox: 'Ready to use: 850 mAh battery, case',
     connector: 'IPEX',
-    band433: {value: 'yes'},
-    meshcore: {value: 'yes'},
+    lowBand: true,
     priceRm: null,
     url: 'https://lilygo.cc/en-us/products/t-echo-meshtastic',
   },
@@ -124,10 +121,7 @@ export const devices = [
     gps: 'Yes',
     inBox: 'Ready to use: 3200 mAh battery, case',
     connector: 'SMA',
-    band433: {value: 'no'},
-    // The flasher lists "RAK WisBlock / WisMesh (RAK 4631)", not the Pocket
-    // V2 by name, though the Pocket is built on the RAK4631.
-    meshcore: {value: 'unconfirmed', note: 'Not listed by name'},
+    lowBand: null,
     priceRm: null,
     url: 'https://store.rakwireless.com/products/wismesh-pocket',
   },
@@ -142,8 +136,7 @@ export const devices = [
     gps: 'Optional',
     inBox: 'Bare board: add a LiPo. Case optional',
     connector: 'IPEX',
-    band433: {value: 'yes'},
-    meshcore: {value: 'yes'},
+    lowBand: true,
     priceRm: null,
     url: 'https://heltec.org/project/mesh-node-t114/',
   },
@@ -158,8 +151,7 @@ export const devices = [
     gps: 'Optional',
     inBox: 'Two small boards: add a LiPo and a case',
     connector: 'IPEX',
-    band433: {value: 'partly', note: 'With a separate LF module'},
-    meshcore: {value: 'yes'},
+    lowBand: 'with the separate Wio-SX1262-LF module',
     priceRm: null,
     url: 'https://www.seeedstudio.com/XIAO-nRF52840-Wio-SX1262-Kit-for-Meshtastic-p-6400.html',
   },
@@ -174,8 +166,7 @@ export const devices = [
     gps: 'Optional',
     inBox: 'Base board and core: add a LiPo and a case',
     connector: 'IPEX',
-    band433: {value: 'yes', note: 'EU433, not CN470'},
-    meshcore: {value: 'yes'},
+    lowBand: 'the EU433 version (not CN470)',
     priceRm: null,
     url: 'https://store.rakwireless.com/products/wisblock-meshtastic-starter-kit',
   },
@@ -190,8 +181,7 @@ export const devices = [
     gps: 'No',
     inBox: 'Bare board: add a LiPo. Case optional',
     connector: 'IPEX',
-    band433: {value: 'yes'},
-    meshcore: {value: 'yes'},
+    lowBand: true,
     priceRm: null,
     url: 'https://heltec.org/project/wifi-lora-32-v3/',
   },
@@ -206,8 +196,7 @@ export const devices = [
     gps: 'Optional',
     inBox: 'Bare board: add a LiPo. Case optional',
     connector: 'IPEX',
-    band433: {value: 'no'},
-    meshcore: {value: 'yes'},
+    lowBand: null,
     priceRm: null,
     url: 'https://heltec.org/project/wifi-lora-32-v4/',
   },
@@ -222,8 +211,7 @@ export const devices = [
     gps: 'Yes',
     inBox: 'Bare board: add a LiPo and a case',
     connector: 'IPEX',
-    band433: {value: 'no'},
-    meshcore: {value: 'yes'},
+    lowBand: null,
     priceRm: null,
     url: 'https://heltec.org/project/wireless-tracker-v2/',
   },
@@ -238,8 +226,7 @@ export const devices = [
     gps: 'Yes',
     inBox: 'Ready to use: 2000 mAh battery, case',
     connector: 'IPEX',
-    band433: {value: 'yes'},
-    meshcore: {value: 'yes'},
+    lowBand: true,
     priceRm: null,
     url: 'https://lilygo.cc/en-us/products/t-deck-plus-meshtastic',
   },
@@ -249,22 +236,30 @@ export const devices = [
     maker: 'LilyGO',
     chip: 'esp32',
     form: 'ready',
-    why: 'A pocket keyboard handheld with GPS. On MeshCore it can’t be a companion radio.',
+    why: 'A pocket-sized keyboard handheld with GPS and a 1500 mAh battery.',
     screen: 'Colour + keyboard',
     gps: 'Yes',
     inBox: 'Ready to use: 1500 mAh battery, case',
     connector: 'Not stated',
-    band433: {value: 'yes'},
-    meshcore: {value: 'partly', note: 'No companion or repeater'},
+    lowBand: true,
     priceRm: null,
     url: 'https://lilygo.cc/en-us/products/t-lora-pager-meshtastic',
   },
 ];
 
+// Band classes a buyer meets. Ranges are typical module ratings (e.g.
+// Heltec 863–928, Seeed Wio-SX1262 862–930, Ebyte E22-900M 850–930 MHz;
+// RAK4631-L 433–470 MHz). The SX1262 itself covers 150–960 MHz.
+export const bands = [
+  {band: 'High band', range: 'about 850–930 MHz', soldAs: '868, 915 or 923 MHz', use: 'MY_919. Buy 915 MHz if you can.'},
+  {band: 'Low band', range: 'about 410–510 MHz', soldAs: '433 or 470 MHz', use: 'Licensed amateur operators only (see below). 470 MHz is for China.'},
+  {band: '2.4 GHz', range: '2400–2483.5 MHz', soldAs: '2.4 GHz', use: 'Not used by MeshMY.'},
+];
+
 export const beforeYouBuy = [
   {
-    title: 'Buy the 915 MHz version.',
-    text: 'Each radio is made for one band. For MY_919, look for “915 MHz”, “902–928 MHz”, “US915” or “863–928 MHz”. Avoid 868 MHz (Europe) and 470–510 MHz (China only, and not 433 MHz either).',
+    title: 'Buy a high-band version, ideally 915 MHz.',
+    text: 'Radios are sold in versions for different bands. Any high-band version (868, 915 or 923 MHz) works on MY_919, but the 915 MHz version’s antenna is tuned closest to it. See Frequency bands below.',
   },
   {
     title: 'Fit the antenna before you switch it on.',
@@ -389,10 +384,6 @@ export const formFactors = [
     text: 'A screen and keyboard, so it works without a phone. Bigger, and ESP32, so it needs daily charging.',
     examples: 'T-Deck Plus, T-Lora Pager',
   },
-  {
-    title: 'Solar and rooftop',
-    text: 'Weatherproof, with a solar panel and a large battery. These are routers, which get their own guide later.',
-  },
 ];
 
 export const features = [
@@ -472,7 +463,7 @@ export const upgrades = [
 export const listingChecklist = [
   {
     title: 'The band.',
-    text: 'The listing, or the option you pick, says 915 MHz or 902–928 MHz. Many listings make you choose at checkout.',
+    text: 'The listing, or the option you pick, is a high-band version, ideally 915 MHz. Many listings make you choose at checkout.',
   },
   {
     title: 'What’s in the box.',

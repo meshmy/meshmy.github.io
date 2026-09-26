@@ -268,6 +268,10 @@
 .list li + li {
   margin-top: 0.25rem;
 }
+.section > .list {
+  max-width: 46rem;
+  margin-bottom: 1rem;
+}
 
 .features {
   display: grid;
@@ -289,18 +293,6 @@
   color: var(--mm-muted);
 }
 
-.routerNote {
-  margin: 1.5rem 0 0;
-  padding: 1rem 1.25rem;
-  font-size: 0.9375rem;
-  color: var(--mm-muted);
-  border: 1px dashed var(--mm-line-strong);
-  border-radius: 0.75rem;
-}
-.routerNote strong {
-  color: var(--ifm-font-color-base);
-}
-
 /* ---------- Tables ---------- */
 
 /* Wide tables scroll inside their own frame on phones, not the page. */
@@ -308,6 +300,9 @@
   overflow-x: auto;
   border: 1px solid var(--mm-line);
   border-radius: 1rem;
+}
+.tableWrap + .body {
+  margin-top: 1rem;
 }
 .tableWrap:focus-visible {
   outline: 2px solid var(--brand-highlight-text);
@@ -386,9 +381,6 @@
 .picksTable td.wide {
   min-width: 9.5rem;
 }
-.picksTable td.markCell {
-  min-width: 8rem;
-}
 /* Keep the radio's name in view while the table scrolls sideways. */
 .picksTable tbody th,
 .picksTable thead th:first-child {
@@ -408,48 +400,6 @@
     min-width: 8.5rem;
     max-width: 8.5rem;
   }
-}
-
-/* Yes / no / partly: a shape plus a word. */
-.mark {
-  display: inline-flex;
-  gap: 0.375rem;
-  align-items: flex-start;
-  color: var(--ifm-font-color-base);
-}
-.mark small {
-  display: block;
-  font-size: 0.8125rem;
-  color: var(--mm-muted);
-}
-.mark svg {
-  flex-shrink: 0;
-  margin-top: 0.25rem;
-  color: var(--brand-highlight-text);
-}
-.markShape {
-  flex-shrink: 0;
-  width: 0.625rem;
-  height: 0.625rem;
-  margin: 0.375rem 0.125rem 0;
-  border-radius: 50%;
-}
-.mark--no {
-  color: var(--mm-muted);
-}
-.mark--no .markShape {
-  width: 0.75rem;
-  height: 2px;
-  margin-top: 0.7rem;
-  border-radius: 1px;
-  background: var(--mm-muted);
-}
-.mark--partly .markShape {
-  border: 2px solid var(--brand-highlight-text);
-  background: linear-gradient(90deg, var(--brand-highlight-text) 50%, transparent 50%);
-}
-.mark--unconfirmed .markShape {
-  border: 2px dashed var(--mm-muted);
 }
 
 /* ---------- Checklist ---------- */

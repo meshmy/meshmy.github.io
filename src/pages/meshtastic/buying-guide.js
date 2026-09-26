@@ -6,7 +6,7 @@ import Heading from '@theme/Heading';
 import {Choice} from '@site/src/components/Setup';
 import useStoredState from '@site/src/components/Join/useStoredState';
 import {
-  batteryTest,
+  bands,
   beforeYouBuy,
   chips,
   devices,
@@ -16,6 +16,7 @@ import {
   listingChecklist,
   pickRadios,
   pickerQuestions,
+  powerTest,
   pricesAsOf,
   starts,
   upgrades,
@@ -32,20 +33,6 @@ function CheckGlyph() {
     <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
       <path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
-  );
-}
-
-/** Yes / no / partly, by shape and word (never by colour alone). */
-function Mark({value, note}) {
-  const word = {yes: 'Yes', no: 'No', partly: 'Partly', unconfirmed: 'Unconfirmed'}[value];
-  return (
-    <span className={clsx(styles.mark, styles[`mark--${value}`])}>
-      {value === 'yes' ? <CheckGlyph /> : <span className={styles.markShape} aria-hidden="true" />}
-      <span>
-        {word}
-        {note && <small>{note}</small>}
-      </span>
-    </span>
   );
 }
 
@@ -163,8 +150,8 @@ export default function BuyingGuide() {
             <p className={styles.eyebrow}>Meshtastic<sup>®</sup> · Buying guide</p>
             <Heading as="h1">Choose your first radio</Heading>
             <p className={styles.lead}>
-              Any Meshtastic radio in its 915&nbsp;MHz version can join the
-              MeshMY mesh on MY_919. The radios differ in battery life, screen,
+              Any high-band Meshtastic radio can join the MeshMY mesh on
+              MY_919. The radios differ in battery life, screen,
               and how much you put together yourself. Answer four questions for
               a shortlist, or read on to compare.
             </p>
@@ -210,29 +197,77 @@ export default function BuyingGuide() {
                 </div>
               ))}
             </div>
-            <div className={styles.tableWrap} role="region" aria-label="Battery bench test" tabIndex={0}>
+            <div className={styles.tableWrap} role="region" aria-label="Measured current draw" tabIndex={0}>
               <table className={styles.table}>
                 <caption>
-                  Battery bench test at default settings.{' '}
-                  <a href={batteryTest.source} target="_blank" rel="noreferrer">
-                    Source ↗
+                  Current draw in mA with Bluetooth on, measured by Meshtastic users from a
+                  3.7&nbsp;V battery on firmware 2.3.10.{' '}
+                  <a href={powerTest.source} target="_blank" rel="noreferrer">
+                    Measurements ↗
                   </a>
                 </caption>
                 <thead>
                   <tr>
                     <th scope="col">Radio</th>
                     <th scope="col">Chip</th>
-                    <th scope="col">Battery</th>
-                    <th scope="col">Ran for about</th>
+                    <th scope="col">Screen on</th>
+                    <th scope="col">Screen off</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {batteryTest.rows.map((r) => (
+                  {powerTest.rows.map((r) => (
                     <tr key={r.radio}>
                       <th scope="row">{r.radio}</th>
                       <td>{chips[r.chip].short}</td>
-                      <td>{r.battery}</td>
-                      <td className={styles.num}>{r.hours}</td>
+                      <td className={styles.num}>{r.screenOn ?? '–'}</td>
+                      <td className={styles.num}>{r.screenOff}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className={styles.body}>
+              Most radios use one of these two chips. Meshtastic also runs on RP2040 and
+              RP2350, STM32WL, and Linux computers such as a Raspberry Pi with a LoRa board.{' '}
+              <a href="https://meshtastic.org/docs/getting-started/#supported-hardware" target="_blank" rel="noreferrer">
+                Supported platforms ↗
+              </a>
+            </p>
+
+            <Heading as="h3" className={styles.sub}>
+              Frequency bands
+            </Heading>
+            <p className={styles.body}>
+              The LoRa chip in most radios, the SX1262, covers 150–960&nbsp;MHz, but each
+              board’s antenna and radio parts are tuned for one part of that range. Makers
+              sell a separate version for each band. Any high-band version works on MY_919
+              (919–924&nbsp;MHz). The 915&nbsp;MHz version is the best choice, because the
+              antenna it comes with is tuned closest to MY_919. Other versions, especially
+              868&nbsp;MHz, can have less range with their original antenna.
+            </p>
+            <div className={styles.tableWrap} role="region" aria-label="Frequency bands" tabIndex={0}>
+              <table className={styles.table}>
+                <caption>
+                  Typical tuning ranges from maker datasheets.{' '}
+                  <a href="https://www.semtech.com/products/wireless-rf/lora-connect/sx1262" target="_blank" rel="noreferrer">
+                    SX1262 ↗
+                  </a>
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Band</th>
+                    <th scope="col">Tuned for</th>
+                    <th scope="col">Sold as</th>
+                    <th scope="col">Use</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bands.map((b) => (
+                    <tr key={b.band}>
+                      <th scope="row">{b.band}</th>
+                      <td className={styles.num}>{b.range}</td>
+                      <td>{b.soldAs}</td>
+                      <td>{b.use}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -317,11 +352,6 @@ export default function BuyingGuide() {
                 </div>
               ))}
             </div>
-            <p className={styles.routerNote}>
-              <strong>Routers aren’t covered here.</strong> A router on a roof or
-              a hill needs a site, solar power and weatherproofing, and you should
-              talk to MeshMY first. A separate guide will cover them.
-            </p>
           </Section>
 
           <Section id="picks" title="All the picks">
@@ -342,8 +372,6 @@ export default function BuyingGuide() {
                     <th scope="col">GPS</th>
                     <th scope="col">In the box</th>
                     <th scope="col">Antenna plug</th>
-                    <th scope="col">433 MHz version</th>
-                    <th scope="col">Runs MeshCore</th>
                     {priced && <th scope="col">Price</th>}
                   </tr>
                 </thead>
@@ -359,24 +387,12 @@ export default function BuyingGuide() {
                       <td>{d.gps}</td>
                       <td className={styles.wide}>{d.inBox}</td>
                       <td>{d.connector}</td>
-                      <td className={styles.markCell}>
-                        <Mark value={d.band433.value} note={d.band433.note} />
-                      </td>
-                      <td className={styles.markCell}>
-                        <Mark value={d.meshcore.value} note={d.meshcore.note} />
-                      </td>
                       {priced && <td className={styles.num}>{formatPrice(d.priceRm) ?? '–'}</td>}
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <p className={styles.fine}>
-              <strong>433 MHz</strong> is for licensed amateur radio operators only; everyone
-              else uses MY_919. <strong>MeshCore</strong> is a different firmware for the same
-              radios. It doesn’t talk to Meshtastic, so the mesh you join depends on the
-              firmware you flash.
-            </p>
           </Section>
 
           <Section id="checklist" title="Check the listing before you pay">
@@ -391,9 +407,48 @@ export default function BuyingGuide() {
               ))}
             </ul>
             <p className={styles.fine}>
-              MeshMY doesn’t recommend or vouch for any shop. The Specs links go to each
-              maker’s own product page.
+              MeshMY does not endorse any maker or seller. Links to makers’ product pages
+              are provided for convenience only.
             </p>
+          </Section>
+
+          <Section id="amateur" title="For licensed amateur radio operators">
+            <p className={styles.body}>
+              If you hold a Malaysian amateur radio licence, you can also use Meshtastic on
+              the 70&nbsp;cm band. You need the low-band 433&nbsp;MHz version of the radio,
+              not the 470&nbsp;MHz version, which is for China.
+            </p>
+            <ul className={styles.list}>
+              <li>
+                <strong>MY_433</strong> covers 433–435&nbsp;MHz. MeshMY runs a 433&nbsp;MHz network
+                alongside MY_919.
+              </li>
+              <li>
+                <strong>ITU3_70CM</strong> covers the ITU Region&nbsp;3 amateur band,
+                430–450&nbsp;MHz. It arrives in firmware 2.8, which is in alpha as of September
+                2026, and it needs licensed mode.
+              </li>
+            </ul>
+            <p className={styles.body}>
+              In licensed mode, the channel has no encryption key and your long name should be
+              your callsign.{' '}
+              <a href="https://meshtastic.org/docs/configuration/radio/user/" target="_blank" rel="noreferrer">
+                Meshtastic user settings ↗
+              </a>
+            </p>
+            <Heading as="h3" className={styles.sub}>
+              Picks with a 433 MHz version
+            </Heading>
+            <ul className={styles.list}>
+              {devices
+                .filter((d) => d.lowBand)
+                .map((d) => (
+                  <li key={d.id}>
+                    {d.name}
+                    {typeof d.lowBand === 'string' && `: ${d.lowBand}`}
+                  </li>
+                ))}
+            </ul>
           </Section>
 
           <section className={styles.cta} aria-labelledby="cta-heading">
