@@ -176,7 +176,7 @@ export default function Join() {
                       <strong>The 915&nbsp;MHz version.</strong>{' '}
                       {licensed
                         ? 'That’s the one for MY_919. For 433 MHz you need a 433 MHz version.'
-                        : 'Any high-band version (868, 915 or 923 MHz) works on MY_919, but the 915 MHz version’s antenna suits it best. Check the band before you buy.'}
+                        : 'MY_919 (919–924 MHz) is inside the 902–928 MHz range of the 915 MHz versions. Radios are sold in versions for different bands, so check before you buy.'}
                     </li>
                     <li>
                       <strong>Bluetooth</strong>, so it pairs with your phone.

@@ -150,8 +150,8 @@ export default function BuyingGuide() {
             <p className={styles.eyebrow}>Meshtastic<sup>®</sup> · Buying guide</p>
             <Heading as="h1">Choose your first radio</Heading>
             <p className={styles.lead}>
-              Any high-band Meshtastic radio can join the MeshMY mesh on
-              MY_919. The radios differ in battery life, screen,
+              A Meshtastic radio in its 915&nbsp;MHz version can join the MeshMY
+              mesh on MY_919. The radios differ in power use, screen,
               and how much you put together yourself. Answer four questions for
               a shortlist, or read on to compare.
             </p>
@@ -180,7 +180,7 @@ export default function BuyingGuide() {
               The chip: nRF52 or ESP32
             </Heading>
             <p className={styles.body}>
-              The chip that runs Meshtastic decides battery life and whether the radio has Wi-Fi.
+              The chip that runs Meshtastic affects power use and whether the radio has Wi-Fi.
             </p>
             <div className={styles.chipGrid}>
               {['nrf52', 'esp32'].map((c) => (
@@ -227,7 +227,7 @@ export default function BuyingGuide() {
               </table>
             </div>
             <p className={styles.body}>
-              Most radios use one of these two chips. Meshtastic also runs on RP2040 and
+              Every pick on this page uses one of these two chips. Meshtastic also runs on RP2040 and
               RP2350, STM32WL, and Linux computers such as a Raspberry Pi with a LoRa board.{' '}
               <a href="https://meshtastic.org/docs/getting-started/#supported-hardware" target="_blank" rel="noreferrer">
                 Supported platforms ↗
@@ -238,26 +238,25 @@ export default function BuyingGuide() {
               Frequency bands
             </Heading>
             <p className={styles.body}>
-              The LoRa chip in most radios, the SX1262, covers 150–960&nbsp;MHz, but each
-              board’s antenna and radio parts are tuned for one part of that range. Makers
-              sell a separate version for each band. Any high-band version works on MY_919
-              (919–924&nbsp;MHz). The 915&nbsp;MHz version is the best choice, because the
-              antenna it comes with is tuned closest to MY_919. Other versions, especially
-              868&nbsp;MHz, can have less range with their original antenna.
+              The LoRa chip in most of these picks, the SX1262, covers 150–960&nbsp;MHz.
+              Makers still sell separate versions of each board for different bands: the
+              Heltec V3, for example, comes in 433, 470–510, 863–870 and 902–928&nbsp;MHz
+              versions. MY_919 (919–924&nbsp;MHz) is inside the 902–928&nbsp;MHz range of
+              the 915&nbsp;MHz versions. Meshtastic’s antenna guide says to use an antenna
+              tuned to the frequency you use.
             </p>
             <div className={styles.tableWrap} role="region" aria-label="Frequency bands" tabIndex={0}>
               <table className={styles.table}>
                 <caption>
-                  Typical tuning ranges from maker datasheets.{' '}
-                  <a href="https://www.semtech.com/products/wireless-rf/lora-connect/sx1262" target="_blank" rel="noreferrer">
-                    SX1262 ↗
+                  Example ranges from makers’ product pages.{' '}
+                  <a href="https://meshtastic.org/docs/hardware/antennas/lora-antenna/" target="_blank" rel="noreferrer">
+                    Meshtastic antenna guide ↗
                   </a>
                 </caption>
                 <thead>
                   <tr>
                     <th scope="col">Band</th>
-                    <th scope="col">Tuned for</th>
-                    <th scope="col">Sold as</th>
+                    <th scope="col">Examples</th>
                     <th scope="col">Use</th>
                   </tr>
                 </thead>
@@ -265,8 +264,7 @@ export default function BuyingGuide() {
                   {bands.map((b) => (
                     <tr key={b.band}>
                       <th scope="row">{b.band}</th>
-                      <td className={styles.num}>{b.range}</td>
-                      <td>{b.soldAs}</td>
+                      <td>{b.examples}</td>
                       <td>{b.use}</td>
                     </tr>
                   ))}
@@ -280,8 +278,8 @@ export default function BuyingGuide() {
             <p className={styles.body}>
               Look for <strong>SX1262</strong>, <strong>LR1110</strong> or{' '}
               <strong>LR1121</strong> in the specs. Meshtastic strongly recommends
-              these over the older <strong>SX1276</strong>, used on the original
-              T-Beam and the Heltec V2, so skip boards with the SX1276.
+              these over the older SX127x series. The original T-Beam (v0.7 and v1.1)
+              and the Heltec V2 use the <strong>SX1276</strong>, so skip those.
             </p>
 
             <Heading as="h3" className={styles.sub}>

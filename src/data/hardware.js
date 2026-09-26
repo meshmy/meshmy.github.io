@@ -23,22 +23,21 @@ export const chips = {
   nrf52: {
     name: 'nRF52 radios',
     short: 'nRF52',
-    headline: 'Long battery life, no Wi-Fi',
-    summary: 'use little power, so a small battery lasts days. No Wi-Fi.',
+    headline: 'Low power, no Wi-Fi',
+    summary: 'draw about 7 mA with the screen off in the measurements below. No Wi-Fi.',
     points: [
-      'Uses little power. A small battery lasts days.',
+      'Draws about 7 mA with the screen off in the measurements below.',
       'No Wi-Fi. Your phone can still connect it to MQTT over Bluetooth.',
-      'Most of Malaysia’s hilltop routers use it.',
     ],
   },
   esp32: {
     name: 'ESP32 radios',
     short: 'ESP32',
-    headline: 'Wi-Fi, short battery life',
-    summary: 'have Wi-Fi, but draw over ten times the current of an nRF52 board, so a small battery lasts hours. Fine on USB power.',
+    headline: 'Wi-Fi, higher power',
+    summary: 'have Wi-Fi, but draw over 100 mA in the measurements below, more than ten times an nRF52 board.',
     points: [
       'Has Wi-Fi, so it can reach MQTT without your phone.',
-      'Uses much more power. A pocket radio needs charging every day.',
+      'Draws over 100 mA in the measurements below.',
       'Turning Wi-Fi on turns Bluetooth off, so you can’t use both at once.',
     ],
   },
@@ -101,7 +100,7 @@ export const devices = [
     maker: 'LilyGO',
     chip: 'nrf52',
     form: 'ready',
-    why: 'An e-ink screen you can read in sunlight, GPS, and a case.',
+    why: 'An e-ink screen, GPS and an 850 mAh battery in a case.',
     screen: 'E-ink',
     gps: 'Yes',
     inBox: 'Ready to use: 850 mAh battery, case',
@@ -131,7 +130,7 @@ export const devices = [
     maker: 'Heltec',
     chip: 'nrf52',
     form: 'diy',
-    why: 'An nRF52 board with good battery life. Order it with the screen and the case.',
+    why: 'An nRF52 board. The screen, GPS and case are options when you order.',
     screen: 'Colour (optional)',
     gps: 'Optional',
     inBox: 'Bare board: add a LiPo. Case optional',
@@ -146,7 +145,7 @@ export const devices = [
     maker: 'Seeed',
     chip: 'nrf52',
     form: 'diy',
-    why: 'The cheapest option, and it uses very little power. It has no screen, so you do everything in the app.',
+    why: 'A small nRF52 board and a LoRa board. The kit has no screen, so you do everything in the app.',
     screen: 'None',
     gps: 'Optional',
     inBox: 'Two small boards: add a LiPo and a case',
@@ -161,7 +160,7 @@ export const devices = [
     maker: 'RAK',
     chip: 'nrf52',
     form: 'diy',
-    why: 'The longest battery life in the bench test. Add a screen, GPS or sensors as clip-on modules.',
+    why: 'An nRF52 base board. The screen, GPS and sensors are plug-in modules.',
     screen: 'OLED (optional)',
     gps: 'Optional',
     inBox: 'Base board and core: add a LiPo and a case',
@@ -176,7 +175,7 @@ export const devices = [
     maker: 'Heltec',
     chip: 'esp32',
     form: 'diy',
-    why: 'The most common radio in Malaysia, and the cheapest with a screen and Wi-Fi. Charge it daily.',
+    why: 'An ESP32 board with a screen and Wi-Fi.',
     screen: 'OLED',
     gps: 'No',
     inBox: 'Bare board: add a LiPo. Case optional',
@@ -247,19 +246,18 @@ export const devices = [
   },
 ];
 
-// Band classes a buyer meets. Ranges are typical module ratings (e.g.
-// Heltec 863–928, Seeed Wio-SX1262 862–930, Ebyte E22-900M 850–930 MHz;
-// RAK4631-L 433–470 MHz). The SX1262 itself covers 150–960 MHz.
+// Band versions a buyer meets, with examples from makers' product pages.
+// The SX1262 itself covers 150–960 MHz (Semtech datasheet).
 export const bands = [
-  {band: 'High band', range: 'about 850–930 MHz', soldAs: '868, 915 or 923 MHz', use: 'MY_919. Buy 915 MHz if you can.'},
-  {band: 'Low band', range: 'about 410–510 MHz', soldAs: '433 or 470 MHz', use: 'Licensed amateur operators only (see below). 470 MHz is for China.'},
-  {band: '2.4 GHz', range: '2400–2483.5 MHz', soldAs: '2.4 GHz', use: 'Not used by MeshMY.'},
+  {band: 'High band', examples: '902–928 MHz (Heltec V3, 915 MHz option); 862–930 MHz (Seeed Wio-SX1262)', use: 'MY_919 (919–924 MHz). Buy the 915 MHz version.'},
+  {band: 'Low band', examples: '433 MHz (Heltec, LilyGO); 470–510 MHz (Heltec, China band)', use: 'Licensed amateur operators only (see below).'},
+  {band: '2.4 GHz', examples: '2400–2483.5 MHz (Meshtastic LORA_24 region)', use: 'Not used by MeshMY.'},
 ];
 
 export const beforeYouBuy = [
   {
-    title: 'Buy a high-band version, ideally 915 MHz.',
-    text: 'Radios are sold in versions for different bands. Any high-band version (868, 915 or 923 MHz) works on MY_919, but the 915 MHz version’s antenna is tuned closest to it. See Frequency bands below.',
+    title: 'Buy the 915 MHz version.',
+    text: 'Radios are sold in versions for different bands. MY_919 (919–924 MHz) is inside the 902–928 MHz range of the 915 MHz versions. See Frequency bands below.',
   },
   {
     title: 'Fit the antenna before you switch it on.',
@@ -279,7 +277,7 @@ export const pickerQuestions = [
   {
     id: 'where',
     label: 'Where will it spend most of its time?',
-    why: 'A radio you carry runs on its battery, so battery life matters most. One at home can stay plugged in.',
+    why: 'A radio you carry runs on its battery, so battery life matters. One at home can stay plugged in.',
     options: [
       {value: 'carry', label: 'With me'},
       {value: 'home', label: 'At home'},
@@ -288,7 +286,7 @@ export const pickerQuestions = [
   {
     id: 'phone',
     label: 'Will you use it with your phone?',
-    why: 'Most radios have no keyboard. You type in the Meshtastic app, and your phone talks to the radio over Bluetooth. A few radios have their own keyboard.',
+    why: 'Most of these picks have no keyboard. You type in the Meshtastic app, and your phone talks to the radio over Bluetooth. A few radios have their own keyboard.',
     options: [
       {value: 'phone', label: 'With my phone'},
       {value: 'standalone', label: 'On its own'},
@@ -306,7 +304,7 @@ export const pickerQuestions = [
   {
     id: 'wifi',
     label: 'Do you want Wi-Fi on the radio?',
-    why: 'Wi-Fi lets the radio reach MQTT, the internet link between meshes, without your phone. Only ESP32 radios have it, and they use more power.',
+    why: 'Wi-Fi lets the radio reach MQTT, the internet link between meshes, without your phone. Of these picks, only the ESP32 radios have it, and they draw more power.',
     options: [
       {value: 'no', label: 'No'},
       {value: 'yes', label: 'Yes'},
@@ -321,8 +319,8 @@ export function pickRadios({where, phone, diy, wifi}) {
     return {
       ids: ['tdeck-plus', 'tlora-pager'],
       note: ready
-        ? 'Both have a keyboard, a screen and Wi-Fi, and work without a phone. They’re ESP32, so charge them daily.'
-        : 'Keyboard radios only come ready-made. Both have a screen and Wi-Fi, and they’re ESP32, so charge them daily.',
+        ? 'Both have a keyboard, a screen and Wi-Fi, and work without a phone. They’re ESP32, so they draw more power.'
+        : 'Of these picks, the keyboard radios only come ready-made. Both have a screen and Wi-Fi, and they’re ESP32, so they draw more power.',
     };
   }
   if (where === 'home') {
@@ -330,7 +328,7 @@ export function pickRadios({where, phone, diy, wifi}) {
       return ready
         ? {
             ids: ['heltec-v4', 'tdeck-plus'],
-            note: 'The only ready-made radios with Wi-Fi have keyboards. The Heltec V4 is a bare board, but at home it runs on USB power, so all it needs is a case (Heltec sells one).',
+            note: 'Of these picks, the only ready-made radios with Wi-Fi have keyboards. The Heltec V4 is a bare board, but at home it runs on USB power, so all it needs is a case (Heltec sells one).',
           }
         : {
             ids: ['heltec-v4', 'heltec-v3'],
@@ -340,7 +338,7 @@ export function pickRadios({where, phone, diy, wifi}) {
     return ready
       ? {
           ids: ['wismesh-pocket', 'wio-l1-pro'],
-          note: 'At home it can stay on USB power. The Pocket V2’s SMA plug makes it easy to fit a bigger antenna later.',
+          note: 'At home it can stay on USB power. The Pocket V2 has an SMA plug, so you can fit a different antenna.',
         }
       : {
           ids: ['rak-kit', 'heltec-t114'],
@@ -355,7 +353,7 @@ export function pickRadios({where, phone, diy, wifi}) {
         }
       : {
           ids: ['heltec-v3', 'heltec-tracker'],
-          note: 'Wi-Fi means ESP32, which drains a small battery in under a day. Your phone can connect an nRF52 radio to MQTT instead.',
+          note: 'Wi-Fi means ESP32, which draws over ten times the current of an nRF52 board. Your phone can connect an nRF52 radio to MQTT instead.',
         };
   }
   return ready
@@ -366,22 +364,22 @@ export function pickRadios({where, phone, diy, wifi}) {
 export const formFactors = [
   {
     title: 'Bare board',
-    text: 'A circuit board with a radio and an antenna plug. Cheapest, but you add a battery and a case.',
+    text: 'A circuit board with a radio and an antenna plug. It costs less, but you add a battery and a case.',
     examples: 'Heltec V3 and V4, Heltec T114, XIAO kit, RAK WisBlock',
   },
   {
     title: 'Pocket radio',
-    text: 'In a case with a battery, paired to your phone. The easiest way to start.',
+    text: 'In a case with a battery, paired to your phone.',
     examples: 'WisMesh Pocket V2, Wio Tracker L1 Pro, T-Echo',
   },
   {
     title: 'Card or tag',
-    text: 'Small, sealed and light, for a keyring or a bag. Usually no screen.',
+    text: 'Sealed and card-sized. The T1000-E has no screen.',
     examples: 'SenseCAP T1000-E',
   },
   {
     title: 'Keyboard handheld',
-    text: 'A screen and keyboard, so it works without a phone. Bigger, and ESP32, so it needs daily charging.',
+    text: 'A screen and keyboard, so it works without a phone. Both picks are ESP32, so they draw more power.',
     examples: 'T-Deck Plus, T-Lora Pager',
   },
 ];
@@ -389,27 +387,23 @@ export const formFactors = [
 export const features = [
   {
     title: 'Screen',
-    text: 'Shows the pairing PIN, messages and who’s nearby. OLED is sharp but small. E-ink reads well in sunlight and uses almost no power. You can do without one and use the app for everything.',
+    text: 'Shows the pairing PIN. Radios without a screen use the PIN 123456, and you do everything in the app.',
   },
   {
     title: 'GPS',
-    text: 'Shares your position on the map and sets the clock. You can skip it, because the app can share your phone’s location instead.',
+    text: 'Gives the radio its position and the time. You can skip it, because the app can use your phone’s GPS instead.',
   },
   {
     title: 'Battery',
     text: 'Ready-made radios include one. Bare boards take a single-cell 3.7 V LiPo with a small JST plug. Check the plug’s polarity before you connect it.',
   },
   {
-    title: 'Buttons',
-    text: 'A button wakes the screen or sends a quick message. Most radios have one or two.',
-  },
-  {
     title: 'Antenna plug',
-    text: 'SMA is sturdy and easy to swap. IPEX (U.FL) is a tiny snap-on plug that wears out if you swap it often. If you plan to upgrade, use a short IPEX-to-SMA cable.',
+    text: 'SMA is a screw-on plug. IPEX (U.FL) is a small snap-on plug rated for about 30 connections, so if you plan to change antennas, use a short IPEX-to-SMA cable.',
   },
   {
     title: 'Sensors',
-    text: 'Some radios can report temperature, humidity and air pressure to the mesh as telemetry. The RAK WisBlock takes clip-on sensor modules; others need a sensor wired to them.',
+    text: 'Meshtastic can report temperature, humidity and air pressure from sensors such as the BME280. The RAK WisBlock takes the RAK1906 environment sensor as a plug-in module.',
   },
 ];
 
@@ -417,13 +411,13 @@ export const starts = [
   {
     kicker: 'Ready-made',
     title: 'In a case, with a battery',
-    text: 'The easiest way to start.',
+    text: 'Charge it and pair it with your phone.',
     ids: ['wio-l1-pro', 't1000e'],
   },
   {
     kicker: 'Build it yourself',
     title: 'Add a battery and a case',
-    text: 'Cheaper than ready-made. No soldering needed.',
+    text: 'Lower maker prices than the ready-made picks. You add a LiPo battery and a case.',
     ids: ['heltec-t114', 'xiao-kit'],
   },
 ];
@@ -431,13 +425,13 @@ export const starts = [
 export const upgrades = [
   {
     kicker: 'Better range',
-    title: 'A better antenna, then height',
-    text: 'A good 915 MHz antenna is the cheapest upgrade, because stock antennas are often poorly tuned. Then move the radio higher, to a window or a higher floor. Match the plug (SMA, RP-SMA or IPEX). The T1000-E’s antenna is built in and can’t be changed.',
+    title: 'A better antenna',
+    text: 'Meshtastic’s antenna guide says stock antennas may not be tuned for your frequency. Use an antenna made for 915 MHz, with the same plug as the radio (SMA, RP-SMA or IPEX). The T1000-E’s antenna is built in and can’t be changed.',
   },
   {
     kicker: 'Longer battery',
     title: 'Move to nRF52',
-    text: 'An nRF52 radio lasts days on a battery that runs an ESP32 radio for hours. A bigger battery also helps.',
+    text: 'An nRF52 radio draws about 7 mA with the screen off, against over 100 mA for an ESP32 radio.',
     ids: ['rak-kit', 'wismesh-pocket'],
   },
   {
@@ -449,13 +443,13 @@ export const upgrades = [
   {
     kicker: 'Location',
     title: 'Add GPS',
-    text: 'Share your position without your phone. Most ready-made radios already have it.',
+    text: 'Share your position without your phone. All the ready-made picks already have it.',
     ids: ['heltec-tracker', 't1000e'],
   },
   {
     kicker: 'A node at home',
-    title: 'A radio by the window',
-    text: 'A radio on USB power by a high window, with a better antenna, keeps you on the mesh when you’re out. Set its role to CLIENT_BASE.',
+    title: 'A radio on USB power',
+    text: 'A radio that stays at home can run on USB power, so its power use doesn’t matter. An ESP32 board can then use Wi-Fi for MQTT.',
     ids: ['heltec-v4', 'wismesh-pocket'],
   },
 ];
@@ -463,15 +457,15 @@ export const upgrades = [
 export const listingChecklist = [
   {
     title: 'The band.',
-    text: 'The listing, or the option you pick, is a high-band version, ideally 915 MHz. Many listings make you choose at checkout.',
+    text: 'Pick the 915 MHz or 902–928 MHz option. Some makers sell every band on one product page, for example the Heltec V3.',
   },
   {
     title: 'What’s in the box.',
-    text: 'Battery, case, antenna and screen are often extras. Check the photos match the option you pick.',
+    text: 'On some boards the screen, GPS and case are options, for example the Heltec T114. Check which one you’re paying for.',
   },
   {
     title: 'The antenna plug.',
-    text: 'SMA and RP-SMA look alike but don’t fit each other. Buy antennas and cables to match the radio.',
+    text: 'SMA and RP-SMA plugs aren’t compatible. Buy antennas and cables to match the radio.',
   },
   {
     title: 'The battery plug.',
@@ -479,7 +473,7 @@ export const listingChecklist = [
   },
   {
     title: 'The maker.',
-    text: 'Copies of popular boards exist. Compare the listing with the maker’s own product page (the Specs links above).',
+    text: 'Compare the listing with the maker’s own product page (the Specs links above).',
   },
   {
     title: 'The power limit.',

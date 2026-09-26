@@ -169,8 +169,8 @@ function Join() {
             <span className={styles.stepNum} aria-hidden="true">1</span>
             <Heading as="h3">Get a radio</Heading>
             <p>
-              Any high-band Meshtastic device works, ideally the 915&nbsp;MHz
-              version. The buying guide compares the options.
+              Any Meshtastic device works in its 915&nbsp;MHz version. The buying
+              guide compares the options.
             </p>
             <Link to="/meshtastic/buying-guide" className={styles.stepLink}>
               Buying guide →
