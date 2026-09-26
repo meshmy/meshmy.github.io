@@ -278,16 +278,12 @@ function Join() {
             <span className={styles.stepNum} aria-hidden="true">1</span>
             <Heading as="h3">Get a radio</Heading>
             <p>
-              Any Meshtastic device works. A small handheld such as a Heltec
-              T114, LilyGO T-Echo or RAK WisBlock makes a great first node.
+              Any Meshtastic device works in its 915&nbsp;MHz version. The buying
+              guide compares the options.
             </p>
-            <a
-              className={styles.stepLink}
-              href="https://meshtastic.org/docs/hardware/devices/"
-              target="_blank"
-              rel="noreferrer">
-              Supported hardware ↗
-            </a>
+            <Link to="/meshtastic/buying-guide" className={styles.stepLink}>
+              Buying guide →
+            </Link>
           </li>
           <li className={styles.step}>
             <span className={styles.stepNum} aria-hidden="true">2</span>
