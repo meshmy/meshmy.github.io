@@ -153,6 +153,97 @@
   white-space: nowrap;
 }
 
+/* ---------- The mesh in numbers ---------- */
+
+.numbers {
+  padding-top: 0;
+}
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 0.75rem;
+}
+.tiles div {
+  padding: 1.125rem 1.25rem;
+  background: var(--mm-surface-1);
+  border: 1px solid var(--mm-line);
+  border-radius: 0.875rem;
+}
+.tiles dt {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--mm-muted);
+}
+.tiles dd {
+  margin: 0.25rem 0 0;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  color: var(--brand-highlight-text);
+}
+.tiles .tileNote {
+  margin: 0.25rem 0 0;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--mm-muted);
+}
+.breakdowns {
+  display: grid;
+  /* Two by two, so the four breakdowns never leave one alone on a row. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.breakdown {
+  padding: 1.125rem 1.25rem;
+  border: 1px solid var(--mm-line);
+  border-radius: 0.875rem;
+}
+.breakdown h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+.breakdown ul {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.breakdown li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.25rem 0.75rem;
+  margin: 0;
+  font-size: 0.9375rem;
+}
+.breakdownCount {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.bar {
+  grid-column: 1 / -1;
+  height: 6px;
+  background: var(--mm-surface-2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.bar span {
+  display: block;
+  height: 100%;
+  background: var(--brand-highlight-text);
+  border-radius: 999px;
+}
+.numbersNote {
+  margin: 0.75rem 0 0;
+  font-size: 0.875rem;
+  color: var(--mm-muted);
+}
+
 /* ---------- Site list ---------- */
 
 .siteList {
@@ -486,5 +577,8 @@
   }
   .gateway {
     padding: 0 1.25rem;
+  }
+  .breakdowns {
+    grid-template-columns: 1fr;
   }
 }

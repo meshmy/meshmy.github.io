@@ -103,6 +103,25 @@ export const weeklyNet = {
       message: 'CMQTT CHECK IN NET MESH MY919',
     },
   ],
+  // The automatic reply net control's node sends back on the net channel when
+  // a check-in arrives, shown on the Weekly Net page as a sample. The details
+  // are made up; `type: null` is filled with the check-in message the reader
+  // picked, since the reply names it.
+  reply: {
+    from: 'MNET',
+    fromLong: 'MY NET MESH 919 (MQTT)',
+    title: 'CHECK-IN RECEIVED',
+    fields: [
+      ['NODE', 'YOUR NODE'],
+      ['NODE ID', '!a1b2c3d4'],
+      ['TYPE', null],
+      ['TIME', '12:01'],
+      ['RSSI', '-24 dBm'],
+      ['SNR', '11.5 dB'],
+      ['HOP', '1'],
+    ],
+    footer: 'This Message Automatic Reply',
+  },
 };
 
 // The net's public secondary channel. `psk` is the key as base64, as the app
