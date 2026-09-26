@@ -1,9 +1,9 @@
 {
   "source": "https://api.lucifernet.com/meshtastic/",
-  "asOf": "2026-09-25",
+  "asOf": "2026-09-26",
   "active": {
     "days": 30,
-    "count": 206
+    "count": 208
   },
   "activeShort": {
     "days": 7,
@@ -32,13 +32,13 @@
     },
     {
       "month": "2026-09",
-      "count": 21
+      "count": 22
     }
   ],
   "byType": [
     {
       "label": "Clients",
-      "count": 179
+      "count": 181
     },
     {
       "label": "Routers",
@@ -52,7 +52,7 @@
   "byArea": [
     {
       "label": "Klang Valley",
-      "count": 148
+      "count": 149
     },
     {
       "label": "Penang",
@@ -79,6 +79,10 @@
       "count": 1
     },
     {
+      "label": "Perak",
+      "count": 1
+    },
+    {
       "label": "Elsewhere",
       "count": 1
     }
@@ -90,7 +94,7 @@
     },
     {
       "label": "RAK WisBlock RAK4631",
-      "count": 24
+      "count": 25
     },
     {
       "label": "LilyGO T-Deck",
@@ -98,7 +102,7 @@
     },
     {
       "label": "Heltec T114",
-      "count": 15
+      "count": 16
     },
     {
       "label": "nRF52 Pro Micro (DIY)",
