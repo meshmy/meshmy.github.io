@@ -7,7 +7,16 @@ import Heading from '@theme/Heading';
 import NetworkMap from '@site/src/components/Home/NetworkMap';
 import CopyButton from '@site/src/components/Home/CopyButton';
 import {ConfigCard, MeshtasticLink, SettingRow, Settings} from '@site/src/components/Setup';
-import {sites, siteStatus, siteElevation, STATUS, SITE_STATUS, maintainerOf, formatMetres} from '@site/src/data/sites';
+import {
+  sites,
+  siteStatus,
+  siteElevation,
+  STATUS,
+  SITE_STATUS,
+  maintainerOf,
+  formatMetres,
+  addRouterUrl,
+} from '@site/src/data/sites';
 import {apps, configUrl, recommended, weeklyNet} from '@site/src/data/meshtasticConfig';
 import networkStats from '@site/src/data/networkStats.json';
 import styles from './index.module.css';
@@ -144,6 +153,21 @@ function SiteStrip({focused, onSelect}) {
             );
           })}
         </ul>
+        <div className={styles.gateway}>
+          <p className={styles.gatewayLine}>
+            <span>
+              <strong>Run a router?</strong> Tell us about it on GitHub and
+              we’ll add it to the map.
+            </span>
+            <a
+              className={clsx('button', styles.buttonQuiet)}
+              href={addRouterUrl}
+              target="_blank"
+              rel="noreferrer">
+              Add your router ↗
+            </a>
+          </p>
+        </div>
       </div>
     </section>
   );

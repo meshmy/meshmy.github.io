@@ -1,0 +1,120 @@
+name: Add a router
+description: Put your Meshtastic router on the MeshMY map and Infrastructure page.
+title: "Add router: "
+labels: ["add router"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Tell us about your router and a maintainer adds it to the map. We check the node on the live mesh first, so make sure it's switched on and connected to MQTT.
+
+        This issue is public. Only share what you're happy to show on a public map.
+
+  - type: input
+    id: name
+    attributes:
+      label: Site name
+      description: The hill, building or place the router is on.
+      placeholder: Bukit Besi
+    validations:
+      required: true
+
+  - type: input
+    id: short-name
+    attributes:
+      label: Short name
+      description: The node's short name, or a 4-letter code for the site. We pick one if you leave this blank.
+      placeholder: BBKL
+
+  - type: input
+    id: area
+    attributes:
+      label: Area
+      placeholder: Kuala Lumpur
+    validations:
+      required: true
+
+  - type: input
+    id: maintainer
+    attributes:
+      label: Maintained by
+      description: Your group, club, or your name or callsign.
+      placeholder: Klang Meshtastic group
+    validations:
+      required: true
+
+  - type: input
+    id: position
+    attributes:
+      label: Position
+      description: Latitude and longitude in decimal degrees.
+      placeholder: 3.0749, 101.7334
+    validations:
+      required: true
+
+  - type: dropdown
+    id: position-accuracy
+    attributes:
+      label: How exact is the position?
+      options:
+        - Exact
+        - Approximate (what the node reports)
+    validations:
+      required: true
+
+  - type: input
+    id: elevation
+    attributes:
+      label: Elevation
+      description: Metres above sea level.
+      placeholder: "212"
+    validations:
+      required: true
+
+  - type: input
+    id: grid
+    attributes:
+      label: Maidenhead grid square
+      description: Optional. We work it out from the position if you leave this blank.
+      placeholder: OJ03ub
+
+  - type: textarea
+    id: radios
+    attributes:
+      label: Radios
+      description: One block per band. Most routers are 919 MHz only. Write "?" for anything you'd rather not share yet.
+      value: |
+        - Band: 919 MHz
+        - Node ID: !xxxxxxxx
+        - Hardware:
+        - Transmit power:
+        - Antenna (gain, type, part number):
+    validations:
+      required: true
+
+  - type: input
+    id: meshmap
+    attributes:
+      label: Mesh Map link
+      description: Your node's link on meshmap2.lucifernet.com, so we can check it's on air.
+      placeholder: https://meshmap2.lucifernet.com/?node_id=3959129294
+
+  - type: input
+    id: contact
+    attributes:
+      label: How we can reach you
+      description: A callsign or Telegram username, in case the router's status changes. Don't post a phone number here.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you send this
+      options:
+        - label: The node runs on `MY_919` (or `MY_433` if I'm a licensed ham) with the MeshMY primary channel.
+          required: true
+        - label: The node has "OK to MQTT" turned on, so you can check its status.
+          required: true
+        - label: I have the site owner's permission to run a router there.
+          required: true
+        - label: I'm happy for the site's name, area and position to show on a public map.
+          required: true

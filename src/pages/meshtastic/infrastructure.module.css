@@ -1,0 +1,34 @@
+.addRouter {
+  /* The card row above already ends with a 2rem margin. */
+  margin: 0 0 2rem;
+  padding: 2rem;
+  background: var(--mm-surface-1);
+  border: 1px solid var(--mm-line);
+  border-radius: 1rem;
+}
+.addRouter h2 {
+  margin-top: 0;
+}
+.addRouter > p {
+  max-width: 40rem;
+  margin-bottom: 1.5rem;
+}
+@media (max-width: 480px) {
+  .addRouter {
+    padding: 1.25rem;
+  }
+}
+.cta {
+  color: var(--mm-cta-fg);
+  background: var(--mm-cta-bg);
+  border: 1px solid var(--mm-cta-bg);
+}
+.cta:hover {
+  color: var(--mm-cta-fg);
+  background: var(--mm-cta-bg-hover);
+  border-color: var(--mm-cta-bg-hover);
+}
+.cta:focus-visible {
+  outline: 2px solid var(--brand-highlight-text);
+  outline-offset: 2px;
+}
