@@ -361,6 +361,10 @@ export const links = [
   ['PGJB', 'PGFH'],
 ];
 
+/** Adding a router: a GitHub issue form (.github/ISSUE_TEMPLATE/add-router.yml). */
+export const addRouterUrl =
+  'https://github.com/meshmy/meshmy.github.io/issues/new?template=add-router.yml';
+
 /** Metres with a fixed locale, so the build and the browser render the same text. */
 export const formatMetres = (m) => m.toLocaleString('en-GB');
 

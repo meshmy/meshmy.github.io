@@ -1,5 +1,6 @@
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
+import clsx from 'clsx';
 import {
   sites,
   STATUS,
@@ -9,7 +10,9 @@ import {
   siteElevation,
   googleMapsUrl,
   meshmapUrl,
+  addRouterUrl,
 } from '@site/src/data/sites';
+import styles from './infrastructure.module.css';
 
 const groups = Object.entries(MAINTAINERS)
   .map(([key, m]) => ({key, ...m, sites: sites.filter((s) => maintainerOf(s) === m)}))
@@ -179,6 +182,25 @@ export default function Infrastructure() {
         </div>
           </section>
         ))}
+
+        <section aria-labelledby="add-router" className={styles.addRouter}>
+          <Heading as="h2" id="add-router">
+            Add your router
+          </Heading>
+          <p>
+            Run a Meshtastic router in Malaysia? Fill in a short form on
+            GitHub with its location, node ID, hardware and antenna. A
+            maintainer checks the node on the live mesh, then adds it to this
+            page and the homepage map. You need a free GitHub account.
+          </p>
+          <a
+            className={clsx('button', styles.cta)}
+            href={addRouterUrl}
+            target="_blank"
+            rel="noreferrer">
+            Add your router ↗
+          </a>
+        </section>
 
         <Heading as="h2">Get help</Heading>
         <p>
