@@ -173,10 +173,10 @@ export default function Join() {
                   </p>
                   <ul className={styles.list}>
                     <li>
-                      <strong>The 915&nbsp;MHz version.</strong>{' '}
+                      <strong>A high-band version, ideally 915&nbsp;MHz.</strong>{' '}
                       {licensed
                         ? 'That’s the one for MY_919. For 433 MHz you need a 433 MHz version.'
-                        : 'MY_919 (919–924 MHz) is inside the 902–928 MHz range of the 915 MHz versions. Radios are sold in versions for different bands, so check before you buy.'}
+                        : 'Any high-band version (868, 915 or 923 MHz) works on MY_919, and the 915 MHz version’s antenna is tuned closest to it. Radios are sold in versions for different bands, so check before you buy.'}
                     </li>
                     <li>
                       <strong>Bluetooth</strong>, so it pairs with your phone.

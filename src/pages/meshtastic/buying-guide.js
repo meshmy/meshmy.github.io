@@ -77,14 +77,14 @@ function Picker() {
   const answer = (id) => (value) => {
     const next = {...answers, [id]: value};
     update({answers: {[id]: value}});
-    setAnnouncement(`Shortlist: ${pickRadios(next).ids.map((i) => byId[i].name).join(', ')}.`);
+    setAnnouncement(`Radios that match: ${pickRadios(next).ids.map((i) => byId[i].name).join(', ')}.`);
   };
 
   return (
     <section className={styles.picker} aria-labelledby="picker-heading">
       <div className={styles.pickerHead}>
         <Heading as="h2" id="picker-heading" className={styles.pickerTitle}>
-          Find your radio
+          Narrow down the list
         </Heading>
         <button type="button" className={styles.reset} onClick={reset}>
           Start over
@@ -108,7 +108,7 @@ function Picker() {
       </p>
       <div className={styles.result}>
         <Heading as="h3" className={styles.resultTitle}>
-          Your shortlist
+          Radios that match
         </Heading>
         {result.note && <p className={styles.resultNote}>{result.note}</p>}
         <div className={styles.picks}>
@@ -150,10 +150,11 @@ export default function BuyingGuide() {
             <p className={styles.eyebrow}>Meshtastic<sup>®</sup> · Buying guide</p>
             <Heading as="h1">Choose your first radio</Heading>
             <p className={styles.lead}>
-              A Meshtastic radio in its 915&nbsp;MHz version can join the MeshMY
-              mesh on MY_919. The radios differ in power use, screen,
-              and how much you put together yourself. Answer four questions for
-              a shortlist, or read on to compare.
+              A Meshtastic radio in a high-band version (868, 915 or
+              923&nbsp;MHz) works in Malaysia on MY_919. The 915&nbsp;MHz
+              version’s antenna is tuned closest to MY_919. The radios differ in power use,
+              screen, and how much you put together yourself. Answer four
+              questions to narrow down the list, or read on to compare.
             </p>
           </header>
 
@@ -177,10 +178,10 @@ export default function BuyingGuide() {
             title="How the options compare"
             lead="More detail on the four questions above.">
             <Heading as="h3" className={styles.sub}>
-              The chip: nRF52 or ESP32
+              The processor: nRF52 or ESP32
             </Heading>
             <p className={styles.body}>
-              The chip that runs Meshtastic affects power use and whether the radio has Wi-Fi.
+              The processor that runs Meshtastic affects power use and whether the radio has Wi-Fi.
             </p>
             <div className={styles.chipGrid}>
               {['nrf52', 'esp32'].map((c) => (
@@ -200,8 +201,8 @@ export default function BuyingGuide() {
             <div className={styles.tableWrap} role="region" aria-label="Measured current draw" tabIndex={0}>
               <table className={styles.table}>
                 <caption>
-                  Current draw in mA with Bluetooth on, measured by Meshtastic users from a
-                  3.7&nbsp;V battery on firmware 2.3.10.{' '}
+                  Current draw in mA with Bluetooth on, from HarukiToreda’s measurements on a
+                  3.7&nbsp;V battery with firmware 2.3.10.{' '}
                   <a href={powerTest.source} target="_blank" rel="noreferrer">
                     Measurements ↗
                   </a>
@@ -209,7 +210,7 @@ export default function BuyingGuide() {
                 <thead>
                   <tr>
                     <th scope="col">Radio</th>
-                    <th scope="col">Chip</th>
+                    <th scope="col">Processor</th>
                     <th scope="col">Screen on</th>
                     <th scope="col">Screen off</th>
                   </tr>
@@ -227,7 +228,7 @@ export default function BuyingGuide() {
               </table>
             </div>
             <p className={styles.body}>
-              Every pick on this page uses one of these two chips. Meshtastic also runs on RP2040 and
+              Every radio on this page uses one of these two processors. Meshtastic also runs on RP2040 and
               RP2350, STM32WL, and Linux computers such as a Raspberry Pi with a LoRa board.{' '}
               <a href="https://meshtastic.org/docs/getting-started/#supported-hardware" target="_blank" rel="noreferrer">
                 Supported platforms ↗
@@ -238,7 +239,7 @@ export default function BuyingGuide() {
               Frequency bands
             </Heading>
             <p className={styles.body}>
-              The LoRa chip in most of these picks, the SX1262, covers 150–960&nbsp;MHz.
+              The LoRa chip in most radios on this page, the SX1262, covers 150–960&nbsp;MHz.
               Makers still sell separate versions of each board for different bands: the
               Heltec V3, for example, comes in 433, 470–510, 863–870 and 902–928&nbsp;MHz
               versions. MY_919 (919–924&nbsp;MHz) is inside the 902–928&nbsp;MHz range of
@@ -277,13 +278,14 @@ export default function BuyingGuide() {
             </Heading>
             <p className={styles.body}>
               Look for <strong>SX1262</strong>, <strong>LR1110</strong> or{' '}
-              <strong>LR1121</strong> in the specs. Meshtastic strongly recommends
-              these over the older SX127x series. The original T-Beam (v0.7 and v1.1)
-              and the Heltec V2 use the <strong>SX1276</strong>, so skip those.
+              <strong>LR1121</strong> in the specs. Meshtastic recommends
+              these over the older SX127x series. Some older boards use the{' '}
+              <strong>SX1276</strong>, for example the T-Beam v0.7 and v1.1 and the
+              Heltec V2. Check the LoRa chip in the listing.
             </p>
 
             <Heading as="h3" className={styles.sub}>
-              Form factors
+              Types of radio
             </Heading>
             <div className={styles.cardGrid}>
               {formFactors.map((f) => (
@@ -312,8 +314,7 @@ export default function BuyingGuide() {
 
           <Section
             id="upgrade"
-            title="What to buy first, and what to upgrade"
-            lead="Start with one radio. Upgrade one thing at a time, when you need to.">
+            title="What to buy first, and what to upgrade">
             <div className={styles.startGrid}>
               {starts.map((s) => (
                 <div key={s.title} className={styles.start}>
@@ -332,19 +333,18 @@ export default function BuyingGuide() {
             </div>
 
             <Heading as="h3" className={styles.sub}>
-              Upgrade paths
+              Upgrades
             </Heading>
             <div className={styles.cardGrid}>
               {upgrades.map((u) => (
                 <div key={u.title} className={styles.card}>
-                  <p className={styles.cardKicker}>{u.kicker}</p>
                   <Heading as="h4" className={styles.cardTitle}>
                     {u.title}
                   </Heading>
                   <p>{u.text}</p>
                   {u.ids && (
                     <p className={styles.examples}>
-                      Picks: {u.ids.map((id) => byId[id].name).join(', ')}
+                      For example: {u.ids.map((id) => byId[id].name).join(', ')}
                     </p>
                   )}
                 </div>
@@ -352,8 +352,8 @@ export default function BuyingGuide() {
             </div>
           </Section>
 
-          <Section id="picks" title="All the picks">
-            <div className={styles.tableWrap} role="region" aria-label="All the picks" tabIndex={0}>
+          <Section id="picks" title="Compare the radios">
+            <div className={styles.tableWrap} role="region" aria-label="Compare the radios" tabIndex={0}>
               <table className={clsx(styles.table, styles.picksTable)}>
                 <caption>
                   {priced ? `Typical prices in Malaysia, ${pricesAsOf}. ` : ''}
@@ -365,7 +365,7 @@ export default function BuyingGuide() {
                 <thead>
                   <tr>
                     <th scope="col">Radio</th>
-                    <th scope="col">Chip</th>
+                    <th scope="col">Processor</th>
                     <th scope="col">Screen</th>
                     <th scope="col">GPS</th>
                     <th scope="col">In the box</th>
@@ -405,7 +405,7 @@ export default function BuyingGuide() {
               ))}
             </ul>
             <p className={styles.fine}>
-              MeshMY does not endorse any maker or seller. Links to makers’ product pages
+              This site does not endorse any maker or seller. Links to makers’ product pages
               are provided for convenience only.
             </p>
           </Section>
@@ -418,24 +418,25 @@ export default function BuyingGuide() {
             </p>
             <ul className={styles.list}>
               <li>
-                <strong>MY_433</strong> covers 433–435&nbsp;MHz. MeshMY runs a 433&nbsp;MHz network
-                alongside MY_919.
+                <strong>MY_433</strong> covers 433–435&nbsp;MHz. Some router sites on the{' '}
+                <Link to="/meshtastic/infrastructure">Infrastructure page</Link> also have a
+                433&nbsp;MHz radio.
               </li>
               <li>
                 <strong>ITU3_70CM</strong> covers the ITU Region&nbsp;3 amateur band,
-                430–450&nbsp;MHz. It arrives in firmware 2.8, which is in alpha as of September
+                430–450&nbsp;MHz. It is in firmware 2.8, which is in alpha as of October
                 2026, and it needs licensed mode.
               </li>
             </ul>
             <p className={styles.body}>
-              In licensed mode, the channel has no encryption key and your long name should be
-              your callsign.{' '}
+              Licensed mode turns encryption off, and your long name must be your
+              callsign.{' '}
               <a href="https://meshtastic.org/docs/configuration/radio/user/" target="_blank" rel="noreferrer">
                 Meshtastic user settings ↗
               </a>
             </p>
             <Heading as="h3" className={styles.sub}>
-              Picks with a 433 MHz version
+              Radios on this page with a 433 MHz version
             </Heading>
             <ul className={styles.list}>
               {devices
@@ -454,7 +455,7 @@ export default function BuyingGuide() {
               <Heading as="h2" id="cta-heading" className={styles.ctaTitle}>
                 Set up your radio
               </Heading>
-              <p>When it arrives, charge it, fit the antenna, and follow the setup steps for MeshMY.</p>
+              <p>When it arrives, fit the antenna, then charge it and follow the setup steps for MY_919.</p>
             </div>
             <Link to="/meshtastic/join" className={clsx('button', 'button--lg', styles.ctaButton)}>
               Connect to the mesh →
