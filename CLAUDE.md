@@ -19,6 +19,19 @@ Rules that apply to every change:
 - Show status by shape plus a word, never by hue alone: filled = online, half-filled = partly online, red ring = offline, dashed and struck through = decommissioned.
 - Use system fonts only (no webfonts). Use borders, not shadows (`--mm-shadow` is only for the map frame and map popups). Check dark and light, at desktop width and at 390px.
 
+## Writing
+
+Site copy is reference material for newcomers in Malaysia, and maintainers have rejected copy that reads as LLM-written: catchy, snappy, trying to sell. Write it factual and plain:
+
+- Taglines and catchy phrasing belong only in the hero of the homepage or of a major section's landing page. Everywhere else, state facts.
+- Give each claim a source: a maker's product page, a Meshtastic doc, the firmware source or a measurement. Use the number in place of the adjective ("draws about 7 mA", "IP65 case"). If you can't find a source, leave the claim out.
+- Describe hardware and sellers as examples, since MeshMY endorses none of them ("radios on this page", "for example"). Keep ranking words like "picks", "best" and "great first node" off the page.
+- Explain options and their trade-offs, and let the reader choose. Keep imperatives for steps and checks ("Fit the antenna before you switch it on", "Check the LoRa chip in the listing").
+- Link only to pages that exist now.
+- MeshMY is the site's name, not an organisation. Write about where things apply ("not used in Malaysia", "works in Malaysia on MY_919") or name who actually does the thing (the volunteers who maintain a router site). Older pages still treat "MeshMY" as a body that acts, owns or endorses ("MeshMY's settings", "the MeshMY team", "MeshMY uses Medium Fast"). When you edit one of those pages, reword its references in the same change.
+- On Meshtastic pages, lead with MY_919, the licence-free default. Put amateur radio information (MY_433, ITU3_70CM, licensed mode) in one section near the end, and keep MeshCore off Meshtastic pages.
+- Use second person, plain verbs and short sentences. Use British spelling, sentence case headings, full stops or commas in place of em dashes and semicolons, and no emoji.
+
 ## Pull requests
 
 This repo only allows squash merges, and `main` only takes changes through a PR. Parallel or stacked PRs have clashed or lost work (#7 was squash-merged into an already-merged branch and never reached `main`), so:
@@ -40,6 +53,6 @@ This repo only allows squash merges, and `main` only takes changes through a PR.
 - `src/components/Setup/`: shared "get on the mesh" UI (SettingRow/Settings, MeshtasticLink, ConfigCard with the QR, Choice pill radios), used by the homepage, Join and Weekly Net.
 - `src/pages/meshtastic/join.js`: interactive beginner setup. Answers and ticks persist in `localStorage` via `src/components/Join/useStoredState.js`; `Term` is the glossary toggletip. Its words (questions, glossary, pairing tips, troubleshooting) live in `src/data/joinGuide.js`.
 - Map tiles are CARTO basemaps and need `CARTO_API_KEY` in the environment at build time (git-ignored `.env.local` locally, a repo secret in `deploy.yml` for production; see README). Without it the map still works, but its tiles carry an "API key required" watermark.
-- `src/pages/meshtastic/buying-guide.js`: the buying guide. The radios, picker questions and rules, and the page's words live in `src/data/hardware.js`. Every claim needs a source (a maker's page, a Meshtastic doc, the firmware source or a measurement). Amateur radio information (MY_433, ITU3_70CM) stays in its own section near the end.
+- `src/pages/meshtastic/buying-guide.js`: the buying guide. The radios, picker questions and rules, and the page's words live in `src/data/hardware.js`, with the date their specs were checked.
 - `src/pages/index.js` + `index.module.css`: homepage.
 - `src/pages/meshtastic/weekly-net.js`: the weekly net. Keep the tagline "Jom check in net! Kalau bukan anda, siapa lagi." verbatim. The schedule, tagline and check-in messages live in `weeklyNet` (`meshtasticConfig.js`); `src/components/WeeklyNet/` has the MYT schedule maths and the open/next status pill. Fill in `netChannel` to turn on the one-tap "add channel" link.
