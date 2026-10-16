@@ -173,10 +173,10 @@ export default function Join() {
                   </p>
                   <ul className={styles.list}>
                     <li>
-                      <strong>The 915&nbsp;MHz version.</strong>{' '}
+                      <strong>A high-band version, ideally 915&nbsp;MHz.</strong>{' '}
                       {licensed
                         ? 'That’s the one for MY_919. For 433 MHz you need a 433 MHz version.'
-                        : 'That’s the one for MY_919. Radios are built for one band (433, 868 or 915 MHz), so check before you buy.'}
+                        : 'Any high-band version (868, 915 or 923 MHz) works on MY_919, and the 915 MHz version’s antenna is tuned closest to it. Radios are sold in versions for different bands, so check before you buy.'}
                     </li>
                     <li>
                       <strong>Bluetooth</strong>, so it pairs with your phone.
@@ -189,7 +189,7 @@ export default function Join() {
                     </li>
                   </ul>
                   <p>
-                    Popular first radios: Heltec T114, LilyGO T-Echo, RAK WisBlock.{' '}
+                    Not sure which? Take a look at our <Link to="/meshtastic/buying-guide">buying guide</Link>.{' '}
                     <a href="https://meshtastic.org/docs/hardware/devices/" target="_blank" rel="noreferrer">
                       Supported hardware ↗
                     </a>

@@ -92,6 +92,7 @@ const config = {
             position: 'left',
             items: [
               {to: '/meshtastic/join', label: 'Connect to mesh'},
+              {to: '/meshtastic/buying-guide', label: 'Buying Guide'},
               {to: '/meshtastic/mqtt', label: 'Set up MQTT'},
               {to: '/meshtastic/weekly-net', label: 'Weekly Check-in'},
               {to: '/meshtastic/infrastructure', label: 'Infrastructure'},
@@ -123,6 +124,7 @@ const config = {
             items: [
               {label: 'Overview', to: '/meshtastic'},
               {label: 'Connect to mesh', to: '/meshtastic/join'},
+              {label: 'Buying Guide', to: '/meshtastic/buying-guide'},
               {label: 'Set up MQTT', to: '/meshtastic/mqtt'},
               {label: 'Weekly Check-in', to: '/meshtastic/weekly-net'},
               {label: 'Infrastructure', to: '/meshtastic/infrastructure'},

@@ -130,6 +130,12 @@
   font-size: 0.875rem;
   font-weight: 600;
 }
+.choiceHint {
+  margin: -0.25rem 0 0.625rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--mm-muted);
+}
 .pills {
   display: flex;
   flex-wrap: wrap;
